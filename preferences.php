@@ -1,23 +1,20 @@
 <?php
-/******************************************************************************
- * preferences.php
- * 
+/**
+ ***********************************************************************************************
  * Modul Preferences (Einstellungen) für das Admidio-Plugin FormFiller
  *
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
- * Hinweis:
- * 
- * preferences.php ist eine modifizierte Kombination der Dateien
- * .../modules/lists/mylist.php und .../modules/preferences/preferences.php
- * 
+ * Hinweis:  preferences.php ist eine modifizierte Kombination der Dateien
+ *           .../modules/lists/mylist.php und .../modules/preferences/preferences.php
+ *
  * Parameters:
  *
  * add	:	Anlegen einer weiteren Konfiguration (true or false)
- *
- *****************************************************************************/
+ ***********************************************************************************************
+ */
 
 // Pfad des Plugins ermitteln
 $plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
@@ -36,7 +33,7 @@ $getAdd = admFuncVariableIsValid($_GET, 'add', 'boolean', array('defaultValue' =
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
-$headline = $gL10n->get('PFF_FORMFILLER');
+$headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
 $num_configs	 = count($pPreferences->config['Formular']['desc']);
 if($getAdd)
@@ -52,6 +49,7 @@ $gNavigation->addUrl(CURRENT_URL, $headline);
 
 // create html page object
 $page = new HtmlPage($headline);
+$page->enableModal();
 
 // open the module configurations if a new configuration is added 
 if($getAdd)
@@ -68,7 +66,7 @@ else
      ', true);
 }
 
-$page->addJavascript('
+$page->addJavascript('   
     $(".form-preferences").submit(function(event) {
         var id = $(this).attr("id");
         var action = $(this).attr("action");
@@ -123,7 +121,7 @@ $javascriptCode = '
         //$(newTableRow).css("display", "none"); // ausgebaut wg. Kompatibilitaetsproblemen im IE8
         
         var newCellCount = newTableRow.insertCell(-1);
-        newCellCount.innerHTML = (fieldNumberShow) + ".&nbsp;'.$gL10n->get('PFF_FIELD').'&nbsp;:";
+        newCellCount.innerHTML = (fieldNumberShow) + ".&nbsp;'.$gL10n->get('PLG_FORMFILLER_FIELD').'&nbsp;:";
         
         // neue Spalte zur Auswahl des Profilfeldes
         var newCellField = newTableRow.insertCell(-1);
@@ -212,19 +210,19 @@ $javascriptCode = '
    
         $javascriptCode .= '
         user_fields['. $i. '] = new Object();
-        user_fields['. $i. ']["cat_name"] = "'.$gL10n->get('PFF_ADDITIONAL_FIELDS').'";
+        user_fields['. $i. ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
         user_fields['. $i. ']["id"]   = "ddummy";           //d wie date
-        user_fields['. $i. ']["data"] = "'.$gL10n->get('PFF_DATE').'";
+        user_fields['. $i. ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_DATE').'";
         
         user_fields['. ($i+1). '] = new Object();
-        user_fields['. ($i+1). ']["cat_name"] = "'.$gL10n->get('PFF_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+1). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
         user_fields['. ($i+1). ']["id"]   = "ldummy";       //l wie logo
-        user_fields['. ($i+1). ']["data"] = "'.$gL10n->get('PFF_PROFILE_PHOTO').'";
+        user_fields['. ($i+1). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_PROFILE_PHOTO').'";
         
         user_fields['. ($i+2). '] = new Object();
-        user_fields['. ($i+2). ']["cat_name"] = "'.$gL10n->get('PFF_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+2). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
         user_fields['. ($i+2). ']["id"]   = "vdummy";      //v wie value
-        user_fields['. ($i+2). ']["data"] = "'.$gL10n->get('PFF_VALUE').'";
+        user_fields['. ($i+2). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_VALUE').'";
         
         return user_fields;
     }
@@ -247,8 +245,9 @@ $javascriptCode .= '
 $page->addJavascript($javascriptCode, true);  
 
 // create module menu with back link
-$preferencesMenu = new HtmlNavbar('menu_dates_create', $headline, $page);
+$preferencesMenu = new HtmlNavbar('menu_preferences', $headline, $page);
 $preferencesMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL10n->get('SYS_BACK'), 'back.png');
+
 $page->addHtml($preferencesMenu->show(false));
 
 $page->addHtml('
@@ -263,7 +262,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_configurations">
-                            <img src="'.THEME_PATH.'/icons/application_form_edit.png" alt="'.$gL10n->get('PFF_CONFIGURATIONS').'" title="'.$gL10n->get('PFF_CONFIGURATIONS').'" />'.$gL10n->get('PFF_CONFIGURATIONS').'
+                            <img src="'.THEME_PATH.'/icons/application_form_edit.png" alt="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" />'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'
                         </a>
                     </h4>
                 </div>
@@ -271,18 +270,21 @@ $page->addHtml('
                     <div class="panel-body">');
                         // show form
                         $form = new HtmlForm('configurations_form', $g_root_path.'/adm_plugins/'.$plugin_folder.'/preferences_function.php?form=configurations', $page, array('class' => 'form-preferences'));
-                        $form->addDescription($gL10n->get('PFF_FORM_CONFIG_HEADER'));
+                        
+                        $html = '<a class="admidio-icon-link" data-toggle="modal" data-target="#admidio_modal" href="'.$g_root_path.'/adm_plugins/'.$plugin_folder.'/preferences_popup.php? " >
+                        		<img src="'. THEME_PATH. '/icons/help.png" alt="'.$gL10n->get('SYS_HELP').'" />'.$gL10n->get('SYS_HELP').'</a>';
+                        $form->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
                     	$form->addLine();
                         $form->addDescription('<div style="width:100%; height:550px; overflow:auto; border:20px;">');
                         for ($conf=0;$conf<$num_configs;$conf++)
 						{                           			
-							$form->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PFF_CONFIGURATION'));
-							$form->addInput('desc'.$conf, $gL10n->get('PFF_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf],array('helpTextIdLabel' => 'PFF_DESCRIPTION_DESC'));
-							$form->addSelectBox('font'.$conf, $gL10n->get('PFF_FONT'), array('Courier'=>'Courier','Arial'=>'Arial','Times'=>'Times','Symbol'=>'Symbol','ZapfDingbats'=>'ZapfDingbats' ), array('defaultValue' => $pPreferences->config['Formular']['font'][$conf], 'showContextDependentFirstEntry' => false, 'helpTextIdLabel' => 'PFF_FONT_DESC'));
-							$form->addSelectBox('style'.$conf, $gL10n->get('PFF_FONTSTYLE'), array(''=>'Normal','B'=>'Fett','I'=>'Kursiv','U'=>'Unterstrichen','BI'=>'Fett-Kursiv','BU'=>'Fett-Unterstrichen','IU'=>'Kursiv-Unterstrichen'), array('defaultValue' => $pPreferences->config['Formular']['style'][$conf],  'showContextDependentFirstEntry' => false, 'helpTextIdLabel' => 'PFF_FONTSTYLE_DESC'));
-							$form->addInput('size'.$conf, $gL10n->get('PFF_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], 
-                            	array('step' => 2,'type' => 'number', 'minNumber' => 6, 'maxNumber' => 40, 'helpTextIdLabel' => 'PFF_FONTSIZE_DESC'));
-							$form->addSelectBox('color'.$conf, $gL10n->get('PFF_FONTCOLOR'), array('0,0,0'=>$gL10n->get('PFF_BLACK'),'255,0,0'=>$gL10n->get('PFF_RED'),'0,255,0'=>$gL10n->get('PFF_GREEN'),'0,0,255'=>$gL10n->get('PFF_BLUE')), array('defaultValue' => $pPreferences->config['Formular']['color'][$conf],  'showContextDependentFirstEntry' => false, 'helpTextIdLabel' => 'PFF_FONTCOLOR_DESC'));
+							$form->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PLG_FORMFILLER_CONFIGURATION'));
+							$form->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf]);
+							$form->addSelectBox('font'.$conf, $gL10n->get('PLG_FORMFILLER_FONT'), array('Courier'=>'Courier','Arial'=>'Arial','Times'=>'Times','Symbol'=>'Symbol','ZapfDingbats'=>'ZapfDingbats' ), array('defaultValue' => $pPreferences->config['Formular']['font'][$conf], 'showContextDependentFirstEntry' => false));
+							$form->addSelectBox('style'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSTYLE'), array(''=>'Normal','B'=>'Fett','I'=>'Kursiv','U'=>'Unterstrichen','BI'=>'Fett-Kursiv','BU'=>'Fett-Unterstrichen','IU'=>'Kursiv-Unterstrichen'), array('defaultValue' => $pPreferences->config['Formular']['style'][$conf],  'showContextDependentFirstEntry' => false));
+							$form->addInput('size'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], 
+                            	array('step' => 2,'type' => 'number', 'minNumber' => 6, 'maxNumber' => 40));
+							$form->addSelectBox('color'.$conf, $gL10n->get('PLG_FORMFILLER_FONTCOLOR'), array('0,0,0'=>$gL10n->get('PLG_FORMFILLER_BLACK'),'255,0,0'=>$gL10n->get('PLG_FORMFILLER_RED'),'0,255,0'=>$gL10n->get('PLG_FORMFILLER_GREEN'),'0,0,255'=>$gL10n->get('PLG_FORMFILLER_BLUE')), array('defaultValue' => $pPreferences->config['Formular']['color'][$conf],  'showContextDependentFirstEntry' => false));
                      
 							$sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
                                 FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
@@ -290,8 +292,8 @@ $page->addHtml('
                                 AND fil.fil_name LIKE \'%.PDF\' 
                                 AND (  fol.fol_org_id = '.$gCurrentOrganization->getValue('org_id').'
                                 OR fol.fol_org_id IS NULL )';
-				        	$form->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PFF_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf], 'helpTextIdLabel' => 'PFF_PDF_FILE_DESC'));				                                            
-                     		$form->addInput('labels'.$conf, $gL10n->get('PFF_LABELS'), $pPreferences->config['Formular']['labels'][$conf],array('helpTextIdLabel' => 'PFF_LABELS_DESC'));
+				        	$form->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf], 'helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC'));				                                            
+                     		$form->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf]);
 						
 							$html = '
 							<div class="table-responsive">
@@ -300,25 +302,25 @@ $page->addHtml('
             							<tr>
                 							<th style="width: 15%;">'.$gL10n->get('SYS_ABR_NO').'</th>
                 							<th style="width: 45%;">'.$gL10n->get('SYS_CONTENT').'</th> 
-                							<th style="width: 40%;">'.$gL10n->get('PFF_POSITION').'</th>    
+                							<th style="width: 40%;">'.$gL10n->get('PLG_FORMFILLER_POSITION').'</th>    
             							</tr>
         							</thead>
         							<tbody id="mylist_fields_tbody'.$conf.'">
             							<tr id="table_row_button">
                 							<td colspan="3">
-                    							<a class="icon-text-link" href="javascript:addColumn'.$conf.'()"><img src="'. THEME_PATH. '/icons/add.png" alt="'.$gL10n->get('PFF_ADD_ANOTHER_FIELD').'" />'.$gL10n->get('PFF_ADD_ANOTHER_FIELD').'</a>
+                    							<a class="icon-text-link" href="javascript:addColumn'.$conf.'()"><img src="'. THEME_PATH. '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'</a>
                 							</td>
             							</tr>
         							</tbody>
     							</table>
     						</div>';
-                        	$form->addCustomContent($gL10n->get('PFF_FIELD_SELECTION'), $html, array('helpTextIdLabel' => 'PFF_FIELD_SELECTION_DESC')); 
+                        	$form->addCustomContent($gL10n->get('PLG_FORMFILLER_FIELD_SELECTION'), $html); 
                         	$form->closeGroupBox();
 						}
                         $form->addDescription('</div>');
                         $form->addLine();
                         $html = '<a id="add_config" class="icon-text-link" href="'. $g_root_path.'/adm_plugins/'.$plugin_folder.'/preferences.php?add=true"><img
-                                    src="'. THEME_PATH. '/icons/add.png" alt="'.$gL10n->get('PFF_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PFF_ADD_ANOTHER_CONFIG').'</a>';
+                                    src="'. THEME_PATH. '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
 						$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
                         $form->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
                         $form->addSubmitButton('btn_save_configurations', $gL10n->get('SYS_SAVE'), array('icon' => THEME_PATH.'/icons/disk.png', 'class' => ' col-sm-offset-3'));
@@ -333,7 +335,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_options">
-                            <img src="'.THEME_PATH.'/icons/options.png" alt="'.$gL10n->get('PFF_OPTIONS').'" title="'.$gL10n->get('PFF_OPTIONS').'" />'.$gL10n->get('PFF_OPTIONS').'
+                            <img src="'.THEME_PATH.'/icons/options.png" alt="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" />'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'
                         </a>
                     </h4>
                 </div>
@@ -341,12 +343,12 @@ $page->addHtml('
                     <div class="panel-body">');
                         // show form
                         $form = new HtmlForm('options_preferences_form', $g_root_path.'/adm_plugins/'.$plugin_folder.'/preferences_function.php?form=options', $page, array('class' => 'form-preferences'));
-                        $form->addInput('maxpdfview', $gL10n->get('PFF_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], 
-                            	array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PFF_MAX_PDFVIEW_DESC'));
+                        $form->addInput('maxpdfview', $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], 
+                            	array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'));
                             	                                           
                         $html = '<a id="deinstallation" class="icon-text-link" href="'. $g_root_path.'/adm_plugins/'.$plugin_folder.'/preferences_function.php?mode=2"><img
-                                    src="'. THEME_PATH. '/icons/delete.png" alt="'.$gL10n->get('PFF_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PFF_LINK_TO_DEINSTALLATION').'</a>';
-                        $form->addCustomContent($gL10n->get('PFF_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PFF_DEINSTALLATION_DESC'));
+                                    src="'. THEME_PATH. '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
+                        $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
                         $form->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => THEME_PATH.'/icons/disk.png', 'class' => ' col-sm-offset-3'));
                         $page->addHtml($form->show(false));
                     	$page->addHtml('
@@ -358,7 +360,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_plugin_control">
-                            <img src="'.THEME_PATH.'/icons/lock.png" alt="'.$gL10n->get('PFF_PLUGIN_CONTROL').'" title="'.$gL10n->get('PFF_PLUGIN_CONTROL').'" />'.$gL10n->get('PFF_PLUGIN_CONTROL').'
+                            <img src="'.THEME_PATH.'/icons/lock.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'
                         </a>
                     </h4>
                 </div>
@@ -371,8 +373,8 @@ $page->addHtml('
                                 WHERE cat.cat_id = rol.rol_cat_id
                                 AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                                 OR cat.cat_org_id IS NULL )';
-				        $form->addSelectBoxFromSql('freigabe', $gL10n->get('PFF_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe'], 'helpTextIdInline' => 'PFF_ROLE_SELECTION_DESC','multiselect' => true));				                                                 
-                        $form->addSelectBoxFromSql('freigabe_config', '', $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe_config'], 'helpTextIdInline' => 'PFF_ROLE_SELECTION_DESC2','multiselect' => true));
+				        $form->addSelectBoxFromSql('freigabe', $gL10n->get('PLG_FORMFILLER_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC','multiselect' => true));				                                                 
+                        $form->addSelectBoxFromSql('freigabe_config', '', $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe_config'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC2','multiselect' => true));
                         $form->addSubmitButton('btn_save_plugin_control_preferences', $gL10n->get('SYS_SAVE'), array('icon' => THEME_PATH.'/icons/disk.png', 'class' => ' col-sm-offset-3'));
                         $page->addHtml($form->show(false));
                     	$page->addHtml('
@@ -384,7 +386,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_plugin_informations">
-                            <img src="'.THEME_PATH.'/icons/info.png" alt="'.$gL10n->get('PFF_PLUGIN_INFORMATION').'" title="'.$gL10n->get('PFF_PLUGIN_INFORMATION').'" />'.$gL10n->get('PFF_PLUGIN_INFORMATION').'
+                            <img src="'.THEME_PATH.'/icons/info.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'
                         </a>
                     </h4>
                 </div>
@@ -392,12 +394,12 @@ $page->addHtml('
                     <div class="panel-body">');
                         // create a static form
                         $form = new HtmlForm('plugin_informations_preferences_form', null, $page);                        
-                        $form->addStaticControl('plg_name', $gL10n->get('PFF_PLUGIN_NAME'), $gL10n->get('PFF_FORMFILLER'));
-                        $form->addStaticControl('plg_version', $gL10n->get('PFF_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
-                        $form->addStaticControl('plg_date', $gL10n->get('PFF_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
-                        $html = '<a class="icon-text-link" href="http://http://www.admidio.de/dokuwiki/doku.php?id=de:plugins:formfiller" target="_blank"><img
-                                    src="'. THEME_PATH. '/icons/eye.png" alt="'.$gL10n->get('PFF_DOCUMENTATION_OPEN').'" />'.$gL10n->get('PFF_DOCUMENTATION_OPEN').'</a>';
-                        $form->addCustomContent($gL10n->get('PFF_DOCUMENTATION'), $html, array('helpTextIdInline' => 'PFF_DOCUMENTATION_OPEN_DESC'));
+                        $form->addStaticControl('plg_name', $gL10n->get('PLG_FORMFILLER_PLUGIN_NAME'), $gL10n->get('PLG_FORMFILLER_FORMFILLER'));
+                        $form->addStaticControl('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
+                        $form->addStaticControl('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
+                        $html = '<a class="icon-text-link" href="http://www.admidio.de/dokuwiki/doku.php?id=de:plugins:formfiller" target="_blank"><img
+                                    src="'. THEME_PATH. '/icons/eye.png" alt="'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'" />'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'</a>';
+                        $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC'));
                         $page->addHtml($form->show(false));
                    		$page->addHtml('
                    	</div>
@@ -409,5 +411,3 @@ $page->addHtml('
 ');
 
 $page->show();
-
-?>

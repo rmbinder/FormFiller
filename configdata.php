@@ -1,15 +1,14 @@
 <?php
-/******************************************************************************
- * 
- * configdata.php
- *   
+/**
+ ***********************************************************************************************
  * Konfigurationsdaten fuer das Admidio-Plugin FormFiller
- * 
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
- * 
- ****************************************************************************/
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ *
+ ***********************************************************************************************
+ */
 
 global $gL10n, $gProfileFields;
 
@@ -19,9 +18,9 @@ $config_default['Pluginfreigabe']['freigabe'] = array(	getRole_IDPFF($gL10n->get
 $config_default['Pluginfreigabe']['freigabe_config'] = array(	getRole_IDPFF($gL10n->get('SYS_WEBMASTER')),
 															getRole_IDPFF($gL10n->get('SYS_MEMBER')));    		
 
-$config_default['Formular'] = array('desc' 			=> array($gL10n->get('PFF_PATTERN'),
-															 $gL10n->get('PFF_ENVELOPE'),
-															 $gL10n->get('PFF_ADDRESSLABELS') ),
+$config_default['Formular'] = array('desc' 			=> array($gL10n->get('PLG_FORMFILLER_PATTERN'),
+															 $gL10n->get('PLG_FORMFILLER_ENVELOPE'),
+															 $gL10n->get('PLG_FORMFILLER_ADDRESSLABELS') ),
  									'font' 			=> array('Courier','Arial','Arial'), 
  									'style'			=> array('','B',''),
  									'size'			=> array(10,12,12),
@@ -47,10 +46,10 @@ $config_default['Formular'] = array('desc' 			=> array($gL10n->get('PFF_PATTERN'
 																	'p'.$gProfileFields->getProperty('GENDER', 'usf_id'))
 															),
  									'positions'		=> array(array(	'10,20;{=Hallo ;}=,',
-																	'20,30;A=B',
+																	'20,30;A=BIU',
  																	'30,40;S=15',
 																	'40,50',
-																	'50,60',
+																	'50,60;A=B;C=255,102,255',
 																	'60,70;V=Das ist ein Beispieltext'),
 															array(	'26,65',
 																	'27,65',
@@ -84,5 +83,3 @@ $config_default['Plugininformationen']['stand'] = '';
  */
 $dbtoken  = '#_#';  
 $dbtoken2 = '#!#';  
-
-?>

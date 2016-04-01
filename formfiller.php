@@ -1,53 +1,23 @@
 <?php
-/******************************************************************************
+/**
+ ***********************************************************************************************
  * FormFiller
  *
- * Version 2.0.2
+ * Version 2.1.0
  *
  * Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
  *
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
- * Author		    : rmb 
- * 
- * Libraries 	  : FormFiller verwendet die externen PHP-Klassen FPDF, FPDI und FPDF_TPL
+ * Author: rmb
  *
- * Version		  : 2.0.2
- * Datum        : 18.01.2016
- * Änderung     : - Die versehentlich gelöschte Funktion "strstr_multiple" wieder eingefügt
- * 				  - Link zur Dokumentation geändert
- * 				  - Option Vortext "{=" und Nachtext "}=" von lagro eingearbeitet
- * 
- * Version		  : 2.0.1
- * Datum        : 02.11.2015
- * Änderung     : - Fehler (verursacht durch die Methode addHeadline) behoben
- * 
- * Version		  : 2.0.0
- * Datum        : 27.05.2015
- * Änderung     : - Anpassung an Admidio 3.0
- * 		            - Deinstallationsroutine erstellt
- *                - Verfahren zum Einbinden des Plugins (include) geändert 
- *                - Menübezeichnungen angepasst (gleichlautend mit anderen Plugins)  
- *                - Nur Intern: Verwaltung der Konfigurationsdaten geändert
- * 
- * Version      : 1.0.3
- * Datum        : 04.12.2014
- * Änderung     : Druckmöglichkeit von Profilfoto und aktuellem Datum
- * 
- * Version 		  : 1.0.2
- * Datum        : 07.05.2014
- * Änderung     : Erzeugung von Mehrfachdokumenten über neues Modul Listenwahl realisiert
- * 
- * Version 		  : 1.0.1 
- * Datum        : 30.04.2014
- * Änderung     : Aufruf des Plugins über die Klasse Menu realisiert
- * 				        (Systemanforderung jetzt Admidio Version 2.4.4 oder höher)
- * 
- * Version		  : 1.0.0
- * Datum        : 14.04.2014
- * 
- *****************************************************************************/
+ * Hinweis: FormFiller verwendet die externen PHP-Klassen FPDF, FPDI und FPDF_TPL 
+ *  
+ * Compatible with Admidio version 3.1
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ ***********************************************************************************************
+ */
 
 //$gNaviagation ist zwar definiert, aber in diesem Script in bestimmten Fällen nicht sichtbar
 global $gNavigation;
@@ -66,9 +36,6 @@ require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php');
 $gL10n->addLanguagePath($plugin_path.'/'.$plugin_folder.'/languages');
 
 $pPreferences = new ConfigTablePFF();
-
-// DB auf Admidio setzen, da evtl. noch andere DBs beim User laufen
-$gDb->setCurrentDB();
 
 //Initialisierung und Anzeige des Links nur, wenn vorher keine Deinstallation stattgefunden hat
 // sonst wäre die Deinstallation hinfällig, da hier wieder Default-Werte der config in die DB geschrieben werden
@@ -101,7 +68,7 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 			$menue=$moduleMenu;
 		}
 
-		$menue->addItem('formfiller_show', '/adm_plugins/'.$plugin_folder.'/formfiller_show.php',$gL10n->get('PFF_FORMFILLER'), '/icons/page_white_acrobat.png'); 
+		$menue->addItem('formfiller_show', '/adm_plugins/'.$plugin_folder.'/formfiller_show.php',$gL10n->get('PLG_FORMFILLER_FORMFILLER'), '/icons/page_white_acrobat.png'); 
 		if(strstr($url, 'adm_program/modules/profile/profile.php?user_id=')!=null )
 		{
 			foreach($pPreferences->config['Formular']['desc'] as $key => $data)
@@ -111,5 +78,3 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 		}
 	}
 }		
-
-?>

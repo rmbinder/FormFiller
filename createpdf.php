@@ -1,30 +1,28 @@
 <?php
-/******************************************************************************
- * 
- * createpdf.php
- *   
+/**
+ ***********************************************************************************************
  * Erzeugt und befuellt die PDF-Datei fuer das Admidio-Plugin FormFiller
- * 
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
  * Parameters:
- * 
+ *
  * user_id : 		ID des Mitglieds, dessen Daten ausgelesen werden
  * form_id :		interne Nummer des verwendeten PDF-Formulars
- * 					    Hinweis: form_id wird abhängig vom aufrufenden Programm
+ * 					Hinweis: form_id wird abhängig vom aufrufenden Programm
  * 						     entweder über $_GET oder über $_POST übergeben
  * lst_id : 		Liste, deren Konfiguration verwendet wird
  * rol_id : 		ID der verwendeten Rolle
  * show_members : 	0 - (Default) aktive Mitglieder der Rolle anzeigen
  *                	1 - Ehemalige Mitglieder der Rolle anzeigen
  *                	2 - Aktive und ehemalige Mitglieder der Rolle anzeigen
- *                
- * Hinweis: Abhängig vom aufrufenden Programm wird 
- * 	   entweder user_id oder (lst_id und rol_id und show_members) übergeben    
- *           
- *****************************************************************************/
+ *
+ * Hinweis: Abhängig vom aufrufenden Programm wird
+ * 	   entweder user_id oder (lst_id und rol_id und show_members) übergeben
+ ***********************************************************************************************
+ */
 
 require_once(substr(__FILE__, 0,strpos(__FILE__, 'adm_plugins')-1).'/adm_program/system/common.php');
 require_once(SERVER_PATH. '/adm_program/system/classes/tablefile.php');
@@ -38,8 +36,8 @@ require_once($plugin_path. '/'.$plugin_folder.'/library/fpdi.php');
 
 // Initialize and check the parameters
 $getUserId       = admFuncVariableIsValid($_GET, 'user_id', 'numeric', array('defaultValue' => 0));
-$getFormID 	 	 = admFuncVariableIsValid($_GET, 'form_id', 'numeric', array('defaultValue' => 0));
-$postFormID 	 = admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
+$getFormID       = admFuncVariableIsValid($_GET, 'form_id', 'numeric', array('defaultValue' => 0));
+$postFormID      = admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
 $postListId      = admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
 $postRoleId      = admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
 $postShowMembers = admFuncVariableIsValid($_POST, 'show_members', 'numeric', array('defaultValue' => 0));
@@ -69,16 +67,16 @@ elseif(($postListId > 0) && ($postRoleId > 0))
 	//$list->getSQL($role_ids, $postShowMembers) erwartet als Parameter für 
 	//$role_ids ein Array, deshalb $postRoleId in ein Array umwandeln
 	$role_ids[] = $postRoleId;
-	$mainSql      = '';   // enthaelt das Haupt-Sql-Statement fuer die Liste
+	$sql        = '';   // enthaelt das Sql-Statement fuer die Liste
 
 	// create list configuration object and create a sql statement out of it
 	$list = new ListConfiguration($gDb, $postListId);
-	$mainSql = $list->getSQL($role_ids, $postShowMembers);
+	$sql = $list->getSQL($role_ids, $postShowMembers);
 		
 	// SQL-Statement der Liste ausfuehren und pruefen ob Daten vorhanden sind
-	$resultList = $gDb->query($mainSql);
+	$statement = $gDb->query($sql);
 	
-	while ($row = $gDb->fetch_array($resultList))
+	while ($row = $statement->fetch())
 	{
 		$userArray[] = $row['usr_id'] ;
 	}
@@ -86,8 +84,8 @@ elseif(($postListId > 0) && ($postRoleId > 0))
 }
 else 
 {
-	//Fehlermeldung ausgeben, wenn Parameter fehler
-	$gMessage->show($gL10n->get('PFF_MISSING_PARAMETER'),$gL10n->get('SYS_ERROR'));
+	//Fehlermeldung ausgeben, wenn Parameter fehlen
+	$gMessage->show($gL10n->get('PLG_FORMFILLER_MISSING_PARAMETER'),$gL10n->get('SYS_ERROR'));
 }
 
 //initiate FPDF
@@ -103,9 +101,9 @@ if ($pPreferences->config['Formular']['pdfid'][$getpostFormID]>0)
             AND fil_fol_id = fol_id
             AND (  fol_org_id = '.$gCurrentOrganization->getValue('org_id').'
             	OR fol_org_id IS NULL ) ';
-    $result = $gDb->query($sql);
-    $row = $gDb->fetch_object($result);
-     
+    $statement = $gDb->query($sql);
+    $row = $statement->fetchObject();
+         
 	// Gibt es das Formular noch in der DB, wenn nicht: Fehlermeldung
     if( !isset($row->fil_id) && !(strlen($row->fil_id) > 0) )
     {
@@ -460,6 +458,3 @@ else
 {
 	$pdf->Output();
 }
-
-
-?>

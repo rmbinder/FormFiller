@@ -1,15 +1,13 @@
 <?php
-/******************************************************************************
- * 
- * common_function.php
- *   
+/**
+ ***********************************************************************************************
  * Gemeinsame Funktionen fuer das Admidio-Plugin FormFiller
- * 
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
- * 
- ****************************************************************************/
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ ***********************************************************************************************
+ */
 
 // Pfad des Plugins ermitteln
 $plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
@@ -19,8 +17,11 @@ $plugin_folder     = substr(__FILE__, $plugin_folder_pos+1, $plugin_file_pos-$pl
  
 require_once($plugin_path. '/../adm_program/system/common.php');
 
-// Funktion liest die Role-ID einer Rolle aus
-// $role_name - Name der zu pruefenden Rolle
+/**
+ * Funktion liest die Role-ID einer Rolle aus
+ * @param   string  $role_name Name der zu pruefenden Rolle
+ * @return  int     rol_id
+ */
 function getRole_IDPFF($role_name)
 {
     global $gDb, $gCurrentOrganization;
@@ -33,16 +34,19 @@ function getRole_IDPFF($role_name)
                  AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  OR cat_org_id IS NULL ) ';
                       
-    $result = $gDb->query($sql);
-    $row = $gDb->fetch_object($result);
+    $statement = $gDb->query($sql);
+    $row = $statement->fetchObject();
 
     // für den seltenen Fall, dass während des Betriebes die Sprache umgeschaltet wird:  $row->rol_id prüfen
     return (isset($row->rol_id) ?  $row->rol_id : 0);
 }
 
-// Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehörigkeit, berechtigt ist das Plugin aufzurufen
-// Parameter: Array mit Rollen-IDs: entweder $pPreferences->config['Pluginfreigabe']['freigabe']
-//      oder $pPreferences->config['Pluginfreigabe']['freigabe_config']
+/**
+ * Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehörigkeit, berechtigt ist das Plugin aufzurufen
+ * @param   array  $array   Array mit Rollen-IDs:   entweder $pPreferences->config['Pluginfreigabe']['freigabe']
+ *                                                  oder $pPreferences->config['Pluginfreigabe']['freigabe_config']
+ * @return  bool   $showPlugin
+ */
 function check_showpluginPFF($array)
 {
 	global $gCurrentUser;
@@ -59,7 +63,13 @@ function check_showpluginPFF($array)
     return $showPlugin;
 }
 
-// Funktion überprüft, ob jeder einzelne Wert von $needle in $heystack enthalten ist
+/**
+ * Funktion prueft, ob jeder einzelne Wert von $needle in $haystack enthalten ist
+ *
+ * @param   string  $haystack
+ * @param   string  $needle
+ * @return  bool
+ */
 function strstr_multiple($haystack, $needle )
 {
 	for ($i=0;$i<strlen($needle);$i++)
@@ -71,5 +81,3 @@ function strstr_multiple($haystack, $needle )
 	}
 	return true;
 }
- 
-?>

@@ -1,25 +1,28 @@
 <?php
+/**
+ ***********************************************************************************************
+ * Class manages the configuration table
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ ***********************************************************************************************
+ */
+
 /******************************************************************************
- * Klasse verwaltet die Konfigurationstabelle
- *
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
- * Description  : Create, modify and display menus. Each menu item is defined by
- *
- * Diese Klasse dient dazu die Konfigurationstabelle "adm_plugin_preferences" zu verwalten.
+ * Klasse verwaltet die Konfigurationstabelle "adm_plugin_preferences"
  *
  * Folgende Methoden stehen zur Verfügung:
  *
- * init()						-	prüft, ob die Konfigurationstabelle existiert, 
+ * init()						:	prüft, ob die Konfigurationstabelle existiert,
  * 									legt sie ggf. an und befüllt sie mit Default-Werten
- * save() 					- 	schreibt die Konfiguration in die Datenbank
- * read()						-	liest die Konfigurationsdaten aus der Datenbank
- * checkforupdate()	-	vergleicht die Angaben in der Datei version.php 
+ * save() 					    : 	schreibt die Konfiguration in die Datenbank
+ * read()						:	liest die Konfigurationsdaten aus der Datenbank
+ * checkforupdate()	            :	vergleicht die Angaben in der Datei version.php
  * 									mit den Daten in der DB
- * delete($deinst_org_select)	-	löscht die Konfigurationsdaten in der Datenbank
- * 
- *****************************************************************************/ 
+ * delete($deinst_org_select)	:	löscht die Konfigurationsdaten in der Datenbank
+ *
+ *****************************************************************************/
 	
 class ConfigTablePFF
 {
@@ -35,7 +38,9 @@ class ConfigTablePFF
 	
 	public  $config_default = array();	
 	
-	// constructor
+    /**
+     * ConfigTablePFF constructor
+     */
 	public function __construct()
 	{
 		global  $gDb, $gCurrentOrganization, $g_tbl_praefix;
@@ -68,7 +73,10 @@ class ConfigTablePFF
 		$this->config_default = $config_default;
 	}
 	
-	// prüft, ob die Konfigurationstabelle existiert, legt sie ggf. an und befüllt sie mit Standardwerten
+    /**
+     * Prüft, ob die Konfigurationstabelle existiert, legt sie ggf an und befüllt sie mit Standardwerten
+     * @return void
+     */
 	public function init()
 	{
 		global $gL10n, $gDb, $gCurrentOrganization,$gProfileFields;
@@ -77,10 +85,10 @@ class ConfigTablePFF
 		
 		// pruefen, ob es die Tabelle bereits gibt
 		$sql = 'SHOW TABLES LIKE \''.$this->table_name.'\' ';
-   	 	$result = $gDb->query($sql);
+   	 	$statement = $gDb->query($sql);
     
     	// Tabelle anlegen, wenn es sie noch nicht gibt
-    	if (!$gDb->num_rows($result))
+     	if (!$statement->rowCount())
     	{
     		// Tabelle ist nicht vorhanden --> anlegen
         	$sql = 'CREATE TABLE '.$this->table_name.' (
@@ -154,7 +162,10 @@ class ConfigTablePFF
   		$this->save();
 	}
 
-	// Funktion schreibt die Konfiguration in die Datenbank
+    /**
+     * Schreibt die Konfigurationsdaten in die Datenbank
+     * @return void
+     */
 	public function save()
 	{
     	global $gDb, $gCurrentOrganization;
@@ -185,8 +196,8 @@ class ConfigTablePFF
             			WHERE plp_name = \''.$plp_name.'\' 
             			AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  		OR plp_org_id IS NULL ) ';
-            	$result = $gDb->query($sql);
-            	$row = $gDb->fetch_object($result);
+                $statement = $gDb->query($sql);
+            	$row = $statement->fetchObject();
 
             	// Gibt es den Datensatz bereits?
             	// wenn ja: UPDATE des bestehende Datensatzes  
@@ -209,7 +220,10 @@ class ConfigTablePFF
     	}
 	}
 
-	// Funktion liest die Konfigurationsdaten aus der Datenbank
+    /**
+     * Liest die Konfigurationsdaten aus der Datenbank
+     * @return void
+     */
 	public function read()
 	{
     	global $gDb, $gCurrentOrganization;
@@ -219,9 +233,9 @@ class ConfigTablePFF
              	WHERE plp_name LIKE \''.self::$shortcut.'__%\'
              	AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  	OR plp_org_id IS NULL ) ';
-		$result = $gDb->query($sql);
+		$statement = $gDb->query($sql);
 	
-		while($row = $gDb->fetch_array($result))
+        while($row = $statement->fetch())
 		{
 			$array = explode('__',$row['plp_name']);
 		
@@ -249,7 +263,10 @@ class ConfigTablePFF
 		}
 	}
 
-	//vergleicht die Angaben in der Datei version.php mit den Daten in der DB
+    /**
+     * Vergleicht die Daten in der version.php mit den Daten in der DB
+     * @return bool
+     */
 	public function checkforupdate()
 	{
 	 	global $gL10n, $gDb, $gCurrentOrganization;
@@ -257,9 +274,9 @@ class ConfigTablePFF
  	
 	 	// pruefen, ob es die Tabelle überhaupt gibt
 		$sql = 'SHOW TABLES LIKE \''.$this->table_name.'\' ';
-   	 	$result = $gDb->query($sql);
+   	 	$tableExistStatement = $gDb->query($sql);
     
-    	if ($gDb->num_rows($result))
+        if ($tableExistStatement->rowCount())
     	{
 			$plp_name = self::$shortcut.'__Plugininformationen__version';
           
@@ -268,8 +285,8 @@ class ConfigTablePFF
             		WHERE plp_name = \''.$plp_name.'\' 
             		AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
             	    	OR plp_org_id IS NULL ) ';
-    		$result = $gDb->query($sql);
-    		$row = $gDb->fetch_object($result);
+    		$statement = $gDb->query($sql);
+    		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: version)
     		if(!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$version)
@@ -284,8 +301,8 @@ class ConfigTablePFF
             		WHERE plp_name = \''.$plp_name.'\' 
             		AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  		OR plp_org_id IS NULL ) ';
-    		$result = $gDb->query($sql);
-    		$row = $gDb->fetch_object($result);
+    		$statement = $gDb->query($sql);
+    		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: stand)
     		if(!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$stand)
@@ -300,12 +317,16 @@ class ConfigTablePFF
     	return $ret;
 	}
 	
-	// Funktion löscht die Konfigurationsdaten in der Datenbank
+    /**
+     * Löscht die Konfigurationsdaten in der Datenbank
+     * @param   int     $deinst_org_select  0 = Daten nur in aktueller Org löschen, 1 = Daten in allen Org löschen
+     * @return  string  $result             Meldung
+     */
 	public function delete($deinst_org_select)
 	{
     	global $gDb, $gCurrentOrganization,$gL10n;
  	
-    	$result_sum = '';		
+    	$result = '';
 		$result_data=false;
 		$result_db = false;
 		
@@ -325,20 +346,18 @@ class ConfigTablePFF
 
 		// wenn die Tabelle nur Einträge dieses Plugins hatte, sollte sie jetzt leer sein und kann gelöscht werden
 		$sql = 'SELECT * FROM '.$this->table_name.' ';
-		$result = $gDb->query($sql);
+		$statement = $gDb->query($sql);
 
-    	if($gDb->num_rows($result) ==0)
+        if($statement->rowCount() ==0)
     	{
         	$sql = 'DROP TABLE '.$this->table_name.' ';
         	$result_db = $gDb->query($sql);
     	}
     	
-    	$result_sum  = ($result_data ? $gL10n->get('PFF_DEINST_DATA_DELETE_SUCCESS') : $gL10n->get('PFF_DEINST_DATA_DELETE_ERROR') );
-		$result_sum .= ($result_db ? $gL10n->get('PFF_DEINST_TABLE_DELETE_SUCCESS') : $gL10n->get('PFF_DEINST_TABLE_DELETE_ERROR') );
-    	$result_sum .= ($result_data ? $gL10n->get('PFF_DEINST_ENDMESSAGE') : '' );
+    	$result  = ($result_data ? $gL10n->get('PLG_FORMFILLER_DEINST_DATA_DELETE_SUCCESS') : $gL10n->get('PLG_FORMFILLER_DEINST_DATA_DELETE_ERROR') );
+		$result .= ($result_db ? $gL10n->get('PLG_FORMFILLER_DEINST_TABLE_DELETE_SUCCESS') : $gL10n->get('PLG_FORMFILLER_DEINST_TABLE_DELETE_ERROR') );
+    	$result .= ($result_data ? $gL10n->get('PLG_FORMFILLER_DEINST_ENDMESSAGE') : '' );
 		
-		return $result_sum;
+		return $result;
 	}
 }
-
-?>

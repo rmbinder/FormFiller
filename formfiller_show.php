@@ -1,17 +1,15 @@
 <?php
- /******************************************************************************
- * formfiller_show
+/**
+ * Zeigt das Menü des Admidio-Plugins FormFiller
  *
- * Hauptprogramm fuer das Admidio-Plugin FormFiller
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html  
- *   
- * 
  * Parameters:	keine
- * 
- *****************************************************************************/
+ *
+ ***********************************************************************************************
+ */
 
 // Pfad des Plugins ermitteln
 $plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
@@ -28,8 +26,8 @@ $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
 // define title (html) and headline
-$title = $gL10n->get('PFF_FORMFILLER');
-$headline = $gL10n->get('PFF_FORMFILLER');
+$title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
+$headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
 // Navigation faengt hier im Modul an
 $gNavigation->clear();
@@ -45,7 +43,7 @@ if(check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config'
 {
 	// show link to pluginpreferences 
 	$listsMenu->addItem('admMenuItemPreferencesLists', $g_root_path. '/adm_plugins/'.$plugin_folder.'/preferences.php', 
-                        $gL10n->get('PFF_SETTINGS'), 'options.png', 'right');        
+                        $gL10n->get('PLG_FORMFILLER_SETTINGS'), 'options.png', 'right');        
 }
         
 // show module menu
@@ -56,7 +54,7 @@ $form = new HtmlForm('configurations_form', $g_root_path.'/adm_plugins/'.$plugin
 
 $form->addCustomContent('', '<p>');
 
-$form->addDescription('1. '.$gL10n->get('PFF_CHOOSE_LISTSELECTION'));
+$form->addDescription('1. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_LISTSELECTION'));
                     	
 $sql = 'SELECT lst_id, lst_name, lst_global FROM '. TBL_LISTS. '
         WHERE lst_org_id = '. $gCurrentOrganization->getValue('org_id'). '
@@ -64,40 +62,41 @@ $sql = 'SELECT lst_id, lst_name, lst_global FROM '. TBL_LISTS. '
             OR lst_global = 1)
         AND lst_name IS NOT NULL
         ORDER BY lst_global ASC, lst_name ASC';
-$result = $gDb->query($sql);
+//$result = $gDb->query($sql);
 $configurations=array();
-$lst_result = $gDb->query($sql);      
-if($gDb->num_rows() > 0)
+//$lst_result = $gDb->query($sql);  
+$statement = $gDb->query($sql);     
+//if($gDb->num_rows() > 0)
+if($statement->rowCount() > 0)
 {
-	while($row = $gDb->fetch_array($lst_result))
+	//while($row = $gDb->fetch_array($lst_result))
+	while($row = $statement->fetch())
     {
     	$configurations[]=array($row['lst_id'],$row['lst_name'],($row['lst_global']==0 ? $gL10n->get('LST_YOUR_LISTS') : $gL10n->get('LST_GENERAL_LISTS') ));
     }        
 }    
-$form->addSelectBox('lst_id', $gL10n->get('LST_CONFIGURATION_LIST'), $configurations, array( 'property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PFF_CHOOSE_LISTSELECTION_DESC'));
+$form->addSelectBox('lst_id', $gL10n->get('LST_CONFIGURATION_LIST'), $configurations, array( 'property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC'));
                     	
 $form->addCustomContent('', '<p>');  
          	
-$form->addDescription('2. '.$gL10n->get('PFF_CHOOSE_ROLESELECTION'));
+$form->addDescription('2. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_ROLESELECTION'));
 $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
         FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
         WHERE cat.cat_id = rol.rol_cat_id
         AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
         OR cat.cat_org_id IS NULL )';
-$form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'property' => FIELD_REQUIRED ,'helpTextIdLabel' => 'PFF_CHOOSE_ROLESELECTION_DESC'));				                                                 
+$form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'property' => FIELD_REQUIRED ,'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
 $selectBoxEntries = array($gL10n->get('LST_ACTIVE_MEMBERS'),$gL10n->get('LST_FORMER_MEMBERS'),$gL10n->get('LST_ACTIVE_FORMER_MEMBERS') );
 $form->addSelectBox('show_members', $gL10n->get('LST_MEMBER_STATUS'), $selectBoxEntries);
                       
 $form->addCustomContent('', '<p>');	 
        
-$form->addDescription('3. '.$gL10n->get('PFF_CHOOSE_CONFIGURATION'));
-$form->addSelectBox('form_id', $gL10n->get('PFF_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array( 'property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PFF_CHOOSE_CONFIGURATION_DESC'));
+$form->addDescription('3. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_CONFIGURATION'));
+$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array( 'property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
         
-$form->addSubmitButton('btn_save_configurations', $gL10n->get('PFF_PDF_FILE_GENERATE'), array('icon' => THEME_PATH.'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
+$form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => THEME_PATH.'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
                         
 $page->addHtml($form->show(false));
         
 // show complete html page
 $page->show();
-
-?>
