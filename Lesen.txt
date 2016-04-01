@@ -1,0 +1,118 @@
+FormFiller 2.0.0
+
+Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
+
+
+1. Installation
+2. Update
+3. Versionshistorie
+4. Systemanforderungen
+
+******************************************************************************
+
+1. Installation
+===============
+
+Zur Installation sind folgende Schritte durchzuführen:
+
+1.1  Im Ordner adm_plugins einen neuen Ordner mit dem Namen formfiller erstellen
+
+1.2 Alle Dateien (und Ordner) des Ordners formfiller aus der entpackten Datei formfiller_2.0.0.zip in diesen Ordner kopieren.
+
+1.3 In der Datei my_body_bottom.php folgende Zeilen einfügen:
+
+   1.3.1  Erste Möglichkeit
+      Darstellung des Links zum Plugin im vorhandenen Module-Menü
+
+      - dazu VOR der vorhandenen Anweisung "$moduleMenu->show();" diese Zeile einfügen:
+         include(SERVER_PATH.'/adm_plugins/formfiller/formfiller.php');
+
+   1.3.2  Zweite Möglichkeit
+      Darstellung des Links zum Plugin in einem eigenen Plugin-Menü
+
+      - dazu diese Zeilen einfügen (falls noch nicht vorhanden):
+         $pluginMenu = new Menu('plugins', 'Plugins');
+         $pluginMenu->show(); 
+
+      - und innerhalb dieser Anweisungen den bereits bekannten include-Befehl einfügen
+         $pluginMenu = new Menu('plugins', 'Plugins');
+         include(SERVER_PATH. '/adm_plugins/formfiller/formfiller.php');
+         $pluginMenu->show(); 
+            
+    Hinweis: Die include-Anweisung sollte nicht innerhalb einer if-Abfrage stehen.  
+            Die Berechtigung, wer das Plugin aufrufen darf, wird über das Einstellungen-Modul festgelegt.
+            Standardeinstellung ist: Rolle Webmaster und Rolle Mitglied
+
+
+1.4 Admidio starten und das Plugin FormFiller ausführen
+
+******************************************************************************
+
+2. Update
+=========
+
+2.1 Alle Dateien im Pluginverzeichnis von FormFiller löschen.
+
+2.2 wie unter Punkt 1.2 beschrieben
+
+2.3 wie unter Punkt 1.3 beschrieben
+
+2.4 * * * ACHTUNG   * * *
+    Mit dieser Version werden die Konfigurationsdaten in einem geänderten Datenformat in der Datenbank gespeichert. 
+    Es wird keine Konvertierung der Altdaten durchgeführt.
+
+    Wichtige Konfigurationseinstellungen müssen von Hand (Bleistift/Block) gesichert werden.
+
+    Zum Bereinigen der Datenbank von Altdaten sollten alle Konfigurationsdaten in der Admidio-Datenbank gelöscht werden.
+
+    Dazu gibt es mehrere Möglichkeiten:
+
+    2.4.1 Entweder nach dem Start des Plugins
+          - über Einstellungen-Optionen die Deinstallationsroutine aufrufen
+
+    2.4.2 oder vor dem Start des Plugins
+          - folgendes PHP-Programm über die Adresszeile des Browsers ausführen: 
+           <Pfad der Admidio-Installation>/adm_plugins/<Name des Pluginordners von FormFiller>/preferences_function.php?mode=2
+          z.B. www.admidio.meinewebseite.de/adm_plugins/formfiller/preferences_function.php?mode=2
+
+    2.4.3 oder vor dem Start des Plugins
+           - Über phpMyAdmin in der Admidio-Datenbank die Tabelle adm_plugin_preferences suchen.
+             In dieser Tabelle alle Einträge, die mit PFF_ beginnen, löschen
+     
+2.5 Admidio starten und das Plugin FormFiller ausführen
+
+******************************************************************************
+
+3. Versionshistorie
+===================
+
+ * Version	: 2.0.0
+ * Datum        : 27.05.2015
+ * Änderung     : - Anpassung an Admidio 3.0
+ * 		  - Deinstallationsroutine erstellt
+ *                - Verfahren zum Einbinden des Plugins (include) geändert
+ *                - Menübezeichnungen angepasst (gleichlautend mit anderen Plugins)  
+ *                - Nur Intern: Verwaltung der Konfigurationsdaten geändert
+ *
+ * Version      : 1.0.3
+ * Datum        : 04.12.2014
+ * Änderung     : Druckmöglichkeit von Profilfoto und aktuellem Datum
+ *
+ * Version 	: 1.0.2
+ * Datum        : 07.05.2014
+ * Änderung     : Erzeugung von Mehrfachdokumenten über neues Modul Listenwahl realisiert
+ *
+ * Version 	: 1.0.1 
+ * Datum        : 30.04.2014
+ * Änderung     : Aufruf des Plugins über die Klasse Menu realisiert
+ * 		  (Systemanforderung jetzt Admidio Version 2.4.4 oder höher)
+ * 
+ * Version	: 1.0.0
+ * Datum        : 14.04.2014
+ 
+******************************************************************************
+
+4. Systemanforderungen
+======================
+ 
+- Admidio Version 3.0.0 oder höher
