@@ -35,9 +35,8 @@ $headline = $gL10n->get('PFF_FORMFILLER');
 $gNavigation->clear();
 $gNavigation->addUrl(CURRENT_URL, $headline);
     
-$page = new HtmlPage();
+$page = new HtmlPage($headline);
 $page->setTitle($title);
-$page->addHeadline($headline);
         
 // create module menu
 $listsMenu = new HtmlNavbar('menu_lists_list', $headline, $page);

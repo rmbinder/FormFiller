@@ -2,7 +2,7 @@
 /******************************************************************************
  * FormFiller
  *
- * Version 2.0.0
+ * Version 2.0.1
  *
  * Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
  *
@@ -11,12 +11,16 @@
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  * Author		    : rmb 
  * 
- * Libraries 	: FormFiller verwendet die externen PHP-Klassen FPDF, FPDI und FPDF_TPL
+ * Libraries 	  : FormFiller verwendet die externen PHP-Klassen FPDF, FPDI und FPDF_TPL
+ *
+ * Version		  : 2.0.1
+ * Datum        : 02.11.2015
+ * Änderung     : - Fehler (verursacht durch die Methode addHeadline) behoben
  * 
- * Version		: 2.0.0
+ * Version		  : 2.0.0
  * Datum        : 27.05.2015
  * Änderung     : - Anpassung an Admidio 3.0
- * 		          - Deinstallationsroutine erstellt
+ * 		            - Deinstallationsroutine erstellt
  *                - Verfahren zum Einbinden des Plugins (include) geändert 
  *                - Menübezeichnungen angepasst (gleichlautend mit anderen Plugins)  
  *                - Nur Intern: Verwaltung der Konfigurationsdaten geändert
@@ -25,16 +29,16 @@
  * Datum        : 04.12.2014
  * Änderung     : Druckmöglichkeit von Profilfoto und aktuellem Datum
  * 
- * Version 		: 1.0.2
+ * Version 		  : 1.0.2
  * Datum        : 07.05.2014
  * Änderung     : Erzeugung von Mehrfachdokumenten über neues Modul Listenwahl realisiert
  * 
- * Version 		: 1.0.1 
+ * Version 		  : 1.0.1 
  * Datum        : 30.04.2014
  * Änderung     : Aufruf des Plugins über die Klasse Menu realisiert
- * 				  (Systemanforderung jetzt Admidio Version 2.4.4 oder höher)
+ * 				        (Systemanforderung jetzt Admidio Version 2.4.4 oder höher)
  * 
- * Version		: 1.0.0
+ * Version		  : 1.0.0
  * Datum        : 14.04.2014
  * 
  *****************************************************************************/

@@ -1,4 +1,4 @@
-FormFiller 2.0.0
+FormFiller 2.0.1
 
 Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
 
@@ -17,7 +17,7 @@ Zur Installation sind folgende Schritte durchzuführen:
 
 1.1  Im Ordner adm_plugins einen neuen Ordner mit dem Namen formfiller erstellen
 
-1.2 Alle Dateien (und Ordner) des Ordners formfiller aus der entpackten Datei formfiller_2.0.0.zip in diesen Ordner kopieren.
+1.2 Alle Dateien (und Ordner) des Ordners formfiller aus der entpackten Datei formfiller....zip in diesen Ordner kopieren.
 
 1.3 In der Datei my_body_bottom.php folgende Zeilen einfügen:
 
@@ -56,36 +56,18 @@ Zur Installation sind folgende Schritte durchzuführen:
 2.2 wie unter Punkt 1.2 beschrieben
 
 2.3 wie unter Punkt 1.3 beschrieben
-
-2.4 * * * ACHTUNG   * * *
-    Mit dieser Version werden die Konfigurationsdaten in einem geänderten Datenformat in der Datenbank gespeichert. 
-    Es wird keine Konvertierung der Altdaten durchgeführt.
-
-    Wichtige Konfigurationseinstellungen müssen von Hand (Bleistift/Block) gesichert werden.
-
-    Zum Bereinigen der Datenbank von Altdaten sollten alle Konfigurationsdaten in der Admidio-Datenbank gelöscht werden.
-
-    Dazu gibt es mehrere Möglichkeiten:
-
-    2.4.1 Entweder nach dem Start des Plugins
-          - über Einstellungen-Optionen die Deinstallationsroutine aufrufen
-
-    2.4.2 oder vor dem Start des Plugins
-          - folgendes PHP-Programm über die Adresszeile des Browsers ausführen: 
-           <Pfad der Admidio-Installation>/adm_plugins/<Name des Pluginordners von FormFiller>/preferences_function.php?mode=2
-          z.B. www.admidio.meinewebseite.de/adm_plugins/formfiller/preferences_function.php?mode=2
-
-    2.4.3 oder vor dem Start des Plugins
-           - Über phpMyAdmin in der Admidio-Datenbank die Tabelle adm_plugin_preferences suchen.
-             In dieser Tabelle alle Einträge, die mit PFF_ beginnen, löschen
      
-2.5 Admidio starten und das Plugin FormFiller ausführen
+2.4 Admidio starten und das Plugin FormFiller ausführen
 
 ******************************************************************************
 
 3. Versionshistorie
 ===================
 
+ * Version	: 2.0.1
+ * Datum        : 02.11.2015
+ * Änderung     : - Fehler (verursacht durch die Methode addHeadline) behoben
+ *
  * Version	: 2.0.0
  * Datum        : 27.05.2015
  * Änderung     : - Anpassung an Admidio 3.0
@@ -115,4 +97,4 @@ Zur Installation sind folgende Schritte durchzuführen:
 4. Systemanforderungen
 ======================
  
-- Admidio Version 3.0.0 oder höher
+- Admidio Version 3.0
