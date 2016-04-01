@@ -2,7 +2,7 @@
 /******************************************************************************
  * FormFiller
  *
- * Version 2.0.1
+ * Version 2.0.2
  *
  * Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
  *
@@ -13,6 +13,12 @@
  * 
  * Libraries 	  : FormFiller verwendet die externen PHP-Klassen FPDF, FPDI und FPDF_TPL
  *
+ * Version		  : 2.0.2
+ * Datum        : 18.01.2016
+ * Änderung     : - Die versehentlich gelöschte Funktion "strstr_multiple" wieder eingefügt
+ * 				  - Link zur Dokumentation geändert
+ * 				  - Option Vortext "{=" und Nachtext "}=" von lagro eingearbeitet
+ * 
  * Version		  : 2.0.1
  * Datum        : 02.11.2015
  * Änderung     : - Fehler (verursacht durch die Methode addHeadline) behoben
@@ -56,13 +62,13 @@ require_once($plugin_path. '/../adm_program/system/common.php');
 require_once($plugin_path. '/'.$plugin_folder.'/common_function.php');
 require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
 
+// Einbinden der Sprachdatei
+$gL10n->addLanguagePath($plugin_path.'/'.$plugin_folder.'/languages');
+
 $pPreferences = new ConfigTablePFF();
 
 // DB auf Admidio setzen, da evtl. noch andere DBs beim User laufen
 $gDb->setCurrentDB();
-
-// Einbinden der Sprachdatei
-$gL10n->addLanguagePath($plugin_path.'/'.$plugin_folder.'/languages');
 
 //Initialisierung und Anzeige des Links nur, wenn vorher keine Deinstallation stattgefunden hat
 // sonst wäre die Deinstallation hinfällig, da hier wieder Default-Werte der config in die DB geschrieben werden

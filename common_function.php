@@ -59,5 +59,17 @@ function check_showpluginPFF($array)
     return $showPlugin;
 }
 
+// Funktion überprüft, ob jeder einzelne Wert von $needle in $heystack enthalten ist
+function strstr_multiple($haystack, $needle )
+{
+	for ($i=0;$i<strlen($needle);$i++)
+	{
+		if (!(strstr($haystack,substr($needle,$i,1))))
+		{
+			return false;
+		}
+	}
+	return true;
+}
  
 ?>

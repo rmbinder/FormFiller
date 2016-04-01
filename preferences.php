@@ -395,7 +395,7 @@ $page->addHtml('
                         $form->addStaticControl('plg_name', $gL10n->get('PFF_PLUGIN_NAME'), $gL10n->get('PFF_FORMFILLER'));
                         $form->addStaticControl('plg_version', $gL10n->get('PFF_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
                         $form->addStaticControl('plg_date', $gL10n->get('PFF_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
-                        $html = '<a class="icon-text-link" href="http://www.admidio.org/dokuwiki/doku.php?id=de:2.0:formfiller" target="_blank"><img
+                        $html = '<a class="icon-text-link" href="http://http://www.admidio.de/dokuwiki/doku.php?id=de:plugins:formfiller" target="_blank"><img
                                     src="'. THEME_PATH. '/icons/eye.png" alt="'.$gL10n->get('PFF_DOCUMENTATION_OPEN').'" />'.$gL10n->get('PFF_DOCUMENTATION_OPEN').'</a>';
                         $form->addCustomContent($gL10n->get('PFF_DOCUMENTATION'), $html, array('helpTextIdInline' => 'PFF_DOCUMENTATION_OPEN_DESC'));
                         $page->addHtml($form->show(false));

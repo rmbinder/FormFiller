@@ -1,4 +1,4 @@
-FormFiller 2.0.1
+FormFiller 2.0.2
 
 Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
 
@@ -64,6 +64,12 @@ Zur Installation sind folgende Schritte durchzuführen:
 3. Versionshistorie
 ===================
 
+ * Version	: 2.0.2
+ * Datum        : 18.01.2016
+ * Änderung     : - Die versehentlich gelöschte Funktion "strstr_multiple" wieder eingefügt
+ * 		  - Link zur Dokumentation geändert
+ * 		  - Option Vortext "{=" und Nachtext "}=" von lagro eingearbeitet
+ *
  * Version	: 2.0.1
  * Datum        : 02.11.2015
  * Änderung     : - Fehler (verursacht durch die Methode addHeadline) behoben

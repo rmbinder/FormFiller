@@ -190,11 +190,11 @@ foreach($userArray as $UserId)
         	
         $formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$key];
         	
-		// jetzt mit den Standarddaten überschreiben
+		// Textfarbe mit den Daten der jeweiligen Konfiguration überschreiben
 		$color = explode(',',$pPreferences->config['Formular']['color'][$getpostFormID]);
 		$pdf->SetTextColor($color[0],$color[1],$color[2]);
 			  
-		// mit den Standarddaten überschreiben
+		// Font mit den Daten der jeweiligen Konfiguration überschreiben
 		$pdf->SetFont($pPreferences->config['Formular']['font'][$getpostFormID],
 			  	  	  $pPreferences->config['Formular']['style'][$getpostFormID],
 			 	  	  $pPreferences->config['Formular']['size'][$getpostFormID]   );										
@@ -393,7 +393,17 @@ foreach($userArray as $UserId)
         		}
         		break;
 			}
-        	
+			
+			// wurde optionaler Text angegeben?   (von lagro)
+         	if ( array_key_exists ( '}', $fontData ) )
+         	{
+            	$text .= $fontData['}'];
+         	}
+         	if ( array_key_exists ( '{', $fontData ) )
+         	{
+            	$text = $fontData['{'].$text;
+         	}
+
         	//über ein Hilfsarray gehen, falls mit Etiketten gearbeitet wird
         	if (count($etiketten)>0)
         	{
