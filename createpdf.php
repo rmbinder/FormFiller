@@ -21,6 +21,8 @@
  *
  * Hinweis: Abhängig vom aufrufenden Programm wird
  * 	   entweder user_id oder (lst_id und rol_id und show_members) übergeben
+ * 
+ * Mit Änderungen zur Formatierung von kossihh (Juni 2016)
  ***********************************************************************************************
  */
 
@@ -176,11 +178,8 @@ foreach($userArray as $UserId)
 	// nur zur Info: FPDI kann auch die Größe einer PDF-Datei auslesen
 	//$arr_size = $pdf->getTemplateSize($tplIdx);
 	
-	// zuerst mal Standardschriftfarbe festlegen (falls nichts definiert wurde)
-	$pdf->SetTextColor(0,0,0);
-
-	// und Standardschrift, -stil und -größe festlegen (falls nichts definiert wurde)
-	$pdf->SetFont('Arial','BI',10);
+	// zuerst mal Standardschrift, -stil, -größe und -farbe festlegen (falls nichts definiert wurde)
+	$attributes = array('font' => 'Arial', 'style' => 'BI', 'size' => 10, 'color' => '0,0,0');
 	
 	// jetzt alle Felder durchlaufen
 	//foreach($gProfileFields->mProfileFields as $field )
@@ -194,15 +193,15 @@ foreach($userArray as $UserId)
         	
         $formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$key];
         	
-		// Textfarbe mit den Daten der jeweiligen Konfiguration überschreiben
-		$color = explode(',',$pPreferences->config['Formular']['color'][$getpostFormID]);
-		$pdf->SetTextColor($color[0],$color[1],$color[2]);
+		// Textattribute mit den Daten der jeweiligen Konfiguration überschreiben, falls vorhanden
+		foreach(array('color', 'font', 'style', 'size') as $attribute)
+		{
+			//if isset($pPreferences->config['Formular'][$attribute][$getpostFormID])
+			{
+				$attributes[$attribute] = $pPreferences->config['Formular'][$attribute][$getpostFormID];
+			}
+		}
 			  
-		// Font mit den Daten der jeweiligen Konfiguration überschreiben
-		$pdf->SetFont($pPreferences->config['Formular']['font'][$getpostFormID],
-			  	  	  $pPreferences->config['Formular']['style'][$getpostFormID],
-			 	  	  $pPreferences->config['Formular']['size'][$getpostFormID]   );										
-			 	  	  
 		if(!empty($formdata))
 		{
 			//zuerst mal sehen, ob Schrift-Parameter angefügt sind (wenn sich ein ';' darin befindet)
@@ -233,9 +232,8 @@ foreach($userArray as $UserId)
 			if ( array_key_exists ( 'C', $fontData ) )
 			{
 				// jetzt mit den konfigurierten Daten überschreiben
-				$color = explode(',',$fontData['C']);
 				$key = true;
-				foreach ($color as $data)
+				foreach (explode(',',$fontData['C']) as $data)
 				{
 					if(!(is_numeric($data)))
 					{
@@ -245,33 +243,27 @@ foreach($userArray as $UserId)
 				}
 				if ($key)
 				{
-					$pdf->SetTextColor($color[0],$color[1],$color[2]);					
+					$attributes['color'] = $fontData['C'];
 				}
 			}
 			
-			// wurde eine abweichende Schriftgröße definiert? -> prüfen und bei Syntaxfehler ggf. löschen
-			if ( array_key_exists ( 'S', $fontData ) && !(is_numeric($fontData['S'])))
+			// wurde eine abweichende Schriftgröße definiert? -> prüfen und ggf. setzen
+			if ( array_key_exists ( 'S', $fontData ) && is_numeric($fontData['S']))
 			{
-				unset($fontData['S']);
+				$attributes['size'] = $fontData['S'];
 			}	
 
-			// wurde ein abweichender Schrifttyp definiert? -> prüfen und bei Syntaxfehler ggf. löschen
-			if ( array_key_exists ( 'F', $fontData ) && !(in_array($fontData['F'],array('Courier','Arial','Times','Symbol','ZapfDingbats' ))))
+			// wurde ein abweichender Schrifttyp definiert? -> prüfen und ggf. setzen
+			if ( array_key_exists ( 'F', $fontData ) && in_array($fontData['F'], array('Courier','Arial','Times','Symbol','ZapfDingbats' )))
 			{
-				unset($fontData['F']);
+				$attributes['font'] = $fontData['F'];
 			}			
 
-			// wurden abweichende Schriftattribute definiert? -> prüfen und bei Syntaxfehler ggf. löschen
-			if ( array_key_exists ( 'A', $fontData ) && !(strstr_multiple('BIU',$fontData['A'])) )
+			// wurden abweichende Schriftattribute definiert? -> prüfen und ggf. setzen
+			if ( array_key_exists ( 'A', $fontData ) && strstr_multiple('BIU',$fontData['A'])) 
 			{
-				unset($fontData['A']);
+				$attributes['style'] = $fontData['A'];
 			}	
-		
-			// wurden abweichende Schriftart, Schriftstil oder Schriftgröße definiert?	-> überschreiben	
-			$pdf->SetFont(
-				((array_key_exists ( 'F', $fontData )) ? $fontData['F'] : $pPreferences->config['Formular']['font'][$getpostFormID]),
-				((array_key_exists ( 'A', $fontData )) ? $fontData['A'] : $pPreferences->config['Formular']['style'][$getpostFormID]),
-				((array_key_exists ( 'S', $fontData )) ? $fontData['S'] : $pPreferences->config['Formular']['size'][$getpostFormID])   );		
 
 			switch ($fieldtype)
 			{
@@ -355,47 +347,69 @@ foreach($userArray as $UserId)
 					break;  
 
 				case 'p':
-        			if($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')=='GENDER')
-        			{
-						if ( array_key_exists ( 'T', $fontData ) )       // wurden Werte für das Geschlecht definiert?
-						{
-							$gender = explode(',',$fontData['T']);
-							if(!isset($gender[0]))
+					switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
+					{
+						case 'RADIO_BUTTON':
+						case 'DROPDOWN':
+
+							$pos  = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
+
+							if ( array_key_exists ( 'T', $fontData ) )    // Nehme n-ten Text aus Konfiguration
 							{
-								$gender[0]='x';
+								$textarray = explode(',',$fontData['T']);
+								if(isset($textarray[$pos]))   // Wenn Text für diese Stelle definiert
+								{
+									$text = $textarray[$pos];
+								}
+								else  // sonst nimm letzten definierten Text
+								{
+									$text = $textarray[Count($textarray)-1];
+								}
 							}
-							if(!isset($gender[1]))
+							else    // lese Wert aus Datenbank
 							{
-								$gender[1]=$gender[0];
+								$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+								if (  (substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>') )
+								{
+									// Option wurde mit Icon definiert, wir müssen aus dem HTML Tag das Title-Attribut auslesen
+									$doc = new DOMDocument();
+									$doc->loadXML($text);
+									$nodeList = $doc->getElementsByTagName('img');
+									$nodes=iterator_to_array($nodeList);
+									$node=$nodes[0];
+									if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
+									{
+										// Kein Tooltip in der Option, nehme Icon-Name als Wert
+										$text = $node->getattribute('src');
+										$text = substr($text, strrpos($text, '/') + 1);
+										$texttemp = explode('.', $text, 2);
+										$text = $texttemp[0];
+									}
+									else
+									{
+										$text = $node->getattribute('title');									
+									}
+								}
 							}
-						}	
-			
-        				if(strstr($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')),'female'))
-        				{
-        	    			//female
-        					if (isset($xyKoord[2]) && isset($xyKoord[3]))
-        					{
-        						$pdf->SetXY($xyKoord[2], $xyKoord[3]);
-        					}
-        					$text = $gender[1];
-        				}
-        				elseif(strstr($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')),'male')) 
-        				{
-        					$text = $gender[0];
-        				}
-        			}
-					elseif($gProfileFields->getPropertyById($fieldid, 'usf_type') == 'CHECKBOX')
-        			{
-        				if($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
-        				{
-        					$text = 'x';
-        				}
-        		}
-        		else 
-        		{
-        			$text= $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-        		}
-        		break;
+
+							if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
+							{
+								if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
+								{
+									$pdf->SetXY($xyKoord[$pos * 2], $xyKoord[$pos * 2 + 1]);
+								}
+							}
+							break;
+						case 'CHECKBOX':
+							if($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
+							{
+								$text = 'x';
+							}
+							break;
+						default:
+							$text= $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+					}
+					break;
 			}
 			
 			// wurde optionaler Text angegeben?   (von lagro)
@@ -411,11 +425,15 @@ foreach($userArray as $UserId)
         	//über ein Hilfsarray gehen, falls mit Etiketten gearbeitet wird
         	if (count($etiketten)>0)
         	{
-        		$etikettenText[$pdf->GetY()][$pdf->GetX()]=$text;
+				$attributes['text'] = $text;
+        		$etikettenText[$pdf->GetY()][$pdf->GetX()] = $attributes;
         	}
         	else 
         	{
-        		$pdf->Write(0,utf8_decode($text));
+				$color = explode(',', $attributes['color']);
+				$pdf->SetTextColor($color[0],$color[1],$color[2]);
+				$pdf->SetFont($attributes['font'], $attributes['style'], $attributes['size']);
+				$pdf->Write(0,utf8_decode($text));
         	}
 		}		
 	}  // zum naechsten Profilfeld 
@@ -436,8 +454,11 @@ foreach($userArray as $UserId)
         	$text = '';
         	foreach($zeileData as $spalteText => $spalteData)
         	{
-        		$text .= $spalteData.' ';
+        		$text .= $spalteData['text'].' ';
         	}
+			$color = explode(',', $zeileData[$xKoord]['color']);
+			$pdf->SetTextColor($color[0],$color[1],$color[2]);
+			$pdf->SetFont($zeileData[$xKoord]['font'], $zeileData[$xKoord]['style'], $zeileData[$xKoord]['size']);
         	$pdf->Write(0,utf8_decode($text));
         }
 	
