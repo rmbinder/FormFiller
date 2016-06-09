@@ -42,6 +42,16 @@ $postListId      = admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('de
 $postRoleId      = admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
 $postShowMembers = admFuncVariableIsValid($_POST, 'show_members', 'numeric', array('defaultValue' => 0));
 
+$pPreferences = new ConfigTablePFF();
+$pPreferences->read();
+
+// only authorized user are allowed to start this module
+if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']))
+{
+	$gMessage->setForwardUrl($gHomepage, 3000);
+    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 $userArray = array();
 unset($role_ids);
 $getpostFormID = 0;
@@ -50,10 +60,6 @@ $zeile = 0;
 $etikettenText = array();
 		
 $user = new User($gDb, $gProfileFields);
-
-// Konfiguration einlesen
-$pPreferences = new ConfigTablePFF();
-$pPreferences->read();
 
 // wenn von der Profilanzeige aufgerufen wurde, dann ist $getUserId>0
 // und form_id wurde über $_GET übergeben

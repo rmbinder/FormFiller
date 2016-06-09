@@ -33,6 +33,13 @@ $getAdd = admFuncVariableIsValid($_GET, 'add', 'boolean', array('defaultValue' =
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
+// only authorized user are allowed to start this module
+if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+{
+	$gMessage->setForwardUrl($gHomepage, 3000);
+    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
 $num_configs	 = count($pPreferences->config['Formular']['desc']);

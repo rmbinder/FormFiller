@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * FormFiller
  *
- * Version 2.1.0
+ * Version 2.1.1
  *
  * Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
  *
@@ -50,7 +50,7 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 		$pPreferences->read();
 	}
 
-	//$url und $user_id einlesen, falls von der Proilanzeige aufgerufen wurde
+	//$url und $user_id einlesen, falls von der Profilanzeige aufgerufen wurde
 	$url = $_SERVER['REQUEST_URI'];
 	$user_id = (isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : '');
 

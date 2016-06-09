@@ -25,6 +25,13 @@ require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php');
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
+// only authorized user are allowed to start this module
+if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']))
+{
+	$gMessage->setForwardUrl($gHomepage, 3000);
+    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 // define title (html) and headline
 $title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
