@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * FormFiller
  *
- * Version 2.1.1
+ * Version 2.1.2
  *
  * Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
  *

@@ -39,6 +39,12 @@ echo '
 	'.$gL10n->get('PLG_FORMFILLER_FONTSIZE_DESC').'<br><br>
     <strong>'.$gL10n->get('PLG_FORMFILLER_FONTCOLOR').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_FONTCOLOR_DESC').'<br><br>
+    <strong>'.$gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION_DESC').'<br><br>
+    <strong>'.$gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE_DESC').'<br><br>
+    <strong>'.$gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT_DESC').'<br><br>			
     <strong>'.$gL10n->get('PLG_FORMFILLER_PDF_FILE').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_DESC').'<br><br>
     <strong>'.$gL10n->get('PLG_FORMFILLER_LABELS').'</strong><br>

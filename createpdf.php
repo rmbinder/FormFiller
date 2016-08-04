@@ -97,7 +97,39 @@ else
 }
 
 //initiate FPDF
-$pdf = new FPDI('P','mm','A4');
+if(!empty($pPreferences->config['Formular']['pdfform_orientation'][$getpostFormID]))
+{
+	$orientation = $pPreferences->config['Formular']['pdfform_orientation'][$getpostFormID];
+}
+else 
+{
+	$orientation ='P';				//Default
+}	
+if(!empty($pPreferences->config['Formular']['pdfform_unit'][$getpostFormID]))
+{
+	$unit = $pPreferences->config['Formular']['pdfform_unit'][$getpostFormID];
+}
+else 
+{
+	$unit ='mm';					//Default
+}	
+if(!empty($pPreferences->config['Formular']['pdfform_size'][$getpostFormID]))
+{
+	if(strstr($pPreferences->config['Formular']['pdfform_size'][$getpostFormID],','))
+	{
+		$size = explode(',',$pPreferences->config['Formular']['pdfform_size'][$getpostFormID]);	
+	}
+	else 
+	{
+		$size = $pPreferences->config['Formular']['pdfform_size'][$getpostFormID];	
+	}
+}
+else 
+{
+	$size ='A4';					//Default
+}	
+
+$pdf = new FPDI($orientation,$unit,$size);
 
 // falls ein Formular definiert wurde, dann ist der Wert der form_pdfid>0
 if ($pPreferences->config['Formular']['pdfid'][$getpostFormID]>0)

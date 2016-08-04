@@ -135,7 +135,30 @@ class ConfigTablePFF
         		unset($config_ist[$section]);
         	}
     	}
-    
+    	
+    	// Falls Formularkonfigurationen hinzugefügt oder gelöscht wurden, dann stimmt die Anzahl der Beispiele
+    	// in den Musterkonfigurationen (3 Stück) nicht mehr. Dies führt zur Fehlermeldung "Undefined offset....",
+    	// deshalb hier alle Formularkonfigurationen prüfen
+    	$conf_count =  sizeof($this->config['Formular']['desc']);
+    	foreach($this->config['Formular'] as $key => $value)
+    	{   		
+    		while(sizeof($this->config['Formular'][$key])>$conf_count)
+    		{
+    			array_pop($this->config['Formular'][$key]);
+    		}
+    		while(sizeof($this->config['Formular'][$key])<$conf_count)
+    		{
+    			if(is_array($value[0]))
+    			{
+    				$this->config['Formular'][$key][]=array('');
+    			}
+    			else 
+    			{
+    				$this->config['Formular'][$key][]='';	
+    			}
+    		}
+    	}
+   
     	// die Ist-config durchlaufen 
     	// jetzt befinden sich hier nur noch die DB-Einträge, die nicht verwendet werden und deshalb: 
     	// 1. in der DB gelöscht werden können
@@ -156,8 +179,8 @@ class ConfigTablePFF
         	{
         		unset($this->config[$section]);
         	}
-    	}
-
+    	}        			
+        			
     	// die aktualisierten und bereinigten Konfigurationsdaten in die DB schreiben 
   		$this->save();
 	}

@@ -57,8 +57,16 @@
     <string name="PLG_FORMFILLER_OPTIONS">Options</string>
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organizational choice</string>
     <string name="PLG_FORMFILLER_PATTERN">Pattern form</string>
+    <string name="PLG_FORMFILLER_PDFFORM_ADDSIZES">Additional PDF sizes</string>
+    <string name="PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC">Here in addition to the standard sizes A3, A4, etc., additional sizes for the resulting PDF document can be specified. Values should be shown in width x height format. Multiple sizes are separated by a semicolon (for example, 160x100;120x60).</string>    
+    <string name="PLG_FORMFILLER_PDFFORM_ORIENTATION">PDF form Orientation</string>
+    <string name="PLG_FORMFILLER_PDFFORM_ORIENTATION_DESC">Here the orientation for the resulting PDF document is given; Default setting is Portrait.</string>    
+    <string name="PLG_FORMFILLER_PDFFORM_SIZE">PDF form Size</string>
+    <string name="PLG_FORMFILLER_PDFFORM_SIZE_DESC">Here the size for the resulting PDF document is given; Default setting is A4.</string>        
+    <string name="PLG_FORMFILLER_PDFFORM_UNIT">PDF form Unit</string>
+    <string name="PLG_FORMFILLER_PDFFORM_UNIT_DESC">Here the unit for the resulting PDF document is given; Default setting is mm.</string>        
     <string name="PLG_FORMFILLER_PDF_FILE">PDF File</string>
-    <string name="PLG_FORMFILLER_PDF_FILE_DESC">Here is the PDF file is selected, the data is written\n\nIf no file is selected, a new, empty PDF document in A4 format, high, is generated, which is described with the data.</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_DESC">Here the PDF file is selected, in which the data is written.\n\nIf no file is selected, a new, blank PDF document is created based on the values of orientation, size and unit and filled with data.</string>
     <string name="PLG_FORMFILLER_PDF_FILE_GENERATE">Generate PDF file</string>
     <string name="PLG_FORMFILLER_PLUGIN_CONTROL">Plug-in release</string>
     <string name="PLG_FORMFILLER_PLUGIN_DATE">Status</string>

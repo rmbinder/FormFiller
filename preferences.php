@@ -52,6 +52,18 @@ if($getAdd)
 	$num_configs++;
 }
 
+//ggf. zusätzlich definierte Größen an das Auswahl-Array anfügen
+$selectBoxSizesEntries = array('A3'=>'A3','A4'=>'A4','A5'=>'A5','Letter'=>'Letter' ,'Legal'=>'Legal' );
+$sizes = explode(';',$pPreferences->config['Optionen']['pdfform_addsizes']);
+foreach ($sizes as $data)
+{
+	$xyValues = explode('x',$data);
+	if (count($xyValues)==2 && is_numeric($xyValues[0]) && is_numeric($xyValues[1])) 
+	{
+		$selectBoxSizesEntries[$xyValues[0].','.$xyValues[1]] =  $xyValues[0].'x'.$xyValues[1];
+	}	
+}
+
 $gNavigation->addUrl(CURRENT_URL, $headline);
 
 // create html page object
@@ -292,14 +304,17 @@ $page->addHtml('
 							$form->addInput('size'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], 
                             	array('step' => 2,'type' => 'number', 'minNumber' => 6, 'maxNumber' => 40));
 							$form->addSelectBox('color'.$conf, $gL10n->get('PLG_FORMFILLER_FONTCOLOR'), array('0,0,0'=>$gL10n->get('PLG_FORMFILLER_BLACK'),'255,0,0'=>$gL10n->get('PLG_FORMFILLER_RED'),'0,255,0'=>$gL10n->get('PLG_FORMFILLER_GREEN'),'0,0,255'=>$gL10n->get('PLG_FORMFILLER_BLUE')), array('defaultValue' => $pPreferences->config['Formular']['color'][$conf],  'showContextDependentFirstEntry' => false));
-                     
+							$form->addSelectBox('pdfform_orientation'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION'), array('P'=>'Hochformat','L'=>'Querformat' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_orientation'][$conf], 'showContextDependentFirstEntry' => true));
+							$form->addSelectBox('pdfform_size'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE'), $selectBoxSizesEntries, array('defaultValue' => $pPreferences->config['Formular']['pdfform_size'][$conf], 'showContextDependentFirstEntry' => true));
+							$form->addSelectBox('pdfform_unit'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT'), array('pt'=>'Punkt','mm'=>'Millimeter','cm'=>'Zentimeter','in'=>'Inch' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_unit'][$conf], 'showContextDependentFirstEntry' => true));							
+							
 							$sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
                                 FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
                                 WHERE fol.fol_id = fil.fil_fol_id
                                 AND fil.fil_name LIKE \'%.PDF\' 
                                 AND (  fol.fol_org_id = '.$gCurrentOrganization->getValue('org_id').'
                                 OR fol.fol_org_id IS NULL )';
-				        	$form->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf], 'helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC'));				                                            
+				        	$form->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf]));				                                            
                      		$form->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf]);
 						
 							$html = '
@@ -352,6 +367,7 @@ $page->addHtml('
                         $form = new HtmlForm('options_preferences_form', $g_root_path.'/adm_plugins/'.$plugin_folder.'/preferences_function.php?form=options', $page, array('class' => 'form-preferences'));
                         $form->addInput('maxpdfview', $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], 
                             	array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'));
+                        $form->addInput('pdfform_addsizes', $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'), $pPreferences->config['Optionen']['pdfform_addsizes'], array('helpTextIdInline' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC'));
                             	                                           
                         $html = '<a id="deinstallation" class="icon-text-link" href="'. $g_root_path.'/adm_plugins/'.$plugin_folder.'/preferences_function.php?mode=2"><img
                                     src="'. THEME_PATH. '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';

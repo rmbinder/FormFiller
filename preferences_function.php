@@ -77,6 +77,9 @@ case 1:
     				$pPreferences->config['Formular']['size'][] = $_POST['size'. $conf];
     				$pPreferences->config['Formular']['color'][] = $_POST['color'. $conf];
     				$pPreferences->config['Formular']['labels'][] = $_POST['labels'. $conf];
+    				$pPreferences->config['Formular']['pdfform_orientation'][] = $_POST['pdfform_orientation'. $conf];
+    				$pPreferences->config['Formular']['pdfform_size'][] = $_POST['pdfform_size'. $conf];
+    				$pPreferences->config['Formular']['pdfform_unit'][] = $_POST['pdfform_unit'. $conf];
     				$pPreferences->config['Formular']['pdfid'][] = (isset($_POST['pdfid'. $conf]) ? $_POST['pdfid'. $conf] : 0);
 
     				$allColumnsEmpty = true;
@@ -111,6 +114,7 @@ case 1:
         	case 'options':
         		
         		$pPreferences->config['Optionen']['maxpdfview'] = $_POST['maxpdfview'];
+        		$pPreferences->config['Optionen']['pdfform_addsizes'] = $_POST['pdfform_addsizes'];
             	break; 
                 
         	case 'plugin_control':
