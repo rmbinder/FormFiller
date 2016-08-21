@@ -35,6 +35,10 @@
     <string name="PLG_FORMFILLER_ERROR_MIN_CONFIG">ERROR: At least one configuration to be present!</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_DATA">ERROR: In each configuration, at least one field with content and position must be specified!</string>
     <string name="PLG_FORMFILLER_FIELD">Field</string>
+    <string name="PLG_FORMFILLER_EXPORT">Export</string>
+    <string name="PLG_FORMFILLER_EXPORT_DESC">Choose from the form configuration that is to be exported. Export creates a file with the extension .cfg and the name of the configuration.</string>
+    <string name="PLG_FORMFILLER_EXPORT_IMPORT">Export / Import</string>
+    <string name="PLG_FORMFILLER_EXPORT_IMPORT_DESC">This configuration can be imported and exported for backup or distribution.</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION">Field selection</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION_DESC">Here the profile and additional fields can be selected to be printed in the PDF document. On "position" the X and Y coordinates are specified.\n\nYou can also specify for each field one, compared to the standard settings deviating configuration.\n\nSyntax:\nFont: F=Text (e.g. F=Arial)\nFont style: A=B or I or U (e.g. A=B)\nFont size: S=size in pt (e.g. S=20)\nFont color:C=RGB value (e.g. C=0,0,255)\nRadio Button/Drop-down Box: T=Text for 1. value,text for 2. value, etc (e.g. T=Mr.,Mrs.; is not a given text on T =, the text of the option or drop-down field is taken)\nBefore text: {=Text in front of a field (e.g. {=Hallo )\nSuffix text: }=Text behind a field (e.g. }=,)\n\nSyntax of the additional fields:\nDate: D=Format parameter of the function date() (e.g. D=d.m.y), standard setting is d.m.Y\nText: V=any text (z.B. V=Attention)\nProfilephoto: L=Filename (z.B. L=logo.jpg), without a parameter, an existing profile photo is displayed\n\n Example:\nDescription: Declaration\nLast name: 10,20 (-> means last name at position 10,20) \nFirst name: 10,40;S=7;F=Arial (-> means first name at position 10,40 with font Arial 7pt) \nAddress: 40,20;C=255,102,255;A=B (-> means address at position 40,20 with font color pink in bold)\nGender: 40,20,60,20;T=Mr.,Mrs. (-> means, depending on the gender, the text Mr. at position 40,20 or the text Mrs. at position 60,20)</string>
     <string name="PLG_FORMFILLER_FONT">Font</string>
@@ -48,9 +52,15 @@
     <string name="PLG_FORMFILLER_FORMFILLER">Form filler</string>
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Here arbitrary forms can be configured. The Description field must be filled.\n\nA configuration can be deleted by the contents of the field description will be deleted. To view the data of a profile field must be specified at least one X and a Y coordinate. The data for X and Y define here the horizontal and vertical position relative to the upper left corner of the form. .\n\nYou can also specify for each profile field a different configuration.</string>
     <string name="PLG_FORMFILLER_GREEN">green</string>
+    <string name="PLG_FORMFILLER_IMPORT">Import</string>
+    <string name="PLG_FORMFILLER_IMPORT_DESC">Choose the form configuration that is to be imported (Note: It can be imported with the extension .cfg files only). </string>
+    <string name="PLG_FORMFILLER_IMPORT_ERROR_FILE">The selected file does not contain valid configuration data.</string>
+    <string name="PLG_FORMFILLER_IMPORT_ERROR_OTHER">When uploading and checking file a general error occurred. Cause of error might as be a wrong file extension or a too large file.</string>
+    <string name="PLG_FORMFILLER_IMPORT_SUCCESS">The configuration has been added.</string>
     <string name="PLG_FORMFILLER_LABELS">Labels</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">To print labels following information in the label field are required: Number of columns, column spacing, line number, line spacing (e.g. 5,50,10,40 means array of labels to 5 columns at a distance of 50mm and 10 lines at a distance of 40mm)</string>
     <string name="PLG_FORMFILLER_LINK_TO_DEINSTALLATION">Skip to uninstall</string>
+    <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Skip zu export / import</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF view</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">max. PDF view is the maximum number of pages that must have a PDF document, so it is still displayed on the screen. If the number of sides increases, the download of the file is immediately available.</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">At least one parameter is missing.</string>

@@ -261,7 +261,7 @@ foreach($userArray as $UserId)
 			$fontData = array();		
 			foreach($arrSplit as $splitData)
 			{
-				$fontData[substr($splitData,0,1)] = substr($splitData,2) ;	   //auch explode möglich?
+				$fontData[substr($splitData,0,1)] = substr($splitData,2) ;	   
 			}
 			// wurde eine abweichende Schriftfarbe definiert? ->  prüfen und ggf. überschreiben
 			if ( array_key_exists ( 'C', $fontData ) )

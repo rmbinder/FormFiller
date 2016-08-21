@@ -35,6 +35,10 @@
     <string name="PLG_FORMFILLER_ERROR_MIN_CONFIG">FEHLER: Mindestens eine Konfiguration muss vorhanden sein!</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_DATA">FEHLER: In jeder Konfiguration muss mindestens ein Feld mit Inhalt und Position angegeben sein!</string>
     <string name="PLG_FORMFILLER_FIELD">Feld</string>
+    <string name="PLG_FORMFILLER_EXPORT">Export</string>
+    <string name="PLG_FORMFILLER_EXPORT_DESC">Wähle die zu exportierende Formularkonfiguration aus. Export erstellt dabei eine Datei mit der Endung .cfg und dem Namen der Konfiguration.</string>
+    <string name="PLG_FORMFILLER_EXPORT_IMPORT">Export/Import</string>
+    <string name="PLG_FORMFILLER_EXPORT_IMPORT_DESC">Hiermit können Konfigurationen zur Datensicherung oder zur Weitergabe sowohl exportiert als auch importiert werden.</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION">Feldwahl</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION_DESC">Hier werden die Profil- und Zusatzfelder ausgewählt, die in das PDF-Dokument gedruckt werden sollen. An "Position" werden die X- und Y-Koordinaten angegeben.\n\nZusätzlich kann für jedes Feld eine, gegenüber den Standardeinstellungen abweichende, Konfiguration erstellt werden.\n\nSyntax:\nSchriftart: F=Text (z.B. F=Arial)\nSchriftstil: A=B oder I oder U (z.B. A=B)\nSchriftgröße: S=Wert in pt (z.B. S=20)\nSchriftfarbe:C=RGB-Wert (z.B. C=0,0,255)\nOptions-/Dropdownfelder: T=Text für 1. Wert,Text für 2. Wert, usw. (z.B. T=Herrn,Frau; gibt man keinen Text über T= an, wird der Text des Options- bzw. Dropdownfeldes genommen)\nVortext: {=Text vor einem Feld (z.B. {=Hallo )\nNachtext: }=Text nach einem Feld (z.B. }=,)\n\nSyntax der Zusatzfelder:\nDatum: D=Formatparameter der Funktion date() (z.B. D=d.m.y), Standardeinstellung ist d.m.Y\nText: V=beliebiger Text (z.B. V=Hinweis)\nProfilfoto: L=Dateiname (z.B. L=logo.jpg), ohne Angabe eines Parameters wird ein evtl. vorhandenes Profilfoto angezeigt\n\n Beispiel:\nBezeichnung: Beitrittserklärung\nNachname: 10,20 (-> bedeutet Nachname auf Position 10,20) \nVorname: 10,40;S=7;F=Arial (-> bedeutet Vorname auf Position 10,40 mit Schriftart Arial in 7pt) \nAdresse: 40,20;C=255,102,255;A=B (-> bedeutet Adresse auf Position 40,20 mit Schriftfarbe rosa in Fettschrift)\nGeschlecht: 40,20,60,20;T=Herrn,Frau (-> bedeutet, abhängig vom Geschlecht, den Text Herrn an Position 40,20 oder den Text Frau an Position 60,20</string>
     <string name="PLG_FORMFILLER_FONT">Schriftart</string>
@@ -48,9 +52,15 @@
     <string name="PLG_FORMFILLER_FORMFILLER">Formular-Füller</string>
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Hier können beliebig viele Konfigurationen für Formulare erstellt werden. Das Feld Bezeichnung muss dabei immer befüllt sein.\n\nUm die Daten eines Profil- oder Zusatzfeldes anzuzeigen muss mindestens eine X- und eine Y-Koordinate angegeben sein. Die Angaben für X und Y definieren hierbei die horizontale und vertikale Position in Millimeter bezogen auf die linke, obere Ecke des ausgewählten PDF-Dokumentes.</string>
     <string name="PLG_FORMFILLER_GREEN">grün</string>
+    <string name="PLG_FORMFILLER_IMPORT">Import</string>
+    <string name="PLG_FORMFILLER_IMPORT_DESC">Wähle die zu importierende Formularkonfiguration aus (Hinweis: Es können nur Dateien mit der Endung .cfg importiert werden). </string>
+    <string name="PLG_FORMFILLER_IMPORT_ERROR_FILE">Die ausgewählte Datei enthält keine gültigen Konfigurationsdaten.</string>
+    <string name="PLG_FORMFILLER_IMPORT_ERROR_OTHER">Beim Hochladen und Überprüfen der Datei ist ein allgemeiner Fehler aufgetreten. Fehlerursache könnten z.B. eine falsche Dateiendung oder eine zu große Datei sein.</string>
+    <string name="PLG_FORMFILLER_IMPORT_SUCCESS">Die Konfiguration wurde hinzugefügt.</string>
     <string name="PLG_FORMFILLER_LABELS">Etiketten</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">Um Etiketten zu drucken sind folgende Angaben im Feld Etiketten erforderlich: Spaltenanzahl,Spaltenabstand,Zeilenanzahl,Zeilenabstand.\n\nBeispiel:\n 5,50,10,40\nbedeutet Anordnung der Etiketten zu 5 Spalten im Abstand von 50mm und 10 Zeilen im Abstand von 40mm</string>
     <string name="PLG_FORMFILLER_LINK_TO_DEINSTALLATION">Zur Deinstallation wechseln</string>
+    <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Zu Export/Import wechseln</string>    
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF-Anzeige</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">max. PDF-Anzeige ist die maximale Seitenzahl, die ein PDF-Dokument aufweisen darf, damit es noch am Bildschirm angezeigt wird. Ist die Anzahl der Seiten größer, wird sofort der Download der Datei angeboten.</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">Mindestens ein Parameter fehlt.</string>
