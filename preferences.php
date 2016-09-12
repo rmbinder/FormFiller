@@ -243,6 +243,16 @@ $javascriptCode = '
         user_fields['. ($i+2). ']["id"]   = "vdummy";      //v wie value
         user_fields['. ($i+2). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_VALUE').'";
         
+        user_fields['. ($i+3). '] = new Object();
+        user_fields['. ($i+3). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+3). ']["id"]   = "tdummy";      //t wie trace (l ist durch logo bereits belegt)
+        user_fields['. ($i+3). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_LINE').'";
+
+        user_fields['. ($i+4). '] = new Object();
+        user_fields['. ($i+4). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+4). ']["id"]   = "rdummy";      //r wie rectangle
+        user_fields['. ($i+4). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_RECTANGLE').'";        
+        
         return user_fields;
     }
 ';

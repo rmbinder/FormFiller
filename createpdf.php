@@ -187,7 +187,15 @@ else
 //wenn 	count($etiketten) jetzt nicht 0 ist, dann wird Etikettendruck durchgeführt	
 
 // jetzt Standardschrift, -stil, -größe und -farbe festlegen (falls nichts definiert wurde)
-$attributesDefault = array('font' => 'Arial', 'style' => 'BI', 'size' => 10, 'color' => '0,0,0');
+$attributesDefault = array(
+	'font'      => 'Arial', 
+	'style'     => 'BI', 
+	'size'      => 10, 
+	'color'     => '0,0,0',
+    'linewidth' => 1, 								//line and rect only
+	'fillcolor' => '0,0,0', 						//line and rect only
+	'drawcolor' => '0,0,0', 						//line and rect only
+	'rectstyle' => 'D' );							//rect only
 	
 // Textattribute mit den Daten der jeweiligen Konfiguration überschreiben, falls vorhanden
 foreach($attributesDefault as $attribute => $dummy)
@@ -254,15 +262,19 @@ foreach($userArray as $UserId)
 			 	'xykoord'=>$xyKoord, 
 			 	'attributes' => $attributesDefault,
 			 	'image'=>array('path'=>'','zufall'=>0),
-			 	'text'=>$text   );	
+			 	'text'=>$text,
+				'trace'=>false ,
+				'rect'=>false     );	
 			$pointer=count($sortArray)-1;	
 			
 			//arrSplit zerlegen in ein assoziatives Array
 			$fontData = array();		
 			foreach($arrSplit as $splitData)
 			{
-				$fontData[substr($splitData,0,1)] = substr($splitData,2) ;	   
+				$attr=explode('=',$splitData);
+				$fontData[$attr[0]]=$attr[1]  ;
 			}
+			
 			// wurde eine abweichende Schriftfarbe definiert? ->  prüfen und ggf. überschreiben
 			if ( array_key_exists ( 'C', $fontData ) )
 			{
@@ -298,8 +310,58 @@ foreach($userArray as $UserId)
 			if ( array_key_exists ( 'A', $fontData ) && strstr_multiple('BIU',$fontData['A'])) 
 			{
 				$sortArray[$pointer]['attributes']['style'] = $fontData['A'];
-			}	
-		
+			}
+			
+			// wurde eine abweichende Linienbreite definiert? -> prüfen und ggf. setzen
+			if ( array_key_exists ( 'LW', $fontData ) && is_numeric($fontData['LW']))
+			{
+				$sortArray[$pointer]['attributes']['linewidth'] = $fontData['LW'];
+			}
+							
+			// wurde eine abweichende Füllfarbe definiert? -> prüfen und ggf. setzen
+			if ( array_key_exists ( 'FC', $fontData ) )
+			{
+				// jetzt mit den konfigurierten Daten überschreiben
+				$key = true;
+				foreach (explode(',',$fontData['FC']) as $data)
+				{
+					if(!(is_numeric($data)))
+					{
+						$key = false;
+						break;
+					}
+				}
+				if ($key)
+				{
+					$sortArray[$pointer]['attributes']['fillcolor'] = $fontData['FC'];
+				}
+			}
+			
+			// wurde eine abweichende Zeichenfarbe definiert? -> prüfen und ggf. setzen
+			if ( array_key_exists ( 'DC', $fontData ) )
+			{
+				// jetzt mit den konfigurierten Daten überschreiben
+				$key = true;
+				foreach (explode(',',$fontData['DC']) as $data)
+				{
+					if(!(is_numeric($data)))
+					{
+						$key = false;
+						break;
+					}
+				}
+				if ($key)
+				{
+					$sortArray[$pointer]['attributes']['drawcolor'] = $fontData['DC'];
+				}
+			}
+			
+			// wurde ein abweichender Rechteckstil definiert? -> prüfen und ggf. setzen
+			if ( array_key_exists ( 'RS', $fontData ) && strstr_multiple('DF',$fontData['RS'])) 
+			{
+				$sortArray[$pointer]['attributes']['rectstyle'] = $fontData['RS'];
+			}
+							
 			switch ($fieldtype)
 			{
 				case 'l':
@@ -423,6 +485,26 @@ foreach($userArray as $UserId)
 							$text= $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
 					}
 				break;
+				
+			case 't':              // trace				
+				//prüfen, ob Koordinaten x2 und y2 vorhanden sind
+				if (count($xyKoord)<4)
+				{
+					continue ;      
+				}
+				
+				$sortArray[$pointer]['trace']=true;
+				break;  
+				
+			case 'r':              // rectangle				
+				//prüfen, ob Koordinaten w und h vorhanden sind
+				if (count($xyKoord)<4)
+				{
+					continue ;     
+				}
+				
+				$sortArray[$pointer]['rect']=true;
+				break;  				
 			}
 			
 			// wurde optionaler Text angegeben?   (von lagro)
@@ -448,18 +530,23 @@ foreach($userArray as $UserId)
 	$yPrevKoord='';														// wird beim Etikettendruck benötigt
 	foreach ($sortArray as $key => $sortData) 
 	{
-		$imageW = 0;
-		$imageH = 0;
+		$width = 0;
+		$height = 0;
+		$koordX2 = 0;
+		$koordY2 = 0;
+		if (isset($sortData['xykoord'][2]))
+		{
+			$width = $sortData['xykoord'][2];
+			$koordX2 = $sortData['xykoord'][2];
+		}
+		if (isset($sortData['xykoord'][3]))
+		{
+			$height = $sortData['xykoord'][3];
+			$koordY2 = $sortData['xykoord'][3];
+		}
+			
 		if ($sortData['image']['path']<>'')
 		{
-			if (isset($sortData['xykoord'][2]))
-			{
-				$imageW = $sortData['xykoord'][2];
-			}
-			if (isset($sortData['xykoord'][3]))
-			{
-				$imageH = $sortData['xykoord'][3];
-			}
 			$imageSize = getimagesize( $sortData['image']['path']);
 				
 			//Berechnungsalgorithmus aus FPDF-Library
@@ -472,73 +559,98 @@ foreach($userArray as $UserId)
 			elseif($unit=='in')
 				$k = 72;
 		
-			if($imageW==0 && $imageH==0)
+			if($width==0 && $height==0)
 			{
 				// Put image at 96 dpi
-				$imageW = -96;
-				$imageH = -96;
+				$width = -96;
+				$height = -96;
 			}
 
-			if($imageW<0)
-				$imageW = -$imageSize[0]*72/$imageW/$k;
-			if($imageH<0)
-				$imageH = -$imageSize[1]*72/$imageH/$k;
-			if($imageW==0)
-				$imageW = $imageH*$imageSize[0]/$imageSize[1];
-			if($imageH==0)
-				$imageH = $imageW*$imageSize[1]/$imageSize[0];
+			if($width<0)
+				$width = -$imageSize[0]*72/$width/$k;
+			if($height<0)
+				$height = -$imageSize[1]*72/$height/$k;
+			if($width==0)
+				$width = $height*$imageSize[0]/$imageSize[1];
+			if($height==0)
+				$height = $width*$imageSize[1]/$imageSize[0];
 		}
          
-        if (count($etiketten)>0)										//Etikettendruck
+        if (count($etiketten)>0)									//Etikettendruck
         {
-        	if($yPrevKoord ==$sortData['xykoord'][1]+($zeile*$etiketten[3]))     // Druck in derselben Zeile
+        	if($yPrevKoord == $sortData['xykoord'][1]+($zeile*$etiketten[3]))     // Druck in derselben Zeile
         	{
-				// das Leerzeichen zwischen Texten bzw Bildern in der Größe der Standardattribute ausgeben,
+        		// das Leerzeichen zwischen Texten bzw Bildern in der Größe der Standardattribute ausgeben,
 				// ansonsten könnten unterschiedlich breite Leerzeichen im Etikett vorhanden sein
 				$pdf->SetFont($attributesDefault['font'], $attributesDefault['style'], $attributesDefault['size']);
-				
-				if ($sortData['image']['path']<>'')
-				{
+					
+        		if($sortData['trace'] || $sortData['rect'])         // bei Linien und Rechtecken die absoluten Koordinaten verwenden, keinen Etikettendruck anwenden 
+        		{
+        			$koordX=$sortData['xykoord'][0]+($spalte*$etiketten[1]);
+         			$koordY=$sortData['xykoord'][1]+($zeile*$etiketten[3]);	
+        		}
+        		elseif ($sortData['image']['path']<>'')				// bei Bildern ein Leerzeichen vorher und die Bildweite mit einbauen
+        		{
 					$pdf->Write(0,utf8_decode('  '));
-					$imageX =$pdf->GetX();
-					$imageY =$pdf->GetY();
-					$pdf->SetX($imageX+$imageW);		
+					$koordX =$pdf->GetX();
+					$koordY =$pdf->GetY();
+					$pdf->SetX($koordX+$width);		
 				}
-				else 
+				else 												// bei Texten innerhalb derselben Zeile nur ein Leerzeichen dazwischen
 				{
 					$pdf->Write(0,utf8_decode(' '));
-				}
+        		}
         	}
-        	else                                                 // eine neue Zeile des Etikettes wurde angefangen
+        	else                                                 	// eine neue Zeile des Etikettes wurde angefangen
         	{
-        		$imageX=$sortData['xykoord'][0]+($spalte*$etiketten[1]);
-         		$imageY=$sortData['xykoord'][1]+($zeile*$etiketten[3]);	
-         		$pdf->SetXY($imageX+$imageW,$imageY);
+        		$koordX=$sortData['xykoord'][0]+($spalte*$etiketten[1]);
+         		$koordY=$sortData['xykoord'][1]+($zeile*$etiketten[3]);	
+         		$pdf->SetXY($koordX+$width,$koordY);
         	}
         		
         	// yKoordinate (=Zeile) zwischenspeichern um im nächsten Durchgang erkennen zu können,
         	// ob in einer neuen Zeile gedruckt wird
         	$yPrevKoord = $sortData['xykoord'][1]+($zeile*$etiketten[3]);
+        	
+        	$koordX2=$koordX2+($spalte*$etiketten[1]);
+        	$koordY2=$koordY2+($zeile*$etiketten[3]);	
         }
-        else 															//Formulardruck
+        else 														//Formulardruck
         {
          	$pdf->SetXY($sortData['xykoord'][0], $sortData['xykoord'][1]);
-         	$imageX=$sortData['xykoord'][0];
-         	$imageY=$sortData['xykoord'][1];
+         	$koordX=$sortData['xykoord'][0];
+         	$koordY=$sortData['xykoord'][1];
         }
+       
         	
 		if ($sortData['image']['path']<>'')						//Bild in PDF-Datei schreiben
 		{
-       		$pdf->Image($sortData['image']['path'], $imageX, $imageY, $imageW, $imageH);
+       		$pdf->Image($sortData['image']['path'], $koordX, $koordY, $width, $height);
+		}
+		elseif($sortData['trace']) 								// Linie in PDF-Datei schreiben
+		{
+			$pdf->SetLineWidth($sortData['attributes']['linewidth']);
+			$color = explode(',', $sortData['attributes']['drawcolor']);
+			$pdf->SetDrawColor($color[0],$color[1],$color[2]);
+			$pdf->Line($koordX,$koordY,$koordX2,$koordY2);
+		}
+		elseif($sortData['rect']) 								// Rechteck in PDF-Datei schreiben
+		{
+			$pdf->SetLineWidth($sortData['attributes']['linewidth']);
+			$color = explode(',', $sortData['attributes']['drawcolor']);
+			$pdf->SetDrawColor($color[0],$color[1],$color[2]);
+			$color = explode(',', $sortData['attributes']['fillcolor']);
+			$pdf->SetFillColor($color[0],$color[1],$color[2]);
+			$pdf->Rect($koordX,$koordY,$width,$height,$sortData['attributes']['rectstyle']);
 		}
 		else 													// Text in PDF-Datei schreiben
 		{
 			$color = explode(',', $sortData['attributes']['color']);
 			$pdf->SetTextColor($color[0],$color[1],$color[2]);
-			$pdf->SetFont($sortData['attributes']['font'], $sortData['attributes']['style'], $sortData['attributes']['size']);
-        	$pdf->Write(0,utf8_decode($sortData['text']));	
+			$pdf->SetFont($sortData['attributes']['font'], $sortData['attributes']['style'], $sortData['attributes']['size']);	
+			$pdf->Write(0,utf8_decode($sortData['text']));	
 		}
-			
+				
 		// ggf. eine temporär erzeugte Bilddatei wieder löschen
 		if(file_exists(SERVER_PATH. '/adm_my_files/PFF'.$sortData['image']['zufall'].'.png'))
         {
