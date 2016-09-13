@@ -186,7 +186,7 @@ else
 }
 //wenn 	count($etiketten) jetzt nicht 0 ist, dann wird Etikettendruck durchgeführt	
 
-// jetzt Standardschrift, -stil, -größe und -farbe festlegen (falls nichts definiert wurde)
+// jetzt Standardattribute (Schrift, Stil, Größe usw.) festlegen (falls nichts definiert wurde)
 $attributesDefault = array(
 	'font'      => 'Arial', 
 	'style'     => 'BI', 
@@ -197,7 +197,7 @@ $attributesDefault = array(
 	'drawcolor' => '0,0,0', 						//line and rect only
 	'rectstyle' => 'D' );							//rect only
 	
-// Textattribute mit den Daten der jeweiligen Konfiguration überschreiben, falls vorhanden
+// Textattribute mit den Daten der jeweiligen Konfiguration überschreiben (falls vorhanden)
 foreach($attributesDefault as $attribute => $dummy)
 {
 	if (isset($pPreferences->config['Formular'][$attribute][$getpostFormID]))
@@ -428,13 +428,12 @@ foreach($userArray as $UserId)
 							if ( array_key_exists ( 'T', $fontData ) )    // Nehme n-ten Text aus Konfiguration
 							{
 								$textarray = explode(',',$fontData['T']);
-								if(isset($textarray[$pos]))   // Wenn Text für diese Stelle definiert
+								if(isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
 								{
 									$text = $textarray[$pos];
 								}
-								else  // sonst nimm letzten definierten Text
+								else                                      // sonst schreibe Leerzeichen
 								{
-									//$text = $textarray[Count($textarray)-1];
 									$text = ' ';
 								}
 							}
@@ -622,7 +621,6 @@ foreach($userArray as $UserId)
          	$koordY=$sortData['xykoord'][1];
         }
        
-        	
 		if ($sortData['image']['path']<>'')						//Bild in PDF-Datei schreiben
 		{
        		$pdf->Image($sortData['image']['path'], $koordX, $koordY, $width, $height);

@@ -62,21 +62,16 @@ $form = new HtmlForm('configurations_form', $g_root_path.'/adm_plugins/'.$plugin
 $form->addCustomContent('', '<p>');
 
 $form->addDescription('1. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_LISTSELECTION'));
-                    	
 $sql = 'SELECT lst_id, lst_name, lst_global FROM '. TBL_LISTS. '
         WHERE lst_org_id = '. $gCurrentOrganization->getValue('org_id'). '
         AND (  lst_usr_id = '. $gCurrentUser->getValue('usr_id'). '
             OR lst_global = 1)
         AND lst_name IS NOT NULL
         ORDER BY lst_global ASC, lst_name ASC';
-//$result = $gDb->query($sql);
 $configurations=array();
-//$lst_result = $gDb->query($sql);  
 $statement = $gDb->query($sql);     
-//if($gDb->num_rows() > 0)
 if($statement->rowCount() > 0)
 {
-	//while($row = $gDb->fetch_array($lst_result))
 	while($row = $statement->fetch())
     {
     	$configurations[]=array($row['lst_id'],$row['lst_name'],($row['lst_global']==0 ? $gL10n->get('LST_YOUR_LISTS') : $gL10n->get('LST_GENERAL_LISTS') ));
