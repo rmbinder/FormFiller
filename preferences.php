@@ -149,7 +149,7 @@ $javascriptCode = '
                 
         var newCellPosition = newTableRow.insertCell(-1);        
       
-        htmlPosFields = "<input type=\"text\" class=\"form-control\" id=\"position" + fieldNumberShow + "\" name=\"position'.$conf.'_" + fieldNumberShow + "\" maxlength=\"50\" ";
+        htmlPosFields = "<input type=\"text\" class=\"form-control\" id=\"position" + fieldNumberShow + "\" name=\"position'.$conf.'_" + fieldNumberShow + "\" maxlength=\"100\" ";
                 
         for(var counter = 1; counter < arr_user_fields.length; counter++)
         {   
