@@ -238,7 +238,7 @@ foreach($userArray as $UserId)
 				
 		//$fielddata splitten in Typ und ID
         $fieldtype=substr($fielddata,0,1);
-        $fieldid=substr($fielddata,1);
+        $fieldid=(int) substr($fielddata,1);
         	
         $formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$key];
 			  

@@ -109,7 +109,7 @@ switch($getMode)
 		{
 			if(substr($data,0,1)=='p')
 			{
-        		$fieldid=substr($data,1);
+        		$fieldid=(int) substr($data,1);
         		$exportArray['usf_name_intern'][]=$gProfileFields->getPropertyById($fieldid, 'usf_name_intern');
         		$exportArray['usf_name'][]=$gProfileFields->getPropertyById($fieldid, 'usf_name');
 			}
