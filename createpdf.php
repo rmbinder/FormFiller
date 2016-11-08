@@ -27,9 +27,9 @@
  */
 
 require_once(substr(__FILE__, 0,strpos(__FILE__, 'adm_plugins')-1).'/adm_program/system/common.php');
-require_once(SERVER_PATH. '/adm_program/system/classes/tablefile.php');
-require_once(SERVER_PATH. '/adm_program/system/classes/listconfiguration.php');
-require_once(SERVER_PATH. '/adm_program/system/classes/image.php');
+require_once(ADMIDIO_PATH . '/adm_program/system/classes/tablefile.php');
+require_once(ADMIDIO_PATH . '/adm_program/system/classes/listconfiguration.php');
+require_once(ADMIDIO_PATH . '/adm_program/system/classes/image.php');
 
 require_once(dirname(__FILE__).'/common_function.php');
 require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
@@ -367,16 +367,16 @@ foreach($userArray as $UserId)
 				case 'l':
 					if ( array_key_exists ( 'L', $fontData ) )                         //Foto aus einer alternativen Bilddatei)
 					{
-						if(file_exists(SERVER_PATH. '/adm_my_files/download/'.$fontData['L']))
+						if(file_exists(ADMIDIO_PATH . '/adm_my_files/download/'.$fontData['L']))
 						{
-							$sortArray[$pointer]['image']['path'] = SERVER_PATH. '/adm_my_files/download/'.$fontData['L'];
+							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . '/adm_my_files/download/'.$fontData['L'];
 						}	
 					}
 					elseif($gPreferences['profile_photo_storage'] == 1 )              //Foto aus adm_my_files
 					{
-						if(file_exists(SERVER_PATH. '/adm_my_files/user_profile_photos/'.$UserId.'.jpg'))
+						if(file_exists(ADMIDIO_PATH . '/adm_my_files/user_profile_photos/'.$UserId.'.jpg'))
 						{
-							$sortArray[$pointer]['image']['path'] = SERVER_PATH. '/adm_my_files/user_profile_photos/'.$UserId.'.jpg';
+							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . '/adm_my_files/user_profile_photos/'.$UserId.'.jpg';
 						}
 					}
 					elseif($gPreferences['profile_photo_storage'] == 0 )               //Foto aus der Datenbank
@@ -390,10 +390,10 @@ foreach($userArray as $UserId)
         					// ich habe es nicht geschafft von der Klasse Image direkt an die Klasse FPDF diesen Pfad zu übergeben
         					// deshalb der Umweg über eine temporäre Datei
         					$zufall = mt_rand(10000,99999);
-        					$image->copyToFile(null,SERVER_PATH. '/adm_my_files/PFF'.$zufall.'.png');
+        					$image->copyToFile(null, ADMIDIO_PATH . '/adm_my_files/PFF'.$zufall.'.png');
         					$image->delete();
         					
-        					$sortArray[$pointer]['image']['path'] = SERVER_PATH. '/adm_my_files/PFF'.$zufall.'.png'; 
+        					$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . '/adm_my_files/PFF'.$zufall.'.png';
         					$sortArray[$pointer]['image']['zufall'] = $zufall;       // zwischenspeichern, damit nach der Sortierung die Zufallsdatei wieder gelöscht werden kann  
     					}
 					}
@@ -650,9 +650,9 @@ foreach($userArray as $UserId)
 		}
 				
 		// ggf. eine temporär erzeugte Bilddatei wieder löschen
-		if(file_exists(SERVER_PATH. '/adm_my_files/PFF'.$sortData['image']['zufall'].'.png'))
+		if(file_exists( ADMIDIO_PATH . '/adm_my_files/PFF'.$sortData['image']['zufall'].'.png'))
         {
-        	unlink(SERVER_PATH. '/adm_my_files/PFF'.$sortData['image']['zufall'].'.png');
+        	unlink( ADMIDIO_PATH . '/adm_my_files/PFF'.$sortData['image']['zufall'].'.png');
         }	
 	}			
 
