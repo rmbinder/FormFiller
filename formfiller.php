@@ -68,12 +68,12 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 			$menue=$moduleMenu;
 		}
 
-		$menue->addItem('formfiller_show', '/adm_plugins/'.$plugin_folder.'/formfiller_show.php',$gL10n->get('PLG_FORMFILLER_FORMFILLER'), '/icons/page_white_acrobat.png'); 
+		$menue->addItem('formfiller_show', FOLDER_PLUGINS . '/'.$plugin_folder.'/formfiller_show.php',$gL10n->get('PLG_FORMFILLER_FORMFILLER'), '/icons/page_white_acrobat.png');
 		if(strstr($url, 'adm_program/modules/profile/profile.php?user_id=')!=null )
 		{
 			foreach($pPreferences->config['Formular']['desc'] as $key => $data)
 			{		
-				$menue->addItem($data, '/adm_plugins/'.$plugin_folder.'/createpdf.php?user_id='.$user_id.'&form_id='.$key, '['.$data.']', '/icons/page_white_acrobat.png');
+				$menue->addItem($data, FOLDER_PLUGINS . '/'.$plugin_folder.'/createpdf.php?user_id='.$user_id.'&form_id='.$key, '['.$data.']', '/icons/page_white_acrobat.png');
 			}
 		}
 	}

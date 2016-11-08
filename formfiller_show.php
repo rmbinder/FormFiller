@@ -49,7 +49,7 @@ $listsMenu = new HtmlNavbar('menu_lists_list', $headline, $page);
 if(check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
 {
 	// show link to pluginpreferences 
-	$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . '/adm_plugins/'.$plugin_folder.'/preferences.php',
+	$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences.php',
                         $gL10n->get('PLG_FORMFILLER_SETTINGS'), 'options.png', 'right');        
 }
         
@@ -57,7 +57,7 @@ if(check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config'
 $page->addHtml($listsMenu->show(false));
  
 // show form
-$form = new HtmlForm('configurations_form', ADMIDIO_URL .'/adm_plugins/'.$plugin_folder.'/createpdf.php', $page, array('class' => 'form-preferences'));
+$form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/createpdf.php', $page, array('class' => 'form-preferences'));
 
 $form->addCustomContent('', '<p>');
 
