@@ -367,16 +367,16 @@ foreach($userArray as $UserId)
 				case 'l':
 					if ( array_key_exists ( 'L', $fontData ) )                         //Foto aus einer alternativen Bilddatei)
 					{
-						if(file_exists(ADMIDIO_PATH . '/adm_my_files/download/'.$fontData['L']))
+						if(file_exists(ADMIDIO_PATH . FOLDER_DATA . '/download/'.$fontData['L']))
 						{
-							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . '/adm_my_files/download/'.$fontData['L'];
+							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/download/'.$fontData['L'];
 						}	
 					}
 					elseif($gPreferences['profile_photo_storage'] == 1 )              //Foto aus adm_my_files
 					{
-						if(file_exists(ADMIDIO_PATH . '/adm_my_files/user_profile_photos/'.$UserId.'.jpg'))
+						if(file_exists(ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$UserId.'.jpg'))
 						{
-							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . '/adm_my_files/user_profile_photos/'.$UserId.'.jpg';
+							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$UserId.'.jpg';
 						}
 					}
 					elseif($gPreferences['profile_photo_storage'] == 0 )               //Foto aus der Datenbank
@@ -390,10 +390,10 @@ foreach($userArray as $UserId)
         					// ich habe es nicht geschafft von der Klasse Image direkt an die Klasse FPDF diesen Pfad zu übergeben
         					// deshalb der Umweg über eine temporäre Datei
         					$zufall = mt_rand(10000,99999);
-        					$image->copyToFile(null, ADMIDIO_PATH . '/adm_my_files/PFF'.$zufall.'.png');
+        					$image->copyToFile(null, ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$zufall.'.png');
         					$image->delete();
         					
-        					$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . '/adm_my_files/PFF'.$zufall.'.png';
+        					$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$zufall.'.png';
         					$sortArray[$pointer]['image']['zufall'] = $zufall;       // zwischenspeichern, damit nach der Sortierung die Zufallsdatei wieder gelöscht werden kann  
     					}
 					}
@@ -650,9 +650,9 @@ foreach($userArray as $UserId)
 		}
 				
 		// ggf. eine temporär erzeugte Bilddatei wieder löschen
-		if(file_exists( ADMIDIO_PATH . '/adm_my_files/PFF'.$sortData['image']['zufall'].'.png'))
+		if(file_exists( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png'))
         {
-        	unlink( ADMIDIO_PATH . '/adm_my_files/PFF'.$sortData['image']['zufall'].'.png');
+        	unlink( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png');
         }	
 	}			
 

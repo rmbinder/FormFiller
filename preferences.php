@@ -291,7 +291,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_configurations">
-                            <img src="'.THEME_PATH.'/icons/application_form_edit.png" alt="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" />'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'
+                            <img src="'. THEME_URL .'/icons/application_form_edit.png" alt="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" />'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'
                         </a>
                     </h4>
                 </div>
@@ -301,7 +301,7 @@ $page->addHtml('
                         $form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_function.php?form=configurations', $page, array('class' => 'form-preferences'));
                         
                         $html = '<a class="admidio-icon-link" data-toggle="modal" data-target="#admidio_modal" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_popup.php? " >
-                        		<img src="'. THEME_PATH. '/icons/help.png" alt="'.$gL10n->get('SYS_HELP').'" />'.$gL10n->get('SYS_HELP').'</a>';
+                        		<img src="'. THEME_URL . '/icons/help.png" alt="'.$gL10n->get('SYS_HELP').'" />'.$gL10n->get('SYS_HELP').'</a>';
                         $form->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
                     	$form->addLine();
                         $form->addDescription('<div style="width:100%; height:550px; overflow:auto; border:20px;">');
@@ -340,7 +340,7 @@ $page->addHtml('
         							<tbody id="mylist_fields_tbody'.$conf.'">
             							<tr id="table_row_button">
                 							<td colspan="3">
-                    							<a class="icon-text-link" href="javascript:addColumn'.$conf.'()"><img src="'. THEME_PATH. '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'</a>
+                    							<a class="icon-text-link" href="javascript:addColumn'.$conf.'()"><img src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'</a>
                 							</td>
             							</tr>
         							</tbody>
@@ -352,10 +352,10 @@ $page->addHtml('
                         $form->addDescription('</div>');
                         $form->addLine();
                         $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences.php?add=true"><img
-                                    src="'. THEME_PATH. '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
+                                    src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
 						$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
                         $form->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
-                        $form->addSubmitButton('btn_save_configurations', $gL10n->get('SYS_SAVE'), array('icon' => THEME_PATH.'/icons/disk.png', 'class' => ' col-sm-offset-3'));
+                        $form->addSubmitButton('btn_save_configurations', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
                         
                         $page->addHtml($form->show(false));
                     	$page->addHtml('
@@ -367,7 +367,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_options">
-                            <img src="'.THEME_PATH.'/icons/options.png" alt="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" />'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'
+                            <img src="'. THEME_URL .'/icons/options.png" alt="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" />'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'
                         </a>
                     </h4>
                 </div>
@@ -379,12 +379,12 @@ $page->addHtml('
                             	array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'));
                         $form->addInput('pdfform_addsizes', $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'), $pPreferences->config['Optionen']['pdfform_addsizes'], array('helpTextIdInline' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC'));
                         $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/export_import.php?mode=1">
-                        			<img src="'. THEME_PATH. '/icons/database_save.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'</a>';
+                        			<img src="'. THEME_URL . '/icons/database_save.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_EXPORT_IMPORT_DESC'));
                         $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_function.php?mode=2">
-                        			<img src="'. THEME_PATH. '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
+                        			<img src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
-                        $form->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => THEME_PATH.'/icons/disk.png', 'class' => ' col-sm-offset-3'));
+                        $form->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
                         $page->addHtml($form->show(false));
                     	$page->addHtml('
                     </div>
@@ -395,7 +395,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_plugin_control">
-                            <img src="'.THEME_PATH.'/icons/lock.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'
+                            <img src="'. THEME_URL .'/icons/lock.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'
                         </a>
                     </h4>
                 </div>
@@ -410,7 +410,7 @@ $page->addHtml('
                                 OR cat.cat_org_id IS NULL )';
 				        $form->addSelectBoxFromSql('freigabe', $gL10n->get('PLG_FORMFILLER_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC','multiselect' => true));				                                                 
                         $form->addSelectBoxFromSql('freigabe_config', '', $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe_config'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC2','multiselect' => true));
-                        $form->addSubmitButton('btn_save_plugin_control_preferences', $gL10n->get('SYS_SAVE'), array('icon' => THEME_PATH.'/icons/disk.png', 'class' => ' col-sm-offset-3'));
+                        $form->addSubmitButton('btn_save_plugin_control_preferences', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
                         $page->addHtml($form->show(false));
                     	$page->addHtml('
                     </div>
@@ -421,7 +421,7 @@ $page->addHtml('
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_plugin_informations">
-                            <img src="'.THEME_PATH.'/icons/info.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'
+                            <img src="'. THEME_URL .'/icons/info.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'
                         </a>
                     </h4>
                 </div>
@@ -433,7 +433,7 @@ $page->addHtml('
                         $form->addStaticControl('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
                         $form->addStaticControl('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
                         $html = '<a class="icon-text-link" href="http://www.admidio.de/dokuwiki/doku.php?id=de:plugins:formfiller" target="_blank"><img
-                                    src="'. THEME_PATH. '/icons/eye.png" alt="'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'" />'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'</a>';
+                                    src="'. THEME_URL . '/icons/eye.png" alt="'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'" />'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC'));
                         $page->addHtml($form->show(false));
                    		$page->addHtml('

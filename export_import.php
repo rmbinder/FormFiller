@@ -61,7 +61,7 @@ switch($getMode)
 		$form->openGroupBox('export', $headline = $gL10n->get('PLG_FORMFILLER_EXPORT'));
     	$form->addDescription($gL10n->get('PLG_FORMFILLER_EXPORT_DESC'));
 		$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION').':', $pPreferences->config['Formular']['desc'], array( 'showContextDependentFirstEntry' => false));
-		$form->addSubmitButton('btn_export', $gL10n->get('PLG_FORMFILLER_EXPORT'), array('icon' => THEME_PATH.'/icons/database_out.png', 'class' => ' col-sm-offset-3'));       	
+		$form->addSubmitButton('btn_export', $gL10n->get('PLG_FORMFILLER_EXPORT'), array('icon' => THEME_URL .'/icons/database_out.png', 'class' => ' col-sm-offset-3'));
     	$form->closeGroupBox();
     	 
       	// add form to html page and show page
@@ -72,7 +72,7 @@ switch($getMode)
     	$form->openGroupBox('import', $headline = $gL10n->get('PLG_FORMFILLER_IMPORT'));
     	$form->addDescription($gL10n->get('PLG_FORMFILLER_IMPORT_DESC'));
 		$form->addFileUpload('importfile', $gL10n->get('SYS_FILE').':', array( 'allowedMimeTypes' => array('application/octet-stream,text/plain')));
-    	$form->addSubmitButton('btn_import', $gL10n->get('PLG_FORMFILLER_IMPORT'), array('icon' => THEME_PATH.'/icons/database_in.png', 'class' => ' col-sm-offset-3'));
+    	$form->addSubmitButton('btn_import', $gL10n->get('PLG_FORMFILLER_IMPORT'), array('icon' => THEME_URL .'/icons/database_in.png', 'class' => ' col-sm-offset-3'));
     	$form->closeGroupBox(); 
     
     	// add form to html page and show page

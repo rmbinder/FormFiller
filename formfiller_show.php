@@ -96,7 +96,7 @@ $form->addCustomContent('', '<p>');
 $form->addDescription('3. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_CONFIGURATION'));
 $form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array( 'property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
         
-$form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => THEME_PATH.'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
+$form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => THEME_URL .'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
                         
 $page->addHtml($form->show(false));
         
