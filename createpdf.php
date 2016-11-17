@@ -26,15 +26,15 @@
  ***********************************************************************************************
  */
 
-require_once(substr(__FILE__, 0,strpos(__FILE__, 'adm_plugins')-1).'/adm_program/system/common.php');
-require_once(ADMIDIO_PATH . '/adm_program/system/classes/tablefile.php');
-require_once(ADMIDIO_PATH . '/adm_program/system/classes/listconfiguration.php');
-require_once(ADMIDIO_PATH . '/adm_program/system/classes/image.php');
+require_once(__DIR__ . '/../../adm_program/system/common.php');
+require_once(__DIR__ . '/../../adm_program/system/classes/tablefile.php');
+require_once(__DIR__ . '/../../adm_program/system/classes/listconfiguration.php');
+require_once(__DIR__ . '/../../adm_program/system/classes/image.php');
 
-require_once(dirname(__FILE__).'/common_function.php');
-require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
-require_once($plugin_path. '/'.$plugin_folder.'/library/fpdf.php');
-require_once($plugin_path. '/'.$plugin_folder.'/library/fpdi.php');
+require_once(__DIR__ . '/common_function.php');
+require_once(__DIR__ . '/classes/configtable.php');
+require_once(__DIR__ . '/library/fpdf.php');
+require_once(__DIR__ . '/library/fpdi.php');
 
 // Initialize and check the parameters
 $getUserId       = admFuncVariableIsValid($_GET, 'user_id', 'numeric', array('defaultValue' => 0));

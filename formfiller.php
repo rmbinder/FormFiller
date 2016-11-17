@@ -22,18 +22,12 @@
 //$gNaviagation ist zwar definiert, aber in diesem Script in bestimmten Fällen nicht sichtbar
 global $gNavigation;
 
-// Pfad des Plugins ermitteln
-$plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
-$plugin_file_pos   = strpos(__FILE__, basename(__FILE__));
-$plugin_path       = substr(__FILE__, 0, $plugin_folder_pos);
-$plugin_folder     = substr(__FILE__, $plugin_folder_pos+1, $plugin_file_pos-$plugin_folder_pos-2);
-
-require_once($plugin_path. '/../adm_program/system/common.php');
-require_once($plugin_path. '/'.$plugin_folder.'/common_function.php');
-require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
+require_once(__DIR__ . '/../../adm_program/system/common.php');
+require_once(__DIR__ . '/common_function.php');
+require_once(__DIR__ . '/classes/configtable.php');
 
 // Einbinden der Sprachdatei
-$gL10n->addLanguagePath($plugin_path.'/'.$plugin_folder.'/languages');
+$gL10n->addLanguagePath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/languages');
 
 $pPreferences = new ConfigTablePFF();
 
@@ -68,12 +62,12 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 			$menue=$moduleMenu;
 		}
 
-		$menue->addItem('formfiller_show', FOLDER_PLUGINS . '/'.$plugin_folder.'/formfiller_show.php',$gL10n->get('PLG_FORMFILLER_FORMFILLER'), '/icons/page_white_acrobat.png');
+		$menue->addItem('formfiller_show', FOLDER_PLUGINS . $plugin_folder .'/formfiller_show.php',$gL10n->get('PLG_FORMFILLER_FORMFILLER'), '/icons/page_white_acrobat.png');
 		if(strstr($url, 'adm_program/modules/profile/profile.php?user_id=')!=null )
 		{
 			foreach($pPreferences->config['Formular']['desc'] as $key => $data)
 			{		
-				$menue->addItem($data, FOLDER_PLUGINS . '/'.$plugin_folder.'/createpdf.php?user_id='.$user_id.'&form_id='.$key, '['.$data.']', '/icons/page_white_acrobat.png');
+				$menue->addItem($data, FOLDER_PLUGINS . $plugin_folder .'/createpdf.php?user_id='.$user_id.'&form_id='.$key, '['.$data.']', '/icons/page_white_acrobat.png');
 			}
 		}
 	}

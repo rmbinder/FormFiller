@@ -16,16 +16,10 @@
  ***********************************************************************************************
  */
 
-// Pfad des Plugins ermitteln
-$plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
-$plugin_file_pos   = strpos(__FILE__, basename(__FILE__));
-$plugin_path       = substr(__FILE__, 0, $plugin_folder_pos);
-$plugin_folder     = substr(__FILE__, $plugin_folder_pos+1, $plugin_file_pos-$plugin_folder_pos-2);
-
-require_once($plugin_path. '/../adm_program/system/common.php');
-require_once($plugin_path. '/../adm_program/system/login_valid.php');
-require_once($plugin_path. '/'.$plugin_folder.'/common_function.php');
-require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
+require_once(__DIR__ . '/../../adm_program/system/common.php');
+require_once(__DIR__ . '/../../adm_program/system/login_valid.php');
+require_once(__DIR__ . '/common_function.php');
+require_once(__DIR__ . '/classes/configtable.php');
 
 // Initialize and check the parameters
 $getAdd = admFuncVariableIsValid($_GET, 'add', 'boolean', array('defaultValue' => false));
@@ -298,9 +292,9 @@ $page->addHtml('
                 <div id="collapse_configurations" class="panel-collapse collapse">
                     <div class="panel-body">');
                         // show form
-                        $form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_function.php?form=configurations', $page, array('class' => 'form-preferences'));
+                        $form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?form=configurations', $page, array('class' => 'form-preferences'));
                         
-                        $html = '<a class="admidio-icon-link" data-toggle="modal" data-target="#admidio_modal" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_popup.php? " >
+                        $html = '<a class="admidio-icon-link" data-toggle="modal" data-target="#admidio_modal" href="'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_popup.php? " >
                         		<img src="'. THEME_URL . '/icons/help.png" alt="'.$gL10n->get('SYS_HELP').'" />'.$gL10n->get('SYS_HELP').'</a>';
                         $form->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
                     	$form->addLine();
@@ -351,7 +345,7 @@ $page->addHtml('
 						}
                         $form->addDescription('</div>');
                         $form->addLine();
-                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences.php?add=true"><img
+                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php?add=true"><img
                                     src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
 						$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
                         $form->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
@@ -374,14 +368,14 @@ $page->addHtml('
                 <div id="collapse_options" class="panel-collapse collapse">
                     <div class="panel-body">');
                         // show form
-                        $form = new HtmlForm('options_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_function.php?form=options', $page, array('class' => 'form-preferences'));
+                        $form = new HtmlForm('options_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?form=options', $page, array('class' => 'form-preferences'));
                         $form->addInput('maxpdfview', $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], 
                             	array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'));
                         $form->addInput('pdfform_addsizes', $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'), $pPreferences->config['Optionen']['pdfform_addsizes'], array('helpTextIdInline' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC'));
-                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/export_import.php?mode=1">
+                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/export_import.php?mode=1">
                         			<img src="'. THEME_URL . '/icons/database_save.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_EXPORT_IMPORT_DESC'));
-                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_function.php?mode=2">
+                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?mode=2">
                         			<img src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
                         $form->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
@@ -402,7 +396,7 @@ $page->addHtml('
                 <div id="collapse_plugin_control" class="panel-collapse collapse">
                     <div class="panel-body">');
                         // show form
-                        $form = new HtmlForm('plugin_control_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences_function.php?form=plugin_control', $page, array('class' => 'form-preferences'));
+                        $form = new HtmlForm('plugin_control_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?form=plugin_control', $page, array('class' => 'form-preferences'));
                         $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
                                 FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
                                 WHERE cat.cat_id = rol.rol_cat_id

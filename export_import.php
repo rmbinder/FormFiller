@@ -16,15 +16,9 @@
  ***********************************************************************************************
  */
 
-// Pfad des Plugins ermitteln
-$plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
-$plugin_file_pos   = strpos(__FILE__, basename(__FILE__));
-$plugin_path       = substr(__FILE__, 0, $plugin_folder_pos);
-$plugin_folder     = substr(__FILE__, $plugin_folder_pos+1, $plugin_file_pos-$plugin_folder_pos-2);
-
-require_once($plugin_path. '/../adm_program/system/common.php');
-require_once($plugin_path. '/'.$plugin_folder.'/common_function.php');
-require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
+require_once(__DIR__ . '/../../adm_program/system/common.php');
+require_once(__DIR__ . '/common_function.php');
+require_once(__DIR__ . '/classes/configtable.php');
 
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
@@ -57,7 +51,7 @@ switch($getMode)
     	$page->addHtml($exportimportMenu->show(false));
 
     	// show form
-    	$form = new HtmlForm('export_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/export_import.php?mode=2', $page);
+    	$form = new HtmlForm('export_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/export_import.php?mode=2', $page);
 		$form->openGroupBox('export', $headline = $gL10n->get('PLG_FORMFILLER_EXPORT'));
     	$form->addDescription($gL10n->get('PLG_FORMFILLER_EXPORT_DESC'));
 		$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION').':', $pPreferences->config['Formular']['desc'], array( 'showContextDependentFirstEntry' => false));
@@ -68,7 +62,7 @@ switch($getMode)
     	$page->addHtml($form->show(false));
     
     	// show form
-    	$form = new HtmlForm('import_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/export_import.php?mode=3', $page, array('enableFileUpload' => true));
+    	$form = new HtmlForm('import_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/export_import.php?mode=3', $page, array('enableFileUpload' => true));
     	$form->openGroupBox('import', $headline = $gL10n->get('PLG_FORMFILLER_IMPORT'));
     	$form->addDescription($gL10n->get('PLG_FORMFILLER_IMPORT_DESC'));
 		$form->addFileUpload('importfile', $gL10n->get('SYS_FILE').':', array( 'allowedMimeTypes' => array('application/octet-stream,text/plain')));

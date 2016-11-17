@@ -11,15 +11,9 @@
  ***********************************************************************************************
  */
 
-// Pfad des Plugins ermitteln
-$plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
-$plugin_file_pos   = strpos(__FILE__, basename(__FILE__));
-$plugin_path       = substr(__FILE__, 0, $plugin_folder_pos);
-$plugin_folder     = substr(__FILE__, $plugin_folder_pos+1, $plugin_file_pos-$plugin_folder_pos-2);
-
-require_once($plugin_path. '/../adm_program/system/common.php');
-require_once($plugin_path. '/'.$plugin_folder.'/common_function.php');  
-require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
+require_once(__DIR__ . '/../../adm_program/system/common.php');
+require_once(__DIR__ . '/common_function.php');
+require_once(__DIR__ . '/classes/configtable.php');
 
 // Konfiguration einlesen          
 $pPreferences = new ConfigTablePFF();
@@ -49,7 +43,7 @@ $listsMenu = new HtmlNavbar('menu_lists_list', $headline, $page);
 if(check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
 {
 	// show link to pluginpreferences 
-	$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences.php',
+	$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php',
                         $gL10n->get('PLG_FORMFILLER_SETTINGS'), 'options.png', 'right');        
 }
         
@@ -57,7 +51,7 @@ if(check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config'
 $page->addHtml($listsMenu->show(false));
  
 // show form
-$form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/createpdf.php', $page, array('class' => 'form-preferences'));
+$form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/createpdf.php', $page, array('class' => 'form-preferences'));
 
 $form->addCustomContent('', '<p>');
 
