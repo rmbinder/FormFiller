@@ -46,7 +46,7 @@ if($getAdd)
 	$num_configs++;
 }
 
-//ggf. zusätzlich definierte Größen an das Auswahl-Array anfügen
+//ggf. zusaetzlich definierte Groessen an das Auswahl-Array anfuegen
 $selectBoxSizesEntries = array('A3'=>'A3','A4'=>'A4','A5'=>'A5','Letter'=>'Letter' ,'Legal'=>'Legal' );
 $sizes = explode(';',$pPreferences->config['Optionen']['pdfform_addsizes']);
 foreach ($sizes as $data)
@@ -161,7 +161,7 @@ $javascriptCode = '
             var position = "";
             
             // bei gespeicherten Listen das entsprechende Profilfeld selektieren
-            // und den Feldnamen dem Listenarray hinzufügen
+            // und den Feldnamen dem Listenarray hinzufuegen
             if(arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.'])
             {
                 if(arr_user_fields[counter]["id"] == arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.']["id"])

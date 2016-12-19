@@ -33,12 +33,12 @@ function getRole_IDPFF($role_name)
     $statement = $gDb->query($sql);
     $row = $statement->fetchObject();
 
-    // für den seltenen Fall, dass während des Betriebes die Sprache umgeschaltet wird:  $row->rol_id prüfen
+    // für den seltenen Fall, dass waehrend des Betriebes die Sprache umgeschaltet wird:  $row->rol_id pruefen
     return (isset($row->rol_id) ?  $row->rol_id : 0);
 }
 
 /**
- * Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehörigkeit, berechtigt ist das Plugin aufzurufen
+ * Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehoerigkeit berechtigt ist das Plugin aufzurufen
  * @param   array  $array   Array mit Rollen-IDs:   entweder $pPreferences->config['Pluginfreigabe']['freigabe']
  *                                                  oder $pPreferences->config['Pluginfreigabe']['freigabe_config']
  * @return  bool   $showPlugin

@@ -98,7 +98,7 @@ case 1:
     				$pPreferences->config['Formular']['positions'][] = $positions;		
     			}
     			
-    			// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen gelöscht (was nicht sein darf)
+    			// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen geloescht (was nicht sein darf)
     			if($konf_neu==0)
     			{
     				$gMessage->show($gL10n->get('PLG_FORMFILLER_ERROR_MIN_CONFIG'));

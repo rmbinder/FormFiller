@@ -1,6 +1,6 @@
 <?php
 /**
- * Zeigt das Menü des Admidio-Plugins FormFiller
+ * Zeigt das Menue des Admidio-Plugins FormFiller
  *
  * @copyright 2004-2016 The Admidio Team
  * @see http://www.admidio.org/

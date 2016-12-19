@@ -65,7 +65,7 @@ $attributesDefault = array();
 $user = new User($gDb, $gProfileFields);
 
 // wenn von der Profilanzeige aufgerufen wurde, dann ist $getUserId>0
-// und form_id wurde über $_GET übergeben
+// und form_id wurde über $_GET uebergeben
 if($getUserId > 0)
 {
 	$userArray[] = $getUserId ;
@@ -135,7 +135,7 @@ $pdf = new FPDI($orientation,$unit,$size);
 // falls ein Formular definiert wurde, dann ist der Wert der form_pdfid>0
 if ($pPreferences->config['Formular']['pdfid'][$getpostFormID]>0)
 {
-	//prüfen, ob das Formular noch in der DB existiert
+	//pruefen, ob das Formular noch in der DB existiert
 	$sql = 'SELECT fil_id 
             FROM '.TBL_FILES.' , '. TBL_CATEGORIES. ', '. TBL_FOLDERS. '
             WHERE fil_id = \''.$pPreferences->config['Formular']['pdfid'][$getpostFormID].'\' 
@@ -166,7 +166,7 @@ if ($pPreferences->config['Formular']['pdfid'][$getpostFormID]>0)
 	}
 }
 
-//sind Daten für Etiketten definiert?  (dann die Etikettendaten überprüfen)
+//sind Daten für Etiketten definiert?  (dann die Etikettendaten überpruefen)
 $etiketten = explode(',',$pPreferences->config['Formular']['labels'][$getpostFormID]);
 		
 if(count($etiketten)==4)
@@ -184,9 +184,9 @@ else
 {
 	$etiketten = array();
 }
-//wenn 	count($etiketten) jetzt nicht 0 ist, dann wird Etikettendruck durchgeführt	
+//wenn 	count($etiketten) jetzt nicht 0 ist, dann wird Etikettendruck durchgefuehrt	
 
-// jetzt Standardattribute (Schrift, Stil, Größe usw.) festlegen (falls nichts definiert wurde)
+// jetzt Standardattribute (Schrift, Stil, Groesse usw.) festlegen (falls nichts definiert wurde)
 $attributesDefault = array(
 	'font'      => 'Arial', 
 	'style'     => 'BI', 
@@ -232,7 +232,7 @@ foreach($userArray as $UserId)
 	// jetzt alle Felder durchlaufen
 	foreach($pPreferences->config['Formular']['fields'][$getpostFormID] as $key => $fielddata)
 	{ 
-		//der zu schreibende Text könnte auch direkt in $sortArray geschrieben werden,
+		//der zu schreibende Text koennte auch direkt in $sortArray geschrieben werden,
 		//aber anhand der Variablen $text ist der Code etwas übersichtlicher :-) 
 		$text = '';		
 				
@@ -249,7 +249,7 @@ foreach($userArray as $UserId)
 			//$formdata splitten in Koordinaten und Rest
 			$arrSplit = explode(';',$formdata);
 
-			// xyKoordinaten extrahieren und in $arrSplit löschen
+			// xyKoordinaten extrahieren und in $arrSplit loeschen
 			$xyKoord = explode(',',array_shift($arrSplit));
 
 			// Routine beenden, wenn nicht mindestens die Koordinaten für X und Y angegeben wurden
@@ -275,7 +275,7 @@ foreach($userArray as $UserId)
 				$fontData[$attr[0]]=$attr[1]  ;
 			}
 			
-			// wurde eine abweichende Schriftfarbe definiert? ->  prüfen und ggf. überschreiben
+			// wurde eine abweichende Schriftfarbe definiert? ->  pruefen und ggf. überschreiben
 			if ( array_key_exists ( 'C', $fontData ) )
 			{
 				// jetzt mit den konfigurierten Daten überschreiben
@@ -294,31 +294,31 @@ foreach($userArray as $UserId)
 				}
 			}
 			
-			// wurde eine abweichende Schriftgröße definiert? -> prüfen und ggf. setzen
+			// wurde eine abweichende Schriftgroesse definiert? -> pruefen und ggf. setzen
 			if ( array_key_exists ( 'S', $fontData ) && is_numeric($fontData['S']))
 			{
 				$sortArray[$pointer]['attributes']['size'] = $fontData['S'];
 			}	
 
-			// wurde ein abweichender Schrifttyp definiert? -> prüfen und ggf. setzen
+			// wurde ein abweichender Schrifttyp definiert? -> pruefen und ggf. setzen
 			if ( array_key_exists ( 'F', $fontData ) && in_array($fontData['F'], array('Courier','Arial','Times','Symbol','ZapfDingbats' )))
 			{
 				$sortArray[$pointer]['attributes']['font'] = $fontData['F'];
 			}			
 
-			// wurden abweichende Schriftattribute definiert? -> prüfen und ggf. setzen
+			// wurden abweichende Schriftattribute definiert? -> pruefen und ggf. setzen
 			if ( array_key_exists ( 'A', $fontData ) && strstr_multiple('BIU',$fontData['A'])) 
 			{
 				$sortArray[$pointer]['attributes']['style'] = $fontData['A'];
 			}
 			
-			// wurde eine abweichende Linienbreite definiert? -> prüfen und ggf. setzen
+			// wurde eine abweichende Linienbreite definiert? -> pruefen und ggf. setzen
 			if ( array_key_exists ( 'LW', $fontData ) && is_numeric($fontData['LW']))
 			{
 				$sortArray[$pointer]['attributes']['linewidth'] = $fontData['LW'];
 			}
 							
-			// wurde eine abweichende Füllfarbe definiert? -> prüfen und ggf. setzen
+			// wurde eine abweichende Fuellfarbe definiert? -> pruefen und ggf. setzen
 			if ( array_key_exists ( 'FC', $fontData ) )
 			{
 				// jetzt mit den konfigurierten Daten überschreiben
@@ -337,7 +337,7 @@ foreach($userArray as $UserId)
 				}
 			}
 			
-			// wurde eine abweichende Zeichenfarbe definiert? -> prüfen und ggf. setzen
+			// wurde eine abweichende Zeichenfarbe definiert? -> pruefen und ggf. setzen
 			if ( array_key_exists ( 'DC', $fontData ) )
 			{
 				// jetzt mit den konfigurierten Daten überschreiben
@@ -356,7 +356,7 @@ foreach($userArray as $UserId)
 				}
 			}
 			
-			// wurde ein abweichender Rechteckstil definiert? -> prüfen und ggf. setzen
+			// wurde ein abweichender Rechteckstil definiert? -> pruefen und ggf. setzen
 			if ( array_key_exists ( 'RS', $fontData ) && strstr_multiple('DF',$fontData['RS'])) 
 			{
 				$sortArray[$pointer]['attributes']['rectstyle'] = $fontData['RS'];
@@ -386,9 +386,9 @@ foreach($userArray as $UserId)
         					$image = new Image();
         					$image->setImageFromData($user->getValue('usr_photo'));
         
-        					// die Methode Image der Klasse FPDF benötigt einen Pfad zur Imagedatei
-        					// ich habe es nicht geschafft von der Klasse Image direkt an die Klasse FPDF diesen Pfad zu übergeben
-        					// deshalb der Umweg über eine temporäre Datei
+        					// die Methode Image der Klasse FPDF benoetigt einen Pfad zur Imagedatei
+        					// ich habe es nicht geschafft von der Klasse Image direkt an die Klasse FPDF diesen Pfad zu uebergeben
+        					// deshalb der Umweg ueber eine temporaere Datei
         					$zufall = mt_rand(10000,99999);
         					$image->copyToFile(null, ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$zufall.'.png');
         					$image->delete();
@@ -442,7 +442,7 @@ foreach($userArray as $UserId)
 								$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
 								if (  (substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>') )
 								{
-									// Option wurde mit Icon definiert, wir müssen aus dem HTML Tag das Title-Attribut auslesen
+									// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
 									$doc = new DOMDocument();
 									$doc->loadXML($text);
 									$nodeList = $doc->getElementsByTagName('img');
@@ -486,7 +486,7 @@ foreach($userArray as $UserId)
 				break;
 				
 			case 't':              // trace				
-				//prüfen, ob Koordinaten x2 und y2 vorhanden sind
+				//pruefen, ob Koordinaten x2 und y2 vorhanden sind
 				if (count($xyKoord)<4)
 				{
 					continue ;      
@@ -496,7 +496,7 @@ foreach($userArray as $UserId)
 				break;  
 				
 			case 'r':              // rectangle				
-				//prüfen, ob Koordinaten w und h vorhanden sind
+				//pruefen, ob Koordinaten w und h vorhanden sind
 				if (count($xyKoord)<4)
 				{
 					continue ;     
@@ -526,7 +526,7 @@ foreach($userArray as $UserId)
 	}
 	array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortArray);
 	
-	$yPrevKoord='';														// wird beim Etikettendruck benötigt
+	$yPrevKoord='';														// wird beim Etikettendruck benoetigt
 	foreach ($sortArray as $key => $sortData) 
 	{
 		$width = 0;
@@ -579,8 +579,8 @@ foreach($userArray as $UserId)
         {
         	if($yPrevKoord == $sortData['xykoord'][1]+($zeile*$etiketten[3]))     // Druck in derselben Zeile
         	{
-        		// das Leerzeichen zwischen Texten bzw Bildern in der Größe der Standardattribute ausgeben,
-				// ansonsten könnten unterschiedlich breite Leerzeichen im Etikett vorhanden sein
+        		// das Leerzeichen zwischen Texten bzw Bildern in der Groesse der Standardattribute ausgeben,
+				// ansonsten koennten unterschiedlich breite Leerzeichen im Etikett vorhanden sein
 				$pdf->SetFont($attributesDefault['font'], $attributesDefault['style'], $attributesDefault['size']);
 					
         		if($sortData['trace'] || $sortData['rect'])         // bei Linien und Rechtecken die absoluten Koordinaten verwenden, keinen Etikettendruck anwenden 
@@ -607,7 +607,7 @@ foreach($userArray as $UserId)
          		$pdf->SetXY($koordX+$width,$koordY);
         	}
         		
-        	// yKoordinate (=Zeile) zwischenspeichern um im nächsten Durchgang erkennen zu können,
+        	// yKoordinate (=Zeile) zwischenspeichern um im naechsten Durchgang erkennen zu koennen,
         	// ob in einer neuen Zeile gedruckt wird
         	$yPrevKoord = $sortData['xykoord'][1]+($zeile*$etiketten[3]);
         	
@@ -649,7 +649,7 @@ foreach($userArray as $UserId)
 			$pdf->Write(0,utf8_decode($sortData['text']));	
 		}
 				
-		// ggf. eine temporär erzeugte Bilddatei wieder löschen
+		// ggf. eine temporaer erzeugte Bilddatei wieder loeschen
 		if(file_exists( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png'))
         {
         	unlink( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png');

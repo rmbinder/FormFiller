@@ -5,7 +5,7 @@
  *
  * Version 2.2.0
  *
- * Dieses Plugin für Admidio ermöglicht das Ausfüllen von PDF-Formularen sowie das Erstellen von Etiketten.
+ * Dieses Plugin für Admidio ermöglicht das Ausfuellen von PDF-Formularen sowie das Erstellen von Etiketten.
  *
  * Author: rmb
  *
@@ -19,7 +19,7 @@
  ***********************************************************************************************
  */
 
-//$gNaviagation ist zwar definiert, aber in diesem Script in bestimmten Fällen nicht sichtbar
+//$gNaviagation ist zwar definiert, aber in diesem Script in bestimmten Faellen nicht sichtbar
 global $gNavigation;
 
 require_once(__DIR__ . '/../../adm_program/system/common.php');
@@ -32,7 +32,7 @@ $gL10n->addLanguagePath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/langu
 $pPreferences = new ConfigTablePFF();
 
 //Initialisierung und Anzeige des Links nur, wenn vorher keine Deinstallation stattgefunden hat
-// sonst wäre die Deinstallation hinfällig, da hier wieder Default-Werte der config in die DB geschrieben werden
+// sonst waere die Deinstallation hinfaellig, da hier wieder Default-Werte der config in die DB geschrieben werden
 if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false)
 {
 	if ($pPreferences->checkforupdate())
@@ -51,7 +51,7 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 	// Zeige Link zum Plugin
 	if(check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']) )
 	{
-		// wenn in der my_body_bottom.php ein $pluginMenu definiert wurde, dann innerhalb dieses Menüs anzeigen,
+		// wenn in der my_body_bottom.php ein $pluginMenu definiert wurde, dann innerhalb dieses Menues anzeigen,
 		// wenn nicht, dann innerhalb des (immer vorhandenen) Module-Menus anzeigen
 		if (isset($pluginMenu))
 		{

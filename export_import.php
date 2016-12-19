@@ -151,7 +151,7 @@ switch($getMode)
 		
 		$parsedArray = parse_ini_file ( $_FILES['userfile']['tmp_name'][0], TRUE );
 	
-		//prüfen, ob die eingelesene Datei eine Formularkonfiguration enthält
+		//pruefen, ob die eingelesene Datei eine Formularkonfiguration enthaelt
 		if(		!(isset($parsedArray['desc']) && $parsedArray['desc']<>'')
 			||  !(isset($parsedArray['fields']) && is_array($parsedArray['fields']))
 			||  !(isset($parsedArray['positions']) && is_array($parsedArray['positions']))
@@ -164,7 +164,7 @@ switch($getMode)
 	
 		$importArray = array();
 	
-		//alle Werte der eingelesenen Datei die kein Array sind in $importArray überführen
+		//alle Werte der eingelesenen Datei die kein Array sind in $importArray überfuehren
 		//dabei werden nur Werte eingelesen, die in der aktuellen $pPreferences->config vorhanden sind
 		foreach($pPreferences->config['Formular'] as $key => $data)
 		{
@@ -179,8 +179,8 @@ switch($getMode)
 		}
 	
 		//jetzt die Profilfelder und Positionen (=Arrays) einlesen
-		//dabei die Profilfelder nicht direkt einlesen, sondern anhand des usf_name_intern bestimmen
-		//(Begr.: usf_ids können von Admidio-Installation zu Admidio-Installation unterschiedlich sein) 
+		//dabei die Profilfelder nicht direkt einlesen, sondern anhand von usf_name_intern bestimmen
+		//(Begr.: usf_ids koennen von Admidio-Installation zu Admidio-Installation unterschiedlich sein) 
 		foreach($parsedArray['fields'] as $key => $data)
 		{
 			//$fieldtype extrahieren
@@ -203,8 +203,8 @@ switch($getMode)
         	$pPreferences->config['Formular'][$key][$pointer]=$data;
     	}		
 
-    	//prüfen, ob eine PDF-Form-Größe in der Importdatei übergeben wurde
-    	//wenn ja, dann diese PDF-Form-Größe den 'zusätzlichen PDF-Größen' hinzufügen
+    	//pruefen, ob eine PDF-Form-Groesse in der Importdatei übergeben wurde
+    	//wenn ja, dann diese PDF-Form-Groesse den 'zusaetzlichen PDF-Groessen' hinzufuegen
     	if($importArray['pdfform_size']<>'')
     	{
     		$addSize = explode(',',$importArray['pdfform_size']);
