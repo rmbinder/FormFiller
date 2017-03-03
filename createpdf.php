@@ -367,9 +367,10 @@ foreach($userArray as $UserId)
 				case 'l':
 					if ( array_key_exists ( 'L', $fontData ) )                         //Foto aus einer alternativen Bilddatei)
 					{
-						if(file_exists(ADMIDIO_PATH . FOLDER_DATA . '/download/'.$fontData['L']))
+						$downloadFolder = new TableFolder($gDb);
+						if(file_exists(ADMIDIO_PATH . FOLDER_DATA . '/'.$downloadFolder->getRootFolderName().'/'.$fontData['L']))
 						{
-							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/download/'.$fontData['L'];
+							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA  .'/'.$downloadFolder->getRootFolderName().'/'.$fontData['L'];
 						}	
 					}
 					elseif($gPreferences['profile_photo_storage'] == 1 )              //Foto aus adm_my_files
