@@ -62,7 +62,9 @@ $zeile = 0;
 $attributes = array();
 $attributesDefault = array();
 
-$user = new User($gDb, $gProfileFields);
+$user 		   = new User($gDb, $gProfileFields);
+$relation      = new TableUserRelation($gDb);
+$relationArray = array();
 
 // wenn von der Profilanzeige aufgerufen wurde, dann ist $getUserId>0
 // und form_id wurde über $_GET uebergeben
@@ -205,7 +207,43 @@ foreach($attributesDefault as $attribute => $dummy)
 		$attributesDefault[$attribute] = $pPreferences->config['Formular'][$attribute][$getpostFormID];
 	}
 }
-		
+	
+//eventuell vorhandene Beziehungen einlesen
+//da es zu Komplikationen fuehren koennte, wenn $userArray durchlaufen und gleichzeitig Werte darin geloescht werden
+//wird das temporaere Array $userScanArray verwendet
+$userScanArray = $userArray;
+foreach($userScanArray as $UserId)
+{
+	$user->readDataById($UserId);
+
+	if(!empty($pPreferences->config['Formular']['relation'][$getpostFormID]) && $user->getValue('GENDER', 'text') === $gL10n->get('SYS_MALE'))
+	{
+		$sql = 'SELECT *
+                  FROM '.TBL_USER_RELATIONS.'
+            INNER JOIN '.TBL_USER_RELATION_TYPES.'
+                    ON ure_urt_id  = urt_id
+                 WHERE ure_usr_id1 = ? -- $UserId
+            	   AND urt_id = ? -- $pPreferences->config[\'Formular\'][\'relation\'][$getpostFormID]
+                   AND urt_name        <> \'\'
+                   AND urt_name_male   <> \'\'
+                   AND urt_name_female <> \'\'
+              ORDER BY urt_name ASC LIMIT 1';
+		$relationStatement = $gDb->queryPrepared($sql, array($UserId, $pPreferences->config['Formular']['relation'][$getpostFormID] ));
+
+		if($row = $relationStatement->fetch())
+		{
+			$relation->clear();
+			$relation->setArray($row);
+			if(array_search($relation->getValue('ure_usr_id2'),$userArray) !== FALSE)
+			{
+				unset($userArray[array_search($relation->getValue('ure_usr_id2'),$userArray)]);
+				$relationArray[$UserId] = $relation->getValue('ure_usr_id2');
+			}
+		}
+	}
+}
+unset($userScanArray);
+	
 foreach($userArray as $UserId)
 {
 	$sortArray = array();
@@ -230,7 +268,7 @@ foreach($userArray as $UserId)
 	}
 
 	// jetzt alle Felder durchlaufen
-	foreach($pPreferences->config['Formular']['fields'][$getpostFormID] as $key => $fielddata)
+	foreach($pPreferences->config['Formular']['fields'][$getpostFormID] as $fieldkey => $fielddata)
 	{ 
 		//der zu schreibende Text koennte auch direkt in $sortArray geschrieben werden,
 		//aber anhand der Variablen $text ist der Code etwas übersichtlicher :-) 
@@ -240,7 +278,7 @@ foreach($userArray as $UserId)
         $fieldtype=substr($fielddata,0,1);
         $fieldid=(int) substr($fielddata,1);
         	
-        $formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$key];
+        $formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$fieldkey];
 			  
 		if(!empty($formdata))
 		{
@@ -484,27 +522,99 @@ foreach($userArray as $UserId)
 						default:
 							$text= $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
 					}
-				break;
+					break;
 				
-			case 't':              // trace				
-				//pruefen, ob Koordinaten x2 und y2 vorhanden sind
-				if (count($xyKoord)<4)
-				{
-					continue ;      
-				}
+				case 'b'  &&  array_key_exists ( $UserId, $relationArray ):
 				
-				$sortArray[$pointer]['trace']=true;
-				break;  
+					$user->readDataById($relationArray[$UserId]);
+
+					switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
+					{
+						case 'RADIO_BUTTON':
+						case 'DROPDOWN':
 				
-			case 'r':              // rectangle				
-				//pruefen, ob Koordinaten w und h vorhanden sind
-				if (count($xyKoord)<4)
-				{
-					continue ;     
-				}
+							$pos  = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
 				
-				$sortArray[$pointer]['rect']=true;
-				break;  				
+							if ( array_key_exists ( 'T', $fontData ) )    // Nehme n-ten Text aus Konfiguration
+							{
+								$textarray = explode(',',$fontData['T']);
+								if(isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
+								{
+									$text = $textarray[$pos];
+								}
+								else                                      // sonst schreibe Leerzeichen
+								{
+									$text = ' ';
+								}
+							}
+							else    // lese Wert aus Datenbank
+							{
+								$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+								if (  (substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>') )
+								{
+									// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
+									$doc = new DOMDocument();
+									$doc->loadXML($text);
+									$nodeList = $doc->getElementsByTagName('img');
+									$nodes=iterator_to_array($nodeList);
+									$node=$nodes[0];
+									if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
+									{
+										// Kein Tooltip in der Option, nehme Icon-Name als Wert
+										$text = $node->getattribute('src');
+										$text = substr($text, strrpos($text, '/') + 1);
+										$texttemp = explode('.', $text, 2);
+										$text = $texttemp[0];
+									}
+									else
+									{
+										$text = $node->getattribute('title');
+									}
+								}
+							}
+				
+							if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
+							{
+								if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
+								{
+									//beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+									//deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+									$sortArray[$pointer]['xykoord'][0]=$xyKoord[$pos * 2];
+									$sortArray[$pointer]['xykoord'][1]=$xyKoord[$pos * 2 + 1];
+								}
+							}
+							break;
+						case 'CHECKBOX':
+							if($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
+							{
+								$text = 'x';
+							}
+							break;
+						default:
+						$text= $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+					}
+					$user->readDataById($UserId);
+					break;
+					
+				case 't':              // trace				
+					//pruefen, ob Koordinaten x2 und y2 vorhanden sind
+					if (count($xyKoord)<4)
+					{
+						continue ;      
+					}
+				
+					$sortArray[$pointer]['trace']=true;
+					break;  
+				
+				case 'r':              // rectangle				
+					//pruefen, ob Koordinaten w und h vorhanden sind
+					if (count($xyKoord)<4)
+					{
+						continue ;     
+					}
+				
+					$sortArray[$pointer]['rect']=true;
+					break;  				
 			}
 			
 			// wurde optionaler Text angegeben?   (von lagro)

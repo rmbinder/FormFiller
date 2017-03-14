@@ -110,15 +110,24 @@ $page->addJavascript('
     });
     ', true);
 
-$javascriptCode = '
-    var arr_user_fields    = createProfileFieldsArray();
-    ';
-    
     // create a array with the necessary data
 	for ($conf=0;$conf<$num_configs;$conf++)
     {      
+    	if(!empty($pPreferences->config['Formular']['relation'][$conf]))
+    	{
+    		$relationtype = new TableUserRelationType($gDb, $pPreferences->config['Formular']['relation'][$conf]);
+    		$javascriptCode .= '
+ 			var arr_user_fields'.$conf.' = createProfileFieldsRelationArray("'.$relationtype->getValue('urt_name').'"); 
+    		';
+    	}
+    	else 
+    	{
+    		$javascriptCode .= '
+  			var arr_user_fields'.$conf.' = createProfileFieldsArray();
+    		';
+    	}
+    	
     	$javascriptCode .= ' 
-                
         var arr_default_fields'.$conf.' = createColumnsArray'.$conf.'();
         var fieldNumberIntern'.$conf.'  = 0;
                 
@@ -145,16 +154,16 @@ $javascriptCode = '
       
         htmlPosFields = "<input type=\"text\" class=\"form-control\" id=\"position" + fieldNumberShow + "\" name=\"position'.$conf.'_" + fieldNumberShow + "\" maxlength=\"100\" ";
                 
-        for(var counter = 1; counter < arr_user_fields.length; counter++)
+        for(var counter = 1; counter < arr_user_fields'.$conf.'.length; counter++)
         {   
-            if(category != arr_user_fields[counter]["cat_name"])
+            if(category != arr_user_fields'.$conf.'[counter]["cat_name"])
             {
                 if(category.length > 0)
                 {
                     htmlCboFields += "</optgroup>";
                 }
-                htmlCboFields += "<optgroup label=\"" + arr_user_fields[counter]["cat_name"] + "\">";
-                category = arr_user_fields[counter]["cat_name"];
+                htmlCboFields += "<optgroup label=\"" + arr_user_fields'.$conf.'[counter]["cat_name"] + "\">";
+                category = arr_user_fields'.$conf.'[counter]["cat_name"];
             }
 
             var selected = "";
@@ -164,13 +173,13 @@ $javascriptCode = '
             // und den Feldnamen dem Listenarray hinzufuegen
             if(arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.'])
             {
-                if(arr_user_fields[counter]["id"] == arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.']["id"])
+                if(arr_user_fields'.$conf.'[counter]["id"] == arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.']["id"])
                 {
                     selected = " selected=\"selected\" ";                 
                 }
                  position = arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.']["positions"];
             }
-            htmlCboFields += "<option value=\"" + arr_user_fields[counter]["id"] + "\" " + selected + ">" + arr_user_fields[counter]["data"] + "</option>";
+            htmlCboFields += "<option value=\"" + arr_user_fields'.$conf.'[counter]["id"] + "\" " + selected + ">" + arr_user_fields'.$conf.'[counter]["data"] + "</option>";
         	htmlPosFields += " value=\"" + position + "\" ";
     	}
         htmlCboFields += "</select>";
@@ -197,11 +206,74 @@ $javascriptCode = '
         }
         $javascriptCode .= '
         return default_fields;
-    }
-        
+    }	
     ';
     }       
     $javascriptCode .= '
+	function createProfileFieldsRelationArray(relation)
+    { 
+        var user_fields = new Array(); ';
+        $i = 1;
+        foreach($gProfileFields->mProfileFields as $field)
+        {    
+            // add profile fields to user field array
+            if($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
+            {   
+                $javascriptCode .= '
+                user_fields['. $i. '] = new Object();
+                user_fields['. $i. ']["cat_name"] = "'. strtr($field->getValue('cat_name'), '"', '\''). '";
+                user_fields['. $i. ']["id"]   = "p'. $field->getValue('usf_id'). '";
+                user_fields['. $i. ']["data"] = "'. addslashes($field->getValue('usf_name')). '";
+                ';
+                $i++;
+            }
+        }  
+       
+        foreach($gProfileFields->mProfileFields as $field)
+        {
+        	// add profile fields to user field array
+        	if(($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers()) && $field->getValue('cat_name') == $gL10n->get('SYS_MASTER_DATA'))
+        	{
+        		$javascriptCode .= '
+                user_fields['. $i. '] = new Object();
+                user_fields['. $i. ']["cat_name"] =  "'. strtr($field->getValue('cat_name'), '"', '\'').'" + ": " + relation ;
+                user_fields['. $i. ']["id"]   = "b'. $field->getValue('usf_id'). '";    //b wie Beziehung (r = Relation ist bereits belegt)
+                user_fields['. $i. ']["data"] = "'. addslashes($field->getValue('usf_name')). '" + "*";
+                ';
+        		$i++;
+        	}
+        }
+        
+        $javascriptCode .= '
+       	 
+        user_fields['. $i. '] = new Object();
+        user_fields['. $i. ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
+        user_fields['. $i. ']["id"]   = "ddummy";           //d wie date
+        user_fields['. $i. ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_DATE').'";
+        
+        user_fields['. ($i+1). '] = new Object();
+        user_fields['. ($i+1). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+1). ']["id"]   = "ldummy";       //l wie logo
+        user_fields['. ($i+1). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_PROFILE_PHOTO').'";
+        
+        user_fields['. ($i+2). '] = new Object();
+        user_fields['. ($i+2). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+2). ']["id"]   = "vdummy";      //v wie value
+        user_fields['. ($i+2). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_VALUE').'";
+        
+        user_fields['. ($i+3). '] = new Object();
+        user_fields['. ($i+3). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+3). ']["id"]   = "tdummy";      //t wie trace (l ist durch logo bereits belegt)
+        user_fields['. ($i+3). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_LINE').'";
+
+        user_fields['. ($i+4). '] = new Object();
+        user_fields['. ($i+4). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
+        user_fields['. ($i+4). ']["id"]   = "rdummy";      //r wie rectangle
+        user_fields['. ($i+4). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_RECTANGLE').'";        
+        
+        return user_fields;
+    }    
+        		
     function createProfileFieldsArray()
     { 
         var user_fields = new Array(); ';
@@ -219,9 +291,10 @@ $javascriptCode = '
                 ';
                 $i++;
             }
-        }        
-   
+        }   
+        
         $javascriptCode .= '
+        		 
         user_fields['. $i. '] = new Object();
         user_fields['. $i. ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
         user_fields['. $i. ']["id"]   = "ddummy";           //d wie date
@@ -249,6 +322,7 @@ $javascriptCode = '
         
         return user_fields;
     }
+    
 ';
         
 $page->addJavascript($javascriptCode);        
@@ -321,6 +395,16 @@ $page->addHtml('
 				        	$form->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf]));				                                            
                      		$form->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf]);
 						
+                     		if ($gPreferences['members_enable_user_relations'] == 1)
+                     		{
+                     			// select box showing all relation types
+                     			$sql = 'SELECT urt_id, urt_name
+              						FROM '.TBL_USER_RELATION_TYPES.'
+          							ORDER BY urt_name';
+                     			$form->addSelectBoxFromSql('relationtype_id'.$conf, $gL10n->get('PLG_FORMFILLER_RELATION'), $gDb, $sql,
+                     				array('defaultValue' => $pPreferences->config['Formular']['relation'][$conf],'showContextDependentFirstEntry' => true, 'multiselect' => false));
+                     		}
+                     		
 							$html = '
 							<div class="table-responsive">
     							<table class="table table-condensed" id="mylist_fields_table">

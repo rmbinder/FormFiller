@@ -11,4 +11,4 @@
  */
 
 $plugin_version = '2.2.0';
-$plugin_stand   = '19.12.2016';
+$plugin_stand   = '14.03.2017';

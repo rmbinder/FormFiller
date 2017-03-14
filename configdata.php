@@ -67,7 +67,8 @@ $config_default['Formular'] = array('desc' 			=> array($gL10n->get('PLG_FORMFILL
  									'pdfid'					=> array('0','0','0'),
 									'pdfform_orientation'	=> array('','',''),
 									'pdfform_size'			=> array('','',''),
-									'pdfform_unit'			=> array('','','')	); 	   		
+									'pdfform_unit'			=> array('','',''),
+									'relation'				=> array('','','')  ); 	   		
  
 $config_default['Optionen']['maxpdfview'] = 10; 
 $config_default['Optionen']['pdfform_addsizes'] = '100x80'; 

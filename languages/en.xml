@@ -88,6 +88,8 @@
     <string name="PLG_FORMFILLER_PROFILE_PHOTO">Profile photo</string>
     <string name="PLG_FORMFILLER_RECTANGLE">Rectangle</string>    
     <string name="PLG_FORMFILLER_RED">red</string>
+    <string name="PLG_FORMFILLER_RELATION">Relationship</string>  
+    <string name="PLG_FORMFILLER_RELATION_DESC">In order to be able to print the spouse in labels, the relationship "spouse" can be chosen. After saving and updating the page, there are additional options for this relationship in the field selection.</string>  
     <string name="PLG_FORMFILLER_ROLE_SELECTION">Role selection</string>
     <string name="PLG_FORMFILLER_ROLE_SELECTION_DESC">Choose from the rollers, whose members may call the plugin.</string>
     <string name="PLG_FORMFILLER_ROLE_SELECTION_DESC2">Choose from the rollers, whose members may access the settings of the plugin.</string>

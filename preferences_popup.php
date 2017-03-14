@@ -43,6 +43,8 @@ echo '
 	'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_DESC').'<br><br>
     <strong>'.$gL10n->get('PLG_FORMFILLER_LABELS').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_LABELS_DESC').'<br><br>
+	<strong>'.$gL10n->get('PLG_FORMFILLER_RELATION').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_RELATION_DESC').'<br><br>
     <strong>'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION_DESC').'
 </div>';
