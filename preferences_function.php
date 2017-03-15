@@ -25,7 +25,7 @@ $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
 // only authorized user are allowed to start this module
-if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+if (!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
 {
 	$gMessage->setForwardUrl($gHomepage, 3000);
     $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
@@ -36,141 +36,139 @@ $getMode = admFuncVariableIsValid($_GET, 'mode', 'numeric', array('defaultValue'
 $getForm = admFuncVariableIsValid($_GET, 'form', 'string');
 
 // in ajax mode only return simple text on error
-if($getMode == 1 )
+if ($getMode == 1)
 {
     $gMessage->showHtmlTextOnly(true);
 }
 
-switch($getMode)
+switch ($getMode)
 {
-case 1:
+	case 1:
 	
-	try
-	{
-		switch($getForm)
-    	{            	
-            case 'configurations':
+		try
+		{
+			switch ($getForm)
+    		{            	
+            	case 'configurations':
             	
-				unset($pPreferences->config['Formular']);
-				$konf_neu = 0;
+					unset($pPreferences->config['Formular']);
+					$konf_neu = 0;
 				
-    			for($conf = 0; isset($_POST['desc'. $conf]); $conf++)
-    			{
-    				if (empty($_POST['desc'. $conf]))	
+    				for ($conf = 0; isset($_POST['desc'. $conf]); $conf++)
     				{
-    					continue;
-    				}
-    				else 
-    				{            			
-            			$konf_neu++;
-    				}
+    					if (empty($_POST['desc'. $conf]))	
+    					{
+    						continue;
+    					}
+    					else 
+    					{            			
+            				$konf_neu++;
+    					}
     				
-        			$pPreferences->config['Formular']['desc'][] = $_POST['desc'. $conf];
-    				$pPreferences->config['Formular']['font'][] = $_POST['font'. $conf];
-    				$pPreferences->config['Formular']['style'][] = $_POST['style'. $conf];
-    				$pPreferences->config['Formular']['size'][] = $_POST['size'. $conf];
-    				$pPreferences->config['Formular']['color'][] = $_POST['color'. $conf];
-    				$pPreferences->config['Formular']['labels'][] = $_POST['labels'. $conf];
-    				$pPreferences->config['Formular']['pdfform_orientation'][] = $_POST['pdfform_orientation'. $conf];
-    				$pPreferences->config['Formular']['pdfform_size'][] = $_POST['pdfform_size'. $conf];
-    				$pPreferences->config['Formular']['pdfform_unit'][] = $_POST['pdfform_unit'. $conf];
-    				$pPreferences->config['Formular']['pdfid'][] = (isset($_POST['pdfid'. $conf]) ? $_POST['pdfid'. $conf] : 0);
-    				$pPreferences->config['Formular']['relation'][] = $_POST['relationtype_id'. $conf];
+        				$pPreferences->config['Formular']['desc'][] = $_POST['desc'. $conf];
+    					$pPreferences->config['Formular']['font'][] = $_POST['font'. $conf];
+    					$pPreferences->config['Formular']['style'][] = $_POST['style'. $conf];
+    					$pPreferences->config['Formular']['size'][] = $_POST['size'. $conf];
+    					$pPreferences->config['Formular']['color'][] = $_POST['color'. $conf];
+    					$pPreferences->config['Formular']['labels'][] = $_POST['labels'. $conf];
+    					$pPreferences->config['Formular']['pdfform_orientation'][] = $_POST['pdfform_orientation'. $conf];
+    					$pPreferences->config['Formular']['pdfform_size'][] = $_POST['pdfform_size'. $conf];
+    					$pPreferences->config['Formular']['pdfform_unit'][] = $_POST['pdfform_unit'. $conf];
+    					$pPreferences->config['Formular']['pdfid'][] = (isset($_POST['pdfid'. $conf]) ? $_POST['pdfid'. $conf] : 0);
+    					$pPreferences->config['Formular']['relation'][] = $_POST['relationtype_id'. $conf];
     				
-    				$allColumnsEmpty = true;
+    					$allColumnsEmpty = true;
 
-    				$fields = array();
-    				$positions = array();
-    				for($number = 1; isset($_POST['column'.$conf.'_'.$number]); $number++)
-    				{
-        				if(strlen($_POST['column'.$conf.'_'.$number]) > 0 && strlen($_POST['position'.$conf.'_'.$number]) > 0)
-        				{
-        					$allColumnsEmpty = false;
-            				$fields[] = $_POST['column'.$conf.'_'.$number];
-            				$positions[] = $_POST['position'.$conf.'_'.$number];
-        				}
+    					$fields = array();
+    					$positions = array();
+    					for ($number = 1; isset($_POST['column'.$conf.'_'.$number]); $number++)
+    					{
+        					if (strlen($_POST['column'.$conf.'_'.$number]) > 0 && strlen($_POST['position'.$conf.'_'.$number]) > 0)
+        					{
+        						$allColumnsEmpty = false;
+            					$fields[] = $_POST['column'.$conf.'_'.$number];
+            					$positions[] = $_POST['position'.$conf.'_'.$number];
+        					}
+    					}
+    			
+    					if ($allColumnsEmpty)
+    					{
+    						$gMessage->show($gL10n->get('PLG_FORMFILLER_ERROR_MIN_DATA'));
+    					}
+    					$pPreferences->config['Formular']['fields'][] = $fields;	
+    					$pPreferences->config['Formular']['positions'][] = $positions;		
     				}
     			
-    				if($allColumnsEmpty)
+    				// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen geloescht (was nicht sein darf)
+    				if ($konf_neu == 0)
     				{
-    					$gMessage->show($gL10n->get('PLG_FORMFILLER_ERROR_MIN_DATA'));
+    					$gMessage->show($gL10n->get('PLG_FORMFILLER_ERROR_MIN_CONFIG'));
     				}
-    				$pPreferences->config['Formular']['fields'][] = $fields;	
-    				$pPreferences->config['Formular']['positions'][] = $positions;		
-    			}
-    			
-    			// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen geloescht (was nicht sein darf)
-    			if($konf_neu==0)
-    			{
-    				$gMessage->show($gL10n->get('PLG_FORMFILLER_ERROR_MIN_CONFIG'));
-    			}
-            	break;
+            		break;
             	
-        	case 'options':
+        		case 'options':
         		
-        		$pPreferences->config['Optionen']['maxpdfview'] = $_POST['maxpdfview'];
-        		$pPreferences->config['Optionen']['pdfform_addsizes'] = $_POST['pdfform_addsizes'];
-            	break; 
+        			$pPreferences->config['Optionen']['maxpdfview'] = $_POST['maxpdfview'];
+        			$pPreferences->config['Optionen']['pdfform_addsizes'] = $_POST['pdfform_addsizes'];
+            		break; 
                 
-        	case 'plugin_control':
-            	if(isset($_POST['freigabe']))
-            	{
-    				$pPreferences->config['Pluginfreigabe']['freigabe'] = $_POST['freigabe'];
-            	}
-            	if(isset($_POST['freigabe_config']))
-            	{
-    				$pPreferences->config['Pluginfreigabe']['freigabe_config'] = $_POST['freigabe_config'];
-            	}
-    			break;
+        		case 'plugin_control':
+            		if (isset($_POST['freigabe']))
+            		{
+    					$pPreferences->config['Pluginfreigabe']['freigabe'] = $_POST['freigabe'];
+            		}
+            		if (isset($_POST['freigabe_config']))
+            		{
+    					$pPreferences->config['Pluginfreigabe']['freigabe_config'] = $_POST['freigabe_config'];
+            		}
+    				break;
             
-        	default:
-           		$gMessage->show($gL10n->get('SYS_INVALID_PAGE_VIEW'));
-    	}
-	}
-	catch(AdmException $e)
-	{
-		$e->showText();
-	}    
+        		default:
+           			$gMessage->show($gL10n->get('SYS_INVALID_PAGE_VIEW'));
+    		}
+		}
+		catch (AdmException $e)
+		{
+			$e->showText();
+		}    
     
-	$pPreferences->save();
-	echo 'success';
-	
-	break;
+		$pPreferences->save();
+		echo 'success';
+		break;
 
-case 2:
+	case 2:
 	
-	
-	$headline = $gL10n->get('PLG_FORMFILLER_DEINSTALLATION');
+		$headline = $gL10n->get('PLG_FORMFILLER_DEINSTALLATION');
 	 
-	    // create html page object
-    $page = new HtmlPage($headline);
+		// create html page object
+   	 	$page = new HtmlPage($headline);
     
-    // add current url to navigation stack
-    $gNavigation->addUrl(CURRENT_URL, $headline);
+    	// add current url to navigation stack
+    	$gNavigation->addUrl(CURRENT_URL, $headline);
 
-    // create module menu with back link
-    $organizationNewMenu = new HtmlNavbar('menu_deinstallation', $headline, $page);
-    $organizationNewMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL10n->get('SYS_BACK'), 'back.png');
-    $page->addHtml($organizationNewMenu->show(false));
+    	// create module menu with back link
+    	$organizationNewMenu = new HtmlNavbar('menu_deinstallation', $headline, $page);
+   	 	$organizationNewMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL10n->get('SYS_BACK'), 'back.png');
+    	$page->addHtml($organizationNewMenu->show(false));
     
-    $page->addHtml('<p class="lead">'.$gL10n->get('PLG_FORMFILLER_DEINSTALLATION_FORM_DESC').'</p>');
+    	$page->addHtml('<p class="lead">'.$gL10n->get('PLG_FORMFILLER_DEINSTALLATION_FORM_DESC').'</p>');
 
-    // show form
-    $form = new HtmlForm('deinstallation_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?mode=3', $page);
-    $radioButtonEntries = array('0' => $gL10n->get('PLG_FORMFILLER_DEINST_ACTORGONLY'), '1' => $gL10n->get('PLG_FORMFILLER_DEINST_ALLORG') );
-    $form->addRadioButton('deinst_org_select',$gL10n->get('PLG_FORMFILLER_ORG_CHOICE'),$radioButtonEntries);    
-    $form->addSubmitButton('btn_deinstall', $gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), array('icon' => THEME_URL .'/icons/delete.png', 'class' => ' col-sm-offset-3'));
+    	// show form
+    	$form = new HtmlForm('deinstallation_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?mode=3', $page);
+    	$radioButtonEntries = array('0' => $gL10n->get('PLG_FORMFILLER_DEINST_ACTORGONLY'), '1' => $gL10n->get('PLG_FORMFILLER_DEINST_ALLORG') );
+   	 	$form->addRadioButton('deinst_org_select',$gL10n->get('PLG_FORMFILLER_ORG_CHOICE'),$radioButtonEntries);    
+    	$form->addSubmitButton('btn_deinstall', $gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), array('icon' => THEME_URL .'/icons/delete.png', 'class' => ' col-sm-offset-3'));
     
-    // add form to html page and show page
-    $page->addHtml($form->show(false));
-    $page->show();
-    break;
+    	// add form to html page and show page
+    	$page->addHtml($form->show(false));
+    	$page->show();
+    	break;
     
-case 3:
+	case 3:
     
-	$gNavigation->addUrl(CURRENT_URL);
-	$gMessage->setForwardUrl($gHomepage);		
+		$gNavigation->addUrl(CURRENT_URL);
+		$gMessage->setForwardUrl($gHomepage);		
 
-	$gMessage->show($gL10n->get('PLG_FORMFILLER_DEINST_STARTMESSAGE').$pPreferences->delete($_POST['deinst_org_select']) );
-   	break;
+		$gMessage->show($gL10n->get('PLG_FORMFILLER_DEINST_STARTMESSAGE').$pPreferences->delete($_POST['deinst_org_select']) );
+   		break;
 }

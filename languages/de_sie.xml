@@ -89,7 +89,7 @@
     <string name="PLG_FORMFILLER_RECTANGLE">Rechteck</string>    
     <string name="PLG_FORMFILLER_RED">rot</string>
     <string name="PLG_FORMFILLER_RELATION">Beziehung</string>  
-    <string name="PLG_FORMFILLER_RELATION_DESC">Um beim Etikettendruck Ehepartner zu drucken kann hier die Beziehung "Ehepartner/-in" gewählt werden. Nach dem Speichern und der Aktualisierung der Seite gibt es in der Feldwahl zusätzliche Wahlmöglichkeiten für diese Beziehung.</string>     
+    <string name="PLG_FORMFILLER_RELATION_DESC">Um bei Etikettendruck Ehepartner zu drucken kann hier die Beziehung "Ehepartner/-in" gewählt werden. Nach dem Speichern und der Aktualisierung der Seite gibt es in der Feldwahl zusätzliche Wahlmöglichkeiten für diese Beziehung.</string>     
     <string name="PLG_FORMFILLER_ROLE_SELECTION">Rollenauswahl</string>
     <string name="PLG_FORMFILLER_ROLE_SELECTION_DESC">Wählen Sie die Rollen aus, deren Mitglieder das Plugin aufrufen dürfen.</string>
     <string name="PLG_FORMFILLER_ROLE_SELECTION_DESC2">Wählen Sie die Rollen aus, deren Mitglieder die Einstellungen des Plugins aufrufen dürfen.</string>

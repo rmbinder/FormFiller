@@ -24,11 +24,11 @@ function getRole_IDPFF($role_name)
 	
     $sql    = 'SELECT rol_id
                  FROM '. TBL_ROLES. ', '. TBL_CATEGORIES. '
-                 WHERE rol_name   = \''.$role_name.'\'
-                 AND rol_valid  = 1 
-                 AND rol_cat_id = cat_id
-                 AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                 OR cat_org_id IS NULL ) ';
+                WHERE rol_name   = \''.$role_name.'\'
+                  AND rol_valid  = 1 
+                  AND rol_cat_id = cat_id
+                  AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                   OR cat_org_id IS NULL ) ';
                       
     $statement = $gDb->query($sql);
     $row = $statement->fetchObject();
@@ -49,9 +49,9 @@ function check_showpluginPFF($array)
 	
     $showPlugin = false;
 
-    foreach ($array AS $i)
+    foreach ($array as $i)
     {
-        if($gCurrentUser ->isMemberOfRole($i))
+        if ($gCurrentUser->isMemberOfRole($i))
         {
             $showPlugin = true;
         } 
@@ -68,9 +68,9 @@ function check_showpluginPFF($array)
  */
 function strstr_multiple($haystack, $needle )
 {
-	for ($i=0;$i<strlen($needle);$i++)
+	for ($i = 0; $i < strlen($needle); $i++)
 	{
-		if (!(strstr($haystack,substr($needle,$i,1))))
+		if (!(strstr($haystack, substr($needle, $i, 1))))
 		{
 			return false;
 		}

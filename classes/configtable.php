@@ -50,19 +50,19 @@ class ConfigTablePFF
 		
 		$this->table_name = $g_tbl_praefix.'_plugin_preferences';
 
-		if(isset($plugin_version))
+		if (isset($plugin_version))
 		{
 			self::$version = $plugin_version;
 		}
-		if(isset($plugin_stand))
+		if (isset($plugin_stand))
 		{
 			self::$stand = $plugin_stand;
 		}
-		if(isset($dbtoken))
+		if (isset($dbtoken))
 		{
 			self::$dbtoken = $dbtoken;
 		}
-			if(isset($dbtoken2))
+		if (isset($dbtoken2))
 		{
 			self::$dbtoken2 = $dbtoken2;
 		}		
@@ -75,7 +75,7 @@ class ConfigTablePFF
      */
 	public function init()
 	{
-		global $gL10n, $gDb, $gCurrentOrganization,$gProfileFields;
+		global $gL10n, $gDb, $gCurrentOrganization, $gProfileFields;
 	
 		$config_ist = array();
 		
@@ -109,9 +109,9 @@ class ConfigTablePFF
 		$config_ist = $this->config;
 	
 		// die default_config durchlaufen
-		foreach($this->config_default as $section => $sectiondata)
+		foreach ($this->config_default as $section => $sectiondata)
     	{
-        	foreach($sectiondata as $key => $value)
+        	foreach ($sectiondata as $key => $value)
         	{
         		// gibt es diese Sektion bereits in der config?
         		if (isset($config_ist[$section][$key]))
@@ -126,7 +126,7 @@ class ConfigTablePFF
         		}
         	}
         	// leere Abschnitte (=leere Arrays) loeschen
-        	if ((isset($config_ist[$section]) && count($config_ist[$section])==0))
+        	if ((isset($config_ist[$section]) && count($config_ist[$section]) == 0))
         	{
         		unset($config_ist[$section]);
         	}
@@ -135,18 +135,18 @@ class ConfigTablePFF
     	// Falls Formularkonfigurationen hinzugefügt oder geloescht wurden, dann stimmt die Anzahl der Beispiele
     	// in den Musterkonfigurationen (3 Stueck) nicht mehr. Dies fuehrt zur Fehlermeldung "Undefined offset....",
     	// deshalb hier alle Formularkonfigurationen pruefen
-    	$conf_count =  sizeof($this->config['Formular']['desc']);
-    	foreach($this->config['Formular'] as $key => $value)
+    	$conf_count = sizeof($this->config['Formular']['desc']);
+    	foreach ($this->config['Formular'] as $key => $value)
     	{   		
-    		while(sizeof($this->config['Formular'][$key])>$conf_count)
+    		while (sizeof($this->config['Formular'][$key]) > $conf_count)
     		{
     			array_pop($this->config['Formular'][$key]);
     		}
-    		while(sizeof($this->config['Formular'][$key])<$conf_count)
+    		while (sizeof($this->config['Formular'][$key]) < $conf_count)
     		{
-    			if(is_array($value[0]))
+    			if (is_array($value[0]))
     			{
-    				$this->config['Formular'][$key][]=array('');
+    				$this->config['Formular'][$key][] = array('');
     			}
     			else 
     			{
@@ -159,19 +159,19 @@ class ConfigTablePFF
     	// jetzt befinden sich hier nur noch die DB-Einträge, die nicht verwendet werden und deshalb: 
     	// 1. in der DB geloescht werden können
     	// 2. in der normalen config geloescht werden koennen
-		foreach($config_ist as $section => $sectiondata)
+		foreach ($config_ist as $section => $sectiondata)
     	{
-    		foreach($sectiondata as $key => $value)
+    		foreach ($sectiondata as $key => $value)
         	{
         		$plp_name = self::$shortcut.'__'.$section.'__'.$key;
 				$sql = 'DELETE FROM '.$this->table_name.'
-        				WHERE plp_name = \''.$plp_name.'\' 
-        				AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
+        				      WHERE plp_name = \''.$plp_name.'\' 
+        				        AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
 				$gDb->query($sql);
 				unset($this->config[$section][$key]);
         	}
 			// leere Abschnitte (=leere Arrays) loeschen
-        	if (count($this->config[$section])==0)
+        	if (count($this->config[$section]) == 0)
         	{
         		unset($this->config[$section]);
         	}
@@ -189,13 +189,13 @@ class ConfigTablePFF
 	{
     	global $gDb, $gCurrentOrganization;
     
-    	foreach($this->config as $section => $sectiondata)
+    	foreach ($this->config as $section => $sectiondata)
     	{
-        	foreach($sectiondata as $sectiondatakey => $sectiondatavalue)
+        	foreach ($sectiondata as $sectiondatakey => $sectiondatavalue)
         	{
             	if (is_array($sectiondatavalue))
             	{
-        			for($i=0; $i < count($sectiondatavalue); $i++)
+        			for ($i = 0; $i < count($sectiondatavalue); $i++)
     				{
     					if (is_array($sectiondatavalue[$i]))
         				{
@@ -211,20 +211,20 @@ class ConfigTablePFF
   				$plp_name = self::$shortcut.'__'.$section.'__'.$sectiondatakey;
           
             	$sql = ' SELECT plp_id 
-            			FROM '.$this->table_name.' 
-            			WHERE plp_name = \''.$plp_name.'\' 
-            			AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                 		OR plp_org_id IS NULL ) ';
+            			   FROM '.$this->table_name.' 
+            			  WHERE plp_name = \''.$plp_name.'\' 
+            			    AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                 		     OR plp_org_id IS NULL ) ';
                 $statement = $gDb->query($sql);
             	$row = $statement->fetchObject();
 
             	// Gibt es den Datensatz bereits?
             	// wenn ja: UPDATE des bestehende Datensatzes  
-            	if(isset($row->plp_id) AND strlen($row->plp_id) > 0)
+            	if (isset($row->plp_id) AND strlen($row->plp_id) > 0)
             	{
                 	$sql = 'UPDATE '.$this->table_name.' 
-                			SET plp_value = \''.$sectiondatavalue.'\' 
-                			WHERE plp_id = '.$row->plp_id;   
+                			   SET plp_value = \''.$sectiondatavalue.'\' 
+                			 WHERE plp_id = '.$row->plp_id;   
                     
                 	$gDb->query($sql);           
             	}
@@ -232,7 +232,7 @@ class ConfigTablePFF
             	else
             	{
   					$sql = 'INSERT INTO '.$this->table_name.' (plp_org_id, plp_name, plp_value) 
-  							VALUES (\''.$gCurrentOrganization->getValue('org_id').'\' ,\''.self::$shortcut.'__'.$section.'__'.$sectiondatakey.'\' ,\''.$sectiondatavalue.'\')'; 
+  							     VALUES (\''.$gCurrentOrganization->getValue('org_id').'\' ,\''.self::$shortcut.'__'.$section.'__'.$sectiondatakey.'\' ,\''.$sectiondatavalue.'\')'; 
             		$gDb->query($sql); 
             	}   
         	} 
@@ -248,28 +248,28 @@ class ConfigTablePFF
     	global $gDb, $gCurrentOrganization;
      
 		$sql = ' SELECT plp_id, plp_name, plp_value
-             	FROM '.$this->table_name.'
-             	WHERE plp_name LIKE \''.self::$shortcut.'__%\'
-             	AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                 	OR plp_org_id IS NULL ) ';
+             	   FROM '.$this->table_name.'
+             	  WHERE plp_name LIKE \''.self::$shortcut.'__%\'
+             	    AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                 	 OR plp_org_id IS NULL ) ';
 		$statement = $gDb->query($sql);
 	
-        while($row = $statement->fetch())
+        while ($row = $statement->fetch())
 		{
 			$array = explode('__',$row['plp_name']);
 		
 			// wenn plp_value von ((  )) eingeschlossen ist, dann ist es als Array einzulesen
-			if ((substr($row['plp_value'],0,2)=='((' ) && (substr($row['plp_value'],-2)=='))' ))
+			if ((substr($row['plp_value'],0,2) == '((' ) && (substr($row['plp_value'],-2) == '))' ))
         	{
-        		$row['plp_value'] = substr($row['plp_value'],2,-2);
+        		$row['plp_value'] = substr($row['plp_value'], 2, -2);
         		$this->config[$array[1]] [$array[2]] = explode(self::$dbtoken,$row['plp_value']); 
         		
         		//das erzeugte Array durchlaufen, auf (( )) pruefen und ggf. nochmal zerlegen
-        		for($i=0; $i < count($this->config[$array[1]] [$array[2]]); $i++)
+        		for ($i = 0; $i < count($this->config[$array[1]] [$array[2]]); $i++)
     			{
-    				if ((substr($this->config[$array[1]] [$array[2]][$i],0,2)=='((' ) && (substr($this->config[$array[1]] [$array[2]][$i],-2)=='))' ))
+    				if ((substr($this->config[$array[1]] [$array[2]][$i],0,2) == '((' ) && (substr($this->config[$array[1]] [$array[2]][$i],-2) == '))' ))
         			{
-        				$temp = substr($this->config[$array[1]] [$array[2]][$i],2,-2);
+        				$temp = substr($this->config[$array[1]] [$array[2]][$i], 2, -2);
         				$this->config[$array[1]] [$array[2]][$i] = array();
         				$this->config[$array[1]] [$array[2]][$i] = explode(self::$dbtoken2,$temp); 
         			}
@@ -308,7 +308,7 @@ class ConfigTablePFF
     		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: version)
-    		if(!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$version)
+    		if (!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$version)
     		{
     			$ret = true;    
     		}
@@ -316,15 +316,15 @@ class ConfigTablePFF
     		$plp_name = self::$shortcut.'__Plugininformationen__stand';
           
     		$sql = 'SELECT plp_value 
-            		FROM '.$this->table_name.' 
-            		WHERE plp_name = \''.$plp_name.'\' 
-            		AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
+            		  FROM '.$this->table_name.' 
+            		 WHERE plp_name = \''.$plp_name.'\' 
+            		   AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  		OR plp_org_id IS NULL ) ';
     		$statement = $gDb->query($sql);
     		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: stand)
-    		if(!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$stand)
+    		if (!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$stand)
     		{
     			$ret = true;    
     		}
@@ -346,20 +346,20 @@ class ConfigTablePFF
     	global $gDb, $gCurrentOrganization,$gL10n;
  	
     	$result = '';
-		$result_data=false;
+		$result_data = false;
 		$result_db = false;
 		
-		if($deinst_org_select==0)                    //0 = Daten nur in aktueller Org loeschen 
+		if ($deinst_org_select == 0)                    //0 = Daten nur in aktueller Org loeschen 
 		{
 			$sql = 'DELETE FROM '.$this->table_name.'
-        			WHERE plp_name LIKE \''.self::$shortcut.'__%\'
-        			AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
+        			 WHERE plp_name LIKE \''.self::$shortcut.'__%\'
+        			   AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
 			$result_data = $gDb->query($sql);		
 		}
-		elseif ($deinst_org_select==1)              //1 = Daten in allen Org loeschen 
+		elseif ($deinst_org_select == 1)              //1 = Daten in allen Org loeschen 
 		{
 			$sql = 'DELETE FROM '.$this->table_name.'
-        			WHERE plp_name LIKE \''.self::$shortcut.'__%\' ';
+        			 WHERE plp_name LIKE \''.self::$shortcut.'__%\' ';
 			$result_data = $gDb->query($sql);		
 		}
 
@@ -367,7 +367,7 @@ class ConfigTablePFF
 		$sql = 'SELECT * FROM '.$this->table_name.' ';
 		$statement = $gDb->query($sql);
 
-        if($statement->rowCount() ==0)
+        if ($statement->rowCount() == 0)
     	{
         	$sql = 'DROP TABLE '.$this->table_name.' ';
         	$result_db = $gDb->query($sql);

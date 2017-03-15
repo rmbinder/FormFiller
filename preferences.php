@@ -28,7 +28,7 @@ $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
 // only authorized user are allowed to start this module
-if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+if (!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
 {
 	$gMessage->setForwardUrl($gHomepage, 3000);
     $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
@@ -36,10 +36,10 @@ if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config
 
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
-$num_configs	 = count($pPreferences->config['Formular']['desc']);
-if($getAdd)
+$num_configs = count($pPreferences->config['Formular']['desc']);
+if ($getAdd)
 {
-	foreach($pPreferences->config['Formular'] as $key => $dummy)
+	foreach ($pPreferences->config['Formular'] as $key => $dummy)
 	{
 		$pPreferences->config['Formular'][$key][$num_configs] = $pPreferences->config_default['Formular'][$key][0];
 	}
@@ -47,14 +47,14 @@ if($getAdd)
 }
 
 //ggf. zusaetzlich definierte Groessen an das Auswahl-Array anfuegen
-$selectBoxSizesEntries = array('A3'=>'A3','A4'=>'A4','A5'=>'A5','Letter'=>'Letter' ,'Legal'=>'Legal' );
+$selectBoxSizesEntries = array('A3'=>'A3', 'A4'=>'A4', 'A5'=>'A5', 'Letter'=>'Letter', 'Legal'=>'Legal' );
 $sizes = explode(';',$pPreferences->config['Optionen']['pdfform_addsizes']);
 foreach ($sizes as $data)
 {
-	$xyValues = explode('x',$data);
-	if (count($xyValues)==2 && is_numeric($xyValues[0]) && is_numeric($xyValues[1])) 
+	$xyValues = explode('x', $data);
+	if (count($xyValues) == 2 && is_numeric($xyValues[0]) && is_numeric($xyValues[1])) 
 	{
-		$selectBoxSizesEntries[$xyValues[0].','.$xyValues[1]] =  $xyValues[0].'x'.$xyValues[1];
+		$selectBoxSizesEntries[$xyValues[0].','.$xyValues[1]] = $xyValues[0].'x'.$xyValues[1];
 	}	
 }
 
@@ -65,7 +65,7 @@ $page = new HtmlPage($headline);
 $page->enableModal();
 
 // open the module configurations if a new configuration is added 
-if($getAdd)
+if ($getAdd)
 {
     $page->addJavascript('$("#tabs_nav_common").attr("class", "active");
         $("#tabs-common").attr("class", "tab-pane active");
@@ -111,9 +111,9 @@ $page->addJavascript('
     ', true);
 
     // create a array with the necessary data
-	for ($conf=0;$conf<$num_configs;$conf++)
+	for ($conf = 0;$conf < $num_configs; $conf++)
     {      
-    	if(!empty($pPreferences->config['Formular']['relation'][$conf]))
+    	if (!empty($pPreferences->config['Formular']['relation'][$conf]))
     	{
     		$relationtype = new TableUserRelationType($gDb, $pPreferences->config['Formular']['relation'][$conf]);
     		$javascriptCode .= '
@@ -196,7 +196,7 @@ $page->addJavascript('
     {   
         var default_fields = new Array(); ';
     	
-        for($number = 0; $number < count($pPreferences->config['Formular']['fields'][$conf]); $number++)
+        for ($number = 0; $number < count($pPreferences->config['Formular']['fields'][$conf]); $number++)
         {          	
         	$javascriptCode .= '
             default_fields['. $number. '] 		   = new Object();
@@ -214,10 +214,10 @@ $page->addJavascript('
     { 
         var user_fields = new Array(); ';
         $i = 1;
-        foreach($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->mProfileFields as $field)
         {    
             // add profile fields to user field array
-            if($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
+            if ($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
             {   
                 $javascriptCode .= '
                 user_fields['. $i. '] = new Object();
@@ -229,10 +229,10 @@ $page->addJavascript('
             }
         }  
        
-        foreach($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->mProfileFields as $field)
         {
         	// add profile fields to user field array
-        	if(($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers()) && $field->getValue('cat_name') == $gL10n->get('SYS_MASTER_DATA'))
+        	if (($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers()) && $field->getValue('cat_name') == $gL10n->get('SYS_MASTER_DATA'))
         	{
         		$javascriptCode .= '
                 user_fields['. $i. '] = new Object();
@@ -278,10 +278,10 @@ $page->addJavascript('
     { 
         var user_fields = new Array(); ';
         $i = 1;
-        foreach($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->mProfileFields as $field)
         {    
             // add profile fields to user field array
-            if($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
+            if ($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
             {   
                 $javascriptCode .= '
                 user_fields['. $i. '] = new Object();
@@ -328,7 +328,7 @@ $page->addJavascript('
 $page->addJavascript($javascriptCode);        
 $javascriptCode = '$(document).ready(function() {   
 ';
-	for($conf = 0; $conf < $num_configs; $conf++)
+	for ($conf = 0; $conf < $num_configs; $conf++)
 	{
 		$javascriptCode .= '  
     	for(var counter = 0; counter < '. count($pPreferences->config['Formular']['fields'][$conf]). '; counter++) {
@@ -373,7 +373,7 @@ $page->addHtml('
                         $form->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
                     	$form->addLine();
                         $form->addDescription('<div style="width:100%; height:550px; overflow:auto; border:20px;">');
-                        for ($conf=0;$conf<$num_configs;$conf++)
+                        for ($conf = 0; $conf < $num_configs; $conf++)
 						{                           			
 							$form->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PLG_FORMFILLER_CONFIGURATION'));
 							$form->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf]);
@@ -387,11 +387,11 @@ $page->addHtml('
 							$form->addSelectBox('pdfform_unit'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT'), array('pt'=>'Punkt','mm'=>'Millimeter','cm'=>'Zentimeter','in'=>'Inch' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_unit'][$conf], 'showContextDependentFirstEntry' => true));							
 							
 							$sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
-                                FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
-                                WHERE fol.fol_id = fil.fil_fol_id
-                                AND fil.fil_name LIKE \'%.PDF\' 
-                                AND (  fol.fol_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                                OR fol.fol_org_id IS NULL )';
+                                      FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
+                                     WHERE fol.fol_id = fil.fil_fol_id
+                                       AND fil.fil_name LIKE \'%.PDF\' 
+                                       AND (  fol.fol_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                                        OR fol.fol_org_id IS NULL )';
 				        	$form->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf]));				                                            
                      		$form->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf]);
 						
@@ -399,8 +399,8 @@ $page->addHtml('
                      		{
                      			// select box showing all relation types
                      			$sql = 'SELECT urt_id, urt_name
-              						FROM '.TBL_USER_RELATION_TYPES.'
-          							ORDER BY urt_name';
+              						      FROM '.TBL_USER_RELATION_TYPES.'
+          							  ORDER BY urt_name';
                      			$form->addSelectBoxFromSql('relationtype_id'.$conf, $gL10n->get('PLG_FORMFILLER_RELATION'), $gDb, $sql,
                      				array('defaultValue' => $pPreferences->config['Formular']['relation'][$conf],'showContextDependentFirstEntry' => true, 'multiselect' => false));
                      		}
@@ -482,10 +482,10 @@ $page->addHtml('
                         // show form
                         $form = new HtmlForm('plugin_control_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?form=plugin_control', $page, array('class' => 'form-preferences'));
                         $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
-                                FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
-                                WHERE cat.cat_id = rol.rol_cat_id
-                                AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                                OR cat.cat_org_id IS NULL )';
+                                  FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+                                 WHERE cat.cat_id = rol.rol_cat_id
+                                   AND ( cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                                    OR cat.cat_org_id IS NULL )';
 				        $form->addSelectBoxFromSql('freigabe', $gL10n->get('PLG_FORMFILLER_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC','multiselect' => true));				                                                 
                         $form->addSelectBoxFromSql('freigabe_config', '', $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe_config'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC2','multiselect' => true));
                         $form->addSubmitButton('btn_save_plugin_control_preferences', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
