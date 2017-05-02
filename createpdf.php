@@ -23,6 +23,12 @@
  * 	   entweder user_id oder (lst_id und rol_id und show_members) übergeben
  * 
  * Mit Aenderungen zur Formatierung von kossihh (Juni 2016)
+ * 
+ * Interface zum Plugin KeyManager:
+ * 
+ * kmf-... :		$_POST-Variablen, welche mit kmf- beginnen, werden durch das Plugin KeyManager übergeben
+ * 					FormFiller übernimmt hierbei die Aufgabe des Ausdrucks
+ * 
  ***********************************************************************************************
  */
 
@@ -65,7 +71,7 @@ $user = new User($gDb, $gProfileFields);
 $relation = new TableUserRelation($gDb);
 $relationArray = array();
 
-// wenn von der Profilanzeige aufgerufen wurde, dann ist $getUserId>0
+// wenn von der Profilanzeige aufgerufen wurde, dann ist $getUserId > 0
 // und form_id wurde über $_GET uebergeben
 if ($getUserId > 0)
 {
@@ -90,6 +96,22 @@ elseif (($postListId > 0) && ($postRoleId > 0))
 	{
 		$userArray[] = $row['usr_id'] ;
 	}
+	$getpostFormID = $postFormID;
+}
+elseif (isset($_POST['kmf-RECEIVER']))
+{	//'kmf-RECEIVER' ist als 'Systemfeld' deklariert, kann nicht geloescht werden und eignet sich deshalb hervorragend zur Ueberpruefung
+	//wenn es vorhanden ist, dann wurde 'createpdf.php' von KeyManager aus aufgerufen
+	
+	$pkmArray = array();                             //Info: pkm = (P)lugin (K)ey(M)anager
+	foreach ($_POST as $postVar => $content)
+	{
+		if (strpos($postVar, 'kmf-') === 0)
+		{
+			$pkmArray[substr($postVar, 4)] = $content;
+		}
+	}
+
+	$userArray[] = $pkmArray['RECEIVER'] > 0 ? $pkmArray['RECEIVER'] : 0;
 	$getpostFormID = $postFormID;
 }
 else 
@@ -442,6 +464,10 @@ foreach ($userArray as $userId)
 					if (array_key_exists('V', $fontData))
 					{
 						$text = $fontData['V'];	               // Hinweis: der uebergebene Inhalt wird nicht überprueft 
+					}
+					elseif (array_key_exists('K', $fontData))
+					{
+						$text = $pkmArray[$fontData['K']];	   // Hinweis: der uebergebene Inhalt wird nicht überprueft
 					}
 					break;	
 

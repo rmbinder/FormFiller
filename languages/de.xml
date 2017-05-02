@@ -57,6 +57,8 @@
     <string name="PLG_FORMFILLER_IMPORT_ERROR_FILE">Die ausgewählte Datei enthält keine gültigen Konfigurationsdaten.</string>
     <string name="PLG_FORMFILLER_IMPORT_ERROR_OTHER">Beim Hochladen und Überprüfen der Datei ist ein allgemeiner Fehler aufgetreten. Fehlerursache könnten z.B. eine falsche Dateiendung oder eine zu große Datei sein.</string>
     <string name="PLG_FORMFILLER_IMPORT_SUCCESS">Die Konfiguration wurde hinzugefügt.</string>
+    <string name="PLG_FORMFILLER_INTERFACE_KEYMANAGER">Interface zum Plugin KeyManager</string>
+    <string name="PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC">FormFiller stellt eine Schnittstelle zum Plugin KeyManager zur Verfügung. Dazu ist unter Inhalt das Zusatzfeld "Text" auszuwählen und unter Position nach den X- und Y-Koordinaten folgende Syntax zu verwenden: K=interner Name des KeyManager-Schlüsselfeldes, z.B. 50,100;K=KEYNAME.</string>   
     <string name="PLG_FORMFILLER_LABELS">Etiketten</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">Um Etiketten zu drucken sind folgende Angaben im Feld Etiketten erforderlich: Spaltenanzahl,Spaltenabstand,Zeilenanzahl,Zeilenabstand.\n\nBeispiel:\n 5,50,10,40\nbedeutet Anordnung der Etiketten zu 5 Spalten im Abstand von 50mm und 10 Zeilen im Abstand von 40mm</string>
     <string name="PLG_FORMFILLER_LINE">Linie</string>
