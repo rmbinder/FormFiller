@@ -243,13 +243,13 @@ foreach ($userScanArray as $userId)
                   FROM '.TBL_USER_RELATIONS.'
             INNER JOIN '.TBL_USER_RELATION_TYPES.'
                     ON ure_urt_id  = urt_id
-                 WHERE ure_usr_id1 = ? -- $userId
-            	   AND urt_id = ? -- $pPreferences->config[\'Formular\'][\'relation\'][$getpostFormID]
+                 WHERE ure_usr_id1 = '.$userId.'
+            	   AND urt_id = '.$pPreferences->config['Formular']['relation'][$getpostFormID].'
                    AND urt_name        <> \'\'
                    AND urt_name_male   <> \'\'
                    AND urt_name_female <> \'\'
               ORDER BY urt_name ASC LIMIT 1';
-		$relationStatement = $gDb->queryPrepared($sql, array($userId, $pPreferences->config['Formular']['relation'][$getpostFormID] ));
+		$relationStatement = $gDb->query($sql);
 
 		if ($row = $relationStatement->fetch())
 		{
