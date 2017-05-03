@@ -3,11 +3,11 @@
  ***********************************************************************************************
  * FormFiller
  *
- * Version 2.2.0
+ * Version 2.2.1
  *
- * Dieses Plugin für Admidio ermöglicht das Ausfuellen von PDF-Formularen sowie das Erstellen von Etiketten.
+ * Dieses Plugin für Admidio ermoeglicht das Ausfuellen von PDF-Formularen sowie das Erstellen von Etiketten.
  *
- * Author: rmb
+ * Autor: rmb
  *
  * Hinweis: FormFiller verwendet die externen PHP-Klassen FPDF, FPDI und FPDF_TPL 
  *  
