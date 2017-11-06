@@ -9,7 +9,7 @@
  *
  * Autor: rmb
  *
- * Hinweis: FormFiller verwendet die externen PHP-Klassen FPDF, FPDI und FPDF_TPL 
+ * Hinweis: FormFiller verwendet die externen PHP-Klassen FPDF und FPDI
  *  
  * Compatible with Admidio version 3.2
  *
