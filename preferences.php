@@ -510,7 +510,7 @@ $page->addHtml('
                         $form->addStaticControl('plg_name', $gL10n->get('PLG_FORMFILLER_PLUGIN_NAME'), $gL10n->get('PLG_FORMFILLER_FORMFILLER'));
                         $form->addStaticControl('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
                         $form->addStaticControl('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
-                        $html = '<a class="icon-text-link" href="http://www.admidio.de/dokuwiki/doku.php?id=de:plugins:formfiller" target="_blank"><img
+                        $html = '<a class="icon-text-link" href="https://www.admidio.org/dokuwiki/doku.php?id=de:plugins:formfiller#formfiller" target="_blank"><img
                                     src="'. THEME_URL . '/icons/eye.png" alt="'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'" />'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC'));
                         $page->addHtml($form->show(false));
