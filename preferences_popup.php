@@ -46,7 +46,9 @@ echo '
 	<strong>'.$gL10n->get('PLG_FORMFILLER_RELATION').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_RELATION_DESC').'<br><br>
 	<strong>'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION_DESC').'<br><br>    
+	'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION_DESC').'<br><br> 
+	<strong>'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC').'<br><br>
     <strong>'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC').'
 </div>';

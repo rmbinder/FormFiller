@@ -265,538 +265,565 @@ foreach ($userScanArray as $userId)
 	}
 }
 unset($userScanArray);
-	
+
 foreach ($userArray as $userId)
 {
-	$sortArray = array();
 	$user->readDataById($userId);
+	$pageCounter = 1;								// notwendig bei importierten PDFs mit mehreren Seiten
+	$pageNumber = 1;							    // notwendig bei importierten PDFs mit mehreren Seiten
 	
 	if ($zeile == 0 && $spalte == 0)
 	{
 		$pdf->AddPage();
 		$pdf->SetAutoPageBreak(false);
 	}
-
-	if ($pPreferences->config['Formular']['pdfid'][$getpostFormID]>0 && $zeile == 0 && $spalte == 0)
+	
+	while ($pageCounter <= $pageNumber )            // Schleife bei importierten PDFs mit mehreren Seiten
 	{
-		// set the sourcefile
-		$pdf->setSourceFile($completePath);
-
-		//import page
-		$tplIdx = $pdf->importPage(1);
-
-		//use the imported page...
-		$pdf->useTemplate($tplIdx,0,0,null,null,true);
-	}
-
-	// jetzt alle Felder durchlaufen
-	foreach ($pPreferences->config['Formular']['fields'][$getpostFormID] as $fieldkey => $fielddata)
-	{ 
-		//der zu schreibende Text koennte auch direkt in $sortArray geschrieben werden,
-		//aber anhand der Variablen $text ist der Code etwas übersichtlicher :-) 
-		$text = '';		
-				
-		//$fielddata splitten in Typ und ID
-        $fieldtype = substr($fielddata, 0, 1);
-        $fieldid = (int) substr($fielddata, 1);
-        	
-        $formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$fieldkey];
-			  
-		if (!empty($formdata))
+		$sortArray = array();
+		if ($pPreferences->config['Formular']['pdfid'][$getpostFormID]>0 && $zeile == 0 && $spalte == 0)
 		{
-			$xyKoord = array();
-			
-			//$formdata splitten in Koordinaten und Rest
-			$arrSplit = explode(';', $formdata);
-
-			// xyKoordinaten extrahieren und in $arrSplit loeschen
-			$xyKoord = explode(',', array_shift($arrSplit));
-
-			// Routine beenden, wenn nicht mindestens die Koordinaten für X und Y angegeben wurden
-			if (count($xyKoord) < 2)
+			// set the sourcefile
+			$pageNumber = $pdf->setSourceFile($completePath);
+		
+			if ($pageCounter > 1)
 			{
-				continue ;
+				$pdf->AddPage();                   // zusaetzliches AddPage bei importierten PDFs mit mehreren Seiten
 			}
 			
-			$sortArray[] = array(
-			 	'xykoord'    => $xyKoord, 
-			 	'attributes' => $attributesDefault,
-			 	'image'      => array('path'=>'', 'zufall'=>0),
-			 	'text'       => $text,
-				'trace'      => false ,
-				'rect'       => false     );	
-			$pointer = count($sortArray)-1;	
-			
-			//arrSplit zerlegen in ein assoziatives Array
-			$fontData = array();		
-			foreach ($arrSplit as $splitData)
+			//import page
+			$tplIdx = $pdf->importPage($pageCounter);
+		
+			//use the imported page...
+			$pdf->useTemplate($tplIdx,0,0,null,null,true);
+		}
+		
+		// jetzt alle Felder durchlaufen
+		foreach ($pPreferences->config['Formular']['fields'][$getpostFormID] as $fieldkey => $fielddata)
+		{ 
+			//der zu schreibende Text koennte auch direkt in $sortArray geschrieben werden,
+			//aber anhand der Variablen $text ist der Code etwas übersichtlicher :-) 
+			$text = '';		
+				
+			//$fielddata splitten in Typ und ID
+        	$fieldtype = substr($fielddata, 0, 1);
+        	$fieldid = (int) substr($fielddata, 1);
+        	
+        	$formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$fieldkey];
+			  
+			if (!empty($formdata))
 			{
-				$attr = explode('=', $splitData);
-				$fontData[$attr[0]] = $attr[1];
-			}
+				$xyKoord = array();
 			
-			// wurde eine abweichende Schriftfarbe definiert? ->  pruefen und ggf. überschreiben
-			if (array_key_exists('C', $fontData))
-			{
-				// jetzt mit den konfigurierten Daten überschreiben
-				$key = true;
-				foreach (explode(',', $fontData['C']) as $data)
+				//$formdata splitten in Koordinaten und Rest
+				$arrSplit = explode(';', $formdata);
+
+				// xyKoordinaten extrahieren und in $arrSplit loeschen
+				$xyKoord = explode(',', array_shift($arrSplit));
+
+				// Routine beenden, wenn nicht mindestens die Koordinaten für X und Y angegeben wurden
+				if (count($xyKoord) < 2)
 				{
-					if (!(is_numeric($data)))
+					continue ;
+				}
+			
+				$sortArray[] = array(
+			 		'xykoord'    => $xyKoord, 
+			 		'attributes' => $attributesDefault,
+			 		'image'      => array('path'=>'', 'zufall'=>0),
+			 		'text'       => $text,
+					'trace'      => false ,
+					'rect'       => false     );	
+				$pointer = count($sortArray)-1;	
+			
+				//arrSplit zerlegen in ein assoziatives Array
+				$fontData = array();		
+				foreach ($arrSplit as $splitData)
+				{
+					$attr = explode('=', $splitData);
+					$fontData[$attr[0]] = $attr[1];
+				}
+			
+				// Parameter "P" auswerten (importierte PDF-Dokumente mit mehreren Seiten) 
+				if ($pageCounter == 1)                // die erste Seite
+				{
+					if (array_key_exists('P', $fontData) && $fontData['P'] <> 1)
 					{
-						$key = false;
-						break;
+						continue;                     //Feld bei Pruefung durchgefallen; zum naechsten Feld
 					}
 				}
-				if ($key)
+				else 
 				{
-					$sortArray[$pointer]['attributes']['color'] = $fontData['C'];
-				}
-			}
-			
-			// wurde eine abweichende Schriftgroesse definiert? -> pruefen und ggf. setzen
-			if (array_key_exists('S', $fontData) && is_numeric($fontData['S']))
-			{
-				$sortArray[$pointer]['attributes']['size'] = $fontData['S'];
-			}	
-
-			// wurde ein abweichender Schrifttyp definiert? -> pruefen und ggf. setzen
-			if (array_key_exists('F', $fontData) && in_array($fontData['F'], array('Courier', 'Arial', 'Times', 'Symbol', 'ZapfDingbats')))
-			{
-				$sortArray[$pointer]['attributes']['font'] = $fontData['F'];
-			}			
-
-			// wurden abweichende Schriftattribute definiert? -> pruefen und ggf. setzen
-			if (array_key_exists('A', $fontData ) && strstr_multiple('BIU', $fontData['A'])) 
-			{
-				$sortArray[$pointer]['attributes']['style'] = $fontData['A'];
-			}
-			
-			// wurde eine abweichende Linienbreite definiert? -> pruefen und ggf. setzen
-			if (array_key_exists('LW', $fontData ) && is_numeric($fontData['LW']))
-			{
-				$sortArray[$pointer]['attributes']['linewidth'] = $fontData['LW'];
-			}
-							
-			// wurde eine abweichende Fuellfarbe definiert? -> pruefen und ggf. setzen
-			if (array_key_exists('FC', $fontData ) )
-			{
-				// jetzt mit den konfigurierten Daten überschreiben
-				$key = true;
-				foreach (explode(',', $fontData['FC']) as $data)
-				{
-					if (!(is_numeric($data)))
+					if (!array_key_exists('P', $fontData) || (array_key_exists('P', $fontData) && $fontData['P'] <> $pageCounter))
 					{
-						$key = false;
-						break;
+						continue;                     //Feld bei Pruefung durchgefallen; zum naechsten Feld
 					}
-				}
-				if ($key)
-				{
-					$sortArray[$pointer]['attributes']['fillcolor'] = $fontData['FC'];
-				}
-			}
+				}			
 			
-			// wurde eine abweichende Zeichenfarbe definiert? -> pruefen und ggf. setzen
-			if (array_key_exists('DC', $fontData ) )
-			{
-				// jetzt mit den konfigurierten Daten überschreiben
-				$key = true;
-				foreach (explode(',', $fontData['DC']) as $data)
+				// wurde eine abweichende Schriftfarbe definiert? ->  pruefen und ggf. überschreiben
+				if (array_key_exists('C', $fontData))
 				{
-					if (!(is_numeric($data)))
+					// jetzt mit den konfigurierten Daten überschreiben
+					$key = true;
+					foreach (explode(',', $fontData['C']) as $data)
 					{
-						$key = false;
-						break;
-					}
-				}
-				if ($key)
-				{
-					$sortArray[$pointer]['attributes']['drawcolor'] = $fontData['DC'];
-				}
-			}
-			
-			// wurde ein abweichender Rechteckstil definiert? -> pruefen und ggf. setzen
-			if (array_key_exists('RS', $fontData ) && strstr_multiple('DF', $fontData['RS'])) 
-			{
-				$sortArray[$pointer]['attributes']['rectstyle'] = $fontData['RS'];
-			}
-							
-			switch ($fieldtype)
-			{
-				case 'l':
-					if (array_key_exists('L', $fontData ) )                         //Foto aus einer alternativen Bilddatei)
-					{
-						$downloadFolder = new TableFolder($gDb);
-						if (file_exists(ADMIDIO_PATH . FOLDER_DATA . '/'.$downloadFolder->getRootFolderName().'/'.$fontData['L']))
+						if (!(is_numeric($data)))
 						{
-							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA .'/'.$downloadFolder->getRootFolderName().'/'.$fontData['L'];
-						}	
-					}
-					elseif ($gPreferences['profile_photo_storage'] == 1)              //Foto aus adm_my_files
-					{
-						if (file_exists(ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$userId.'.jpg'))
-						{
-							$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$userId.'.jpg';
+							$key = false;
+							break;
 						}
 					}
-					elseif ($gPreferences['profile_photo_storage'] == 0)               //Foto aus der Datenbank
-					{		
-						if (strlen($user->getValue('usr_photo')) != NULL)
-    					{
-        					$image = new Image();
-        					$image->setImageFromData($user->getValue('usr_photo'));
-        
-        					// die Methode Image der Klasse FPDF benoetigt einen Pfad zur Imagedatei
-        					// ich habe es nicht geschafft von der Klasse Image direkt an die Klasse FPDF diesen Pfad zu uebergeben
-        					// deshalb der Umweg ueber eine temporaere Datei
-        					$zufall = mt_rand(10000,99999);
-        					$image->copyToFile(null, ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$zufall.'.png');
-        					$image->delete();
-        					
-        					$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$zufall.'.png';
-        					$sortArray[$pointer]['image']['zufall'] = $zufall;       // zwischenspeichern, damit nach der Sortierung die Zufallsdatei wieder gelöscht werden kann  
-    					}
-					}
-					break;
-
-				case 'v':
-					// wurde ein "beliebiger Text" definiert? 
-					if (array_key_exists('V', $fontData))
+					if ($key)
 					{
-						$text = $fontData['V'];	               // Hinweis: der uebergebene Inhalt wird nicht überprueft 
+						$sortArray[$pointer]['attributes']['color'] = $fontData['C'];
 					}
-					elseif (array_key_exists('K', $fontData))
-					{
-						$text = $pkmArray[$fontData['K']];	   // Hinweis: der uebergebene Inhalt wird nicht überprueft
-					}
-					break;	
-
-				case 'd':
-					$text = date("d.m.Y");
-				
-					// wurden Werte für das Datum definiert? 
-					if (array_key_exists('D', $fontData))
-					{
-						$text = date($fontData['D']);	       // Hinweis: der übergebene Inhalt wird nicht überprüft 
-					}	
-					break;  
-
-				case 'p':
-					switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
-					{
-						case 'RADIO_BUTTON':
-						case 'DROPDOWN':
-
-							$pos  = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
-
-							if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
-							{
-								$textarray = explode(',', $fontData['T']);
-								if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
-								{
-									$text = $textarray[$pos];
-								}
-								else                                      // sonst schreibe Leerzeichen
-								{
-									$text = ' ';
-								}
-							}
-							else    // lese Wert aus Datenbank
-							{
-								$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-								if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
-								{
-									// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
-									$doc = new DOMDocument();
-									$doc->loadXML($text);
-									$nodeList = $doc->getElementsByTagName('img');
-									$nodes = iterator_to_array($nodeList);
-									$node = $nodes[0];
-									if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
-									{
-										// Kein Tooltip in der Option, nehme Icon-Name als Wert
-										$text = $node->getattribute('src');
-										$text = substr($text, strrpos($text, '/') + 1);
-										$texttemp = explode('.', $text, 2);
-										$text = $texttemp[0];
-									}
-									else
-									{
-										$text = $node->getattribute('title');									
-									}
-								}
-							}
-
-							if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
-							{
-								if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
-								{
-									//beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
-									//deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
-									$sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
-									$sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
-								}
-							}
-							break;
-							
-						case 'CHECKBOX':
-							if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
-							{
-								$text = 'x';
-							}
-							break;
-							
-						default:
-							$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-					}
-					break;
-				
-				case 'b'  &&  array_key_exists($userId, $relationArray):
-				
-					$user->readDataById($relationArray[$userId]);
-
-					switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
-					{
-						case 'RADIO_BUTTON':
-						case 'DROPDOWN':
-				
-							$pos = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
-				
-							if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
-							{
-								$textarray = explode(',', $fontData['T']);
-								if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
-								{
-									$text = $textarray[$pos];
-								}
-								else                                      // sonst schreibe Leerzeichen
-								{
-									$text = ' ';
-								}
-							}
-							else    // lese Wert aus Datenbank
-							{
-								$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-								if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
-								{
-									// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
-									$doc = new DOMDocument();
-									$doc->loadXML($text);
-									$nodeList = $doc->getElementsByTagName('img');
-									$nodes = iterator_to_array($nodeList);
-									$node = $nodes[0];
-									if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
-									{
-										// Kein Tooltip in der Option, nehme Icon-Name als Wert
-										$text = $node->getattribute('src');
-										$text = substr($text, strrpos($text, '/') + 1);
-										$texttemp = explode('.', $text, 2);
-										$text = $texttemp[0];
-									}
-									else
-									{
-										$text = $node->getattribute('title');
-									}
-								}
-							}
-				
-							if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
-							{
-								if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
-								{
-									//beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
-									//deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
-									$sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
-									$sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
-								}
-							}
-							break;
-							
-						case 'CHECKBOX':
-							if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
-							{
-								$text = 'x';
-							}
-							break;
-							
-						default:
-						$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-					}
-					$user->readDataById($userId);
-					break;
-					
-				case 't':              // trace				
-					//pruefen, ob Koordinaten x2 und y2 vorhanden sind
-					if (count($xyKoord) < 4)
-					{
-						continue ;      
-					}
-				
-					$sortArray[$pointer]['trace'] = true;
-					break;  
-				
-				case 'r':              // rectangle				
-					//pruefen, ob Koordinaten w und h vorhanden sind
-					if (count($xyKoord) < 4)
-					{
-						continue ;     
-					}
-				
-					$sortArray[$pointer]['rect'] = true;
-					break;  				
-			}
-			
-			// wurde optionaler Text angegeben?   (von lagro)
-         	if (array_key_exists('}', $fontData))
-         	{
-            	$text .= $fontData['}'];
-         	}
-         	if (array_key_exists('{', $fontData))
-         	{
-            	$text = $fontData['{'].$text;
-         	}
-			$sortArray[$pointer]['text'] = $text;                  
-		}	
-	}  // zum naechsten Profilfeld 
-
-	foreach ($sortArray as $key => $row) 
-	{
-    	$sortFirst[$key] = $row['xykoord'][1];          
-    	$sortSecond[$key] = $row['xykoord'][0];    
-	}
-	array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortArray);
-	
-	$yPrevKoord = '';														// wird beim Etikettendruck benoetigt
-	foreach ($sortArray as $key => $sortData) 
-	{
-		$width = 0;
-		$height = 0;
-		$koordX2 = 0;
-		$koordY2 = 0;
-		if (isset($sortData['xykoord'][2]))
-		{
-			$width = $sortData['xykoord'][2];
-			$koordX2 = $sortData['xykoord'][2];
-		}
-		if (isset($sortData['xykoord'][3]))
-		{
-			$height = $sortData['xykoord'][3];
-			$koordY2 = $sortData['xykoord'][3];
-		}
-			
-		if ($sortData['image']['path'] <> '')
-		{
-			$imageSize = getimagesize( $sortData['image']['path']);
-				
-			//Berechnungsalgorithmus aus FPDF-Library
-			if ($unit == 'pt')
-				$k = 1;
-			elseif ($unit == 'mm')
-				$k = 72/25.4;
-			elseif ($unit == 'cm')
-				$k = 72/2.54;
-			elseif ($unit == 'in')
-				$k = 72;
-		
-			if ($width == 0 && $height == 0)
-			{
-				// Put image at 96 dpi
-				$width = -96;
-				$height = -96;
-			}
-
-			if ($width < 0)
-				$width = -$imageSize[0]*72/$width/$k;
-			if ($height < 0)
-				$height = -$imageSize[1]*72/$height/$k;
-			if ($width == 0)
-				$width = $height*$imageSize[0]/$imageSize[1];
-			if ($height == 0)
-				$height = $width*$imageSize[1]/$imageSize[0];
-		}
-         
-        if (count($etiketten) > 0)									//Etikettendruck
-        {
-        	if ($yPrevKoord == $sortData['xykoord'][1]+($zeile*$etiketten[3]))     // Druck in derselben Zeile
-        	{
-        		// das Leerzeichen zwischen Texten bzw Bildern in der Groesse der Standardattribute ausgeben,
-				// ansonsten koennten unterschiedlich breite Leerzeichen im Etikett vorhanden sein
-				$pdf->SetFont($attributesDefault['font'], $attributesDefault['style'], $attributesDefault['size']);
-					
-        		if ($sortData['trace'] || $sortData['rect'])         // bei Linien und Rechtecken die absoluten Koordinaten verwenden, keinen Etikettendruck anwenden 
-        		{
-        			$koordX = $sortData['xykoord'][0]+($spalte*$etiketten[1]);
-         			$koordY = $sortData['xykoord'][1]+($zeile*$etiketten[3]);	
-        		}
-        		elseif ($sortData['image']['path'] <> '')				// bei Bildern ein Leerzeichen vorher und die Bildweite mit einbauen
-        		{
-					$pdf->Write(0,utf8_decode('  '));
-					$koordX = $pdf->GetX();
-					$koordY = $pdf->GetY();
-					$pdf->SetX($koordX+$width);		
 				}
-				else 												// bei Texten innerhalb derselben Zeile nur ein Leerzeichen dazwischen
+			
+				// wurde eine abweichende Schriftgroesse definiert? -> pruefen und ggf. setzen
+				if (array_key_exists('S', $fontData) && is_numeric($fontData['S']))
 				{
-					$pdf->Write(0,utf8_decode(' '));
-        		}
-        	}
-        	else                                                 	// eine neue Zeile des Etikettes wurde angefangen
-        	{
-        		$koordX=$sortData['xykoord'][0]+($spalte*$etiketten[1]);
-         		$koordY=$sortData['xykoord'][1]+($zeile*$etiketten[3]);	
-         		$pdf->SetXY($koordX+$width,$koordY);
-        	}
-        		
-        	// yKoordinate (=Zeile) zwischenspeichern um im naechsten Durchgang erkennen zu koennen,
-        	// ob in einer neuen Zeile gedruckt wird
-        	$yPrevKoord = $sortData['xykoord'][1]+($zeile*$etiketten[3]);
-        	
-        	$koordX2 = $koordX2+($spalte*$etiketten[1]);
-        	$koordY2 = $koordY2+($zeile*$etiketten[3]);	
-        }
-        else 														//Formulardruck
-        {
-         	$pdf->SetXY($sortData['xykoord'][0], $sortData['xykoord'][1]);
-         	$koordX = $sortData['xykoord'][0];
-         	$koordY = $sortData['xykoord'][1];
-        }
-       
-		if ($sortData['image']['path'] <> '')						//Bild in PDF-Datei schreiben
-		{
-       		$pdf->Image($sortData['image']['path'], $koordX, $koordY, $width, $height);
-		}
-		elseif ($sortData['trace']) 								// Linie in PDF-Datei schreiben
-		{
-			$pdf->SetLineWidth($sortData['attributes']['linewidth']);
-			$color = explode(',', $sortData['attributes']['drawcolor']);
-			$pdf->SetDrawColor($color[0],$color[1],$color[2]);
-			$pdf->Line($koordX,$koordY,$koordX2,$koordY2);
-		}
-		elseif ($sortData['rect']) 								// Rechteck in PDF-Datei schreiben
-		{
-			$pdf->SetLineWidth($sortData['attributes']['linewidth']);
-			$color = explode(',', $sortData['attributes']['drawcolor']);
-			$pdf->SetDrawColor($color[0],$color[1],$color[2]);
-			$color = explode(',', $sortData['attributes']['fillcolor']);
-			$pdf->SetFillColor($color[0],$color[1],$color[2]);
-			$pdf->Rect($koordX,$koordY,$width,$height,$sortData['attributes']['rectstyle']);
-		}
-		else 													// Text in PDF-Datei schreiben
-		{
-			$color = explode(',', $sortData['attributes']['color']);
-			$pdf->SetTextColor($color[0],$color[1],$color[2]);
-			$pdf->SetFont($sortData['attributes']['font'], $sortData['attributes']['style'], $sortData['attributes']['size']);	
-			$pdf->Write(0,utf8_decode($sortData['text']));	
-		}
-				
-		// ggf. eine temporaer erzeugte Bilddatei wieder loeschen
-		if(file_exists( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png'))
-        {
-        	unlink( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png');
-        }	
-	}			
+					$sortArray[$pointer]['attributes']['size'] = $fontData['S'];
+				}	
 
+				// wurde ein abweichender Schrifttyp definiert? -> pruefen und ggf. setzen
+				if (array_key_exists('F', $fontData) && in_array($fontData['F'], array('Courier', 'Arial', 'Times', 'Symbol', 'ZapfDingbats')))
+				{
+					$sortArray[$pointer]['attributes']['font'] = $fontData['F'];
+				}			
+
+				// wurden abweichende Schriftattribute definiert? -> pruefen und ggf. setzen
+				if (array_key_exists('A', $fontData ) && strstr_multiple('BIU', $fontData['A'])) 
+				{
+					$sortArray[$pointer]['attributes']['style'] = $fontData['A'];
+				}
+			
+				// wurde eine abweichende Linienbreite definiert? -> pruefen und ggf. setzen
+				if (array_key_exists('LW', $fontData ) && is_numeric($fontData['LW']))
+				{
+					$sortArray[$pointer]['attributes']['linewidth'] = $fontData['LW'];
+				}
+							
+				// wurde eine abweichende Fuellfarbe definiert? -> pruefen und ggf. setzen
+				if (array_key_exists('FC', $fontData ) )
+				{
+					// jetzt mit den konfigurierten Daten überschreiben
+					$key = true;
+					foreach (explode(',', $fontData['FC']) as $data)
+					{
+						if (!(is_numeric($data)))
+						{
+							$key = false;
+							break;
+						}
+					}
+					if ($key)
+					{
+						$sortArray[$pointer]['attributes']['fillcolor'] = $fontData['FC'];
+					}
+				}
+			
+				// wurde eine abweichende Zeichenfarbe definiert? -> pruefen und ggf. setzen
+				if (array_key_exists('DC', $fontData ) )
+				{
+					// jetzt mit den konfigurierten Daten überschreiben
+					$key = true;
+					foreach (explode(',', $fontData['DC']) as $data)
+					{
+						if (!(is_numeric($data)))
+						{
+							$key = false;
+							break;
+						}
+					}
+					if ($key)
+					{
+						$sortArray[$pointer]['attributes']['drawcolor'] = $fontData['DC'];
+					}
+				}
+			
+				// wurde ein abweichender Rechteckstil definiert? -> pruefen und ggf. setzen
+				if (array_key_exists('RS', $fontData ) && strstr_multiple('DF', $fontData['RS'])) 
+				{
+					$sortArray[$pointer]['attributes']['rectstyle'] = $fontData['RS'];
+				}
+							
+				switch ($fieldtype)
+				{
+					case 'l':
+						if (array_key_exists('L', $fontData ) )                         //Foto aus einer alternativen Bilddatei)
+						{
+							$downloadFolder = new TableFolder($gDb);
+							if (file_exists(ADMIDIO_PATH . FOLDER_DATA . '/'.$downloadFolder->getRootFolderName().'/'.$fontData['L']))
+							{
+								$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA .'/'.$downloadFolder->getRootFolderName().'/'.$fontData['L'];
+							}	
+						}
+						elseif ($gPreferences['profile_photo_storage'] == 1)              //Foto aus adm_my_files
+						{
+							if (file_exists(ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$userId.'.jpg'))
+							{
+								$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$userId.'.jpg';
+							}
+						}
+						elseif ($gPreferences['profile_photo_storage'] == 0)               //Foto aus der Datenbank
+						{		
+							if (strlen($user->getValue('usr_photo')) != NULL)
+    						{
+        						$image = new Image();
+        						$image->setImageFromData($user->getValue('usr_photo'));
+        
+        						// die Methode Image der Klasse FPDF benoetigt einen Pfad zur Imagedatei
+        						// ich habe es nicht geschafft von der Klasse Image direkt an die Klasse FPDF diesen Pfad zu uebergeben
+        						// deshalb der Umweg ueber eine temporaere Datei
+        						$zufall = mt_rand(10000,99999);
+        						$image->copyToFile(null, ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$zufall.'.png');
+        						$image->delete();
+        					
+        						$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$zufall.'.png';
+        						$sortArray[$pointer]['image']['zufall'] = $zufall;       // zwischenspeichern, damit nach der Sortierung die Zufallsdatei wieder gelöscht werden kann  
+    						}
+						}
+						break;
+
+					case 'v':
+						// wurde ein "beliebiger Text" definiert? 
+						if (array_key_exists('V', $fontData))
+						{
+							$text = $fontData['V'];	               // Hinweis: der uebergebene Inhalt wird nicht überprueft 
+						}
+						elseif (array_key_exists('K', $fontData))
+						{
+							$text = $pkmArray[$fontData['K']];	   // Hinweis: der uebergebene Inhalt wird nicht überprueft
+						}
+						break;	
+
+					case 'd':
+						$text = date("d.m.Y");
+				
+						// wurden Werte für das Datum definiert? 
+						if (array_key_exists('D', $fontData))
+						{
+							$text = date($fontData['D']);	       // Hinweis: der übergebene Inhalt wird nicht überprüft 
+						}	
+						break;  
+
+					case 'p':
+						switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
+						{
+							case 'RADIO_BUTTON':
+							case 'DROPDOWN':
+
+								$pos  = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
+
+								if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
+								{
+									$textarray = explode(',', $fontData['T']);
+									if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
+									{
+										$text = $textarray[$pos];
+									}
+									else                                      // sonst schreibe Leerzeichen
+									{
+										$text = ' ';
+									}
+								}
+								else    // lese Wert aus Datenbank
+								{
+									$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+									if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
+									{
+										// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
+										$doc = new DOMDocument();
+										$doc->loadXML($text);
+										$nodeList = $doc->getElementsByTagName('img');
+										$nodes = iterator_to_array($nodeList);
+										$node = $nodes[0];
+										if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
+										{
+											// Kein Tooltip in der Option, nehme Icon-Name als Wert
+											$text = $node->getattribute('src');
+											$text = substr($text, strrpos($text, '/') + 1);
+											$texttemp = explode('.', $text, 2);
+											$text = $texttemp[0];
+										}
+										else
+										{
+											$text = $node->getattribute('title');									
+										}
+									}
+								}
+
+								if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
+								{
+									if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
+									{
+										//beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+										//deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+										$sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
+										$sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
+									}
+								}
+								break;
+							
+							case 'CHECKBOX':
+								if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
+								{
+									$text = 'x';
+								}
+								break;
+							
+							default:
+								$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+						}
+						break;
+				
+					case 'b'  &&  array_key_exists($userId, $relationArray):
+				
+						$user->readDataById($relationArray[$userId]);
+
+						switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
+						{
+							case 'RADIO_BUTTON':
+							case 'DROPDOWN':
+				
+								$pos = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
+				
+								if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
+								{
+									$textarray = explode(',', $fontData['T']);
+									if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
+									{
+										$text = $textarray[$pos];
+									}
+									else                                      // sonst schreibe Leerzeichen
+									{
+										$text = ' ';
+									}
+								}
+								else    // lese Wert aus Datenbank
+								{
+									$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+									if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
+									{
+										// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
+										$doc = new DOMDocument();
+										$doc->loadXML($text);
+										$nodeList = $doc->getElementsByTagName('img');
+										$nodes = iterator_to_array($nodeList);
+										$node = $nodes[0];
+										if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
+										{
+											// Kein Tooltip in der Option, nehme Icon-Name als Wert
+											$text = $node->getattribute('src');
+											$text = substr($text, strrpos($text, '/') + 1);
+											$texttemp = explode('.', $text, 2);
+											$text = $texttemp[0];
+										}
+										else
+										{
+											$text = $node->getattribute('title');
+										}
+									}
+								}
+				
+								if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
+								{
+									if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
+									{
+										//beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+										//deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+										$sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
+										$sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
+									}
+								}
+								break;
+							
+							case 'CHECKBOX':
+								if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
+								{
+									$text = 'x';
+								}
+								break;
+							
+							default:
+							$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+						}
+						$user->readDataById($userId);
+						break;
+					
+					case 't':              // trace				
+						//pruefen, ob Koordinaten x2 und y2 vorhanden sind
+						if (count($xyKoord) < 4)
+						{
+							continue ;      
+						}
+				
+						$sortArray[$pointer]['trace'] = true;
+						break;  
+				
+					case 'r':              // rectangle				
+						//pruefen, ob Koordinaten w und h vorhanden sind
+						if (count($xyKoord) < 4)
+						{
+							continue ;     
+						}
+				
+						$sortArray[$pointer]['rect'] = true;
+						break;  				
+				}
+			
+				// wurde optionaler Text angegeben?   (von lagro)
+         		if (array_key_exists('}', $fontData))
+         		{
+            		$text .= $fontData['}'];
+         		}
+         		if (array_key_exists('{', $fontData))
+         		{
+            		$text = $fontData['{'].$text;
+         		}
+				$sortArray[$pointer]['text'] = $text;                  
+			}	
+		}  // zum naechsten Profilfeld 
+	
+		foreach ($sortArray as $key => $row) 
+		{
+    		$sortFirst[$key] = $row['xykoord'][1];          
+    		$sortSecond[$key] = $row['xykoord'][0];    
+		}
+		array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortArray);
+	
+		$yPrevKoord = '';														// wird beim Etikettendruck benoetigt
+		foreach ($sortArray as $key => $sortData) 
+		{
+			$width = 0;
+			$height = 0;
+			$koordX2 = 0;
+			$koordY2 = 0;
+			if (isset($sortData['xykoord'][2]))
+			{
+				$width = $sortData['xykoord'][2];
+				$koordX2 = $sortData['xykoord'][2];
+			}
+			if (isset($sortData['xykoord'][3]))
+			{
+				$height = $sortData['xykoord'][3];
+				$koordY2 = $sortData['xykoord'][3];
+			}
+			
+			if ($sortData['image']['path'] <> '')
+			{
+				$imageSize = getimagesize( $sortData['image']['path']);
+				
+				//Berechnungsalgorithmus aus FPDF-Library
+				if ($unit == 'pt')
+					$k = 1;
+				elseif ($unit == 'mm')
+					$k = 72/25.4;
+				elseif ($unit == 'cm')
+					$k = 72/2.54;
+				elseif ($unit == 'in')
+					$k = 72;
+		
+				if ($width == 0 && $height == 0)
+				{
+					// Put image at 96 dpi
+					$width = -96;
+					$height = -96;
+				}
+
+				if ($width < 0)
+					$width = -$imageSize[0]*72/$width/$k;
+				if ($height < 0)
+					$height = -$imageSize[1]*72/$height/$k;
+				if ($width == 0)
+					$width = $height*$imageSize[0]/$imageSize[1];
+				if ($height == 0)
+					$height = $width*$imageSize[1]/$imageSize[0];
+			}
+         
+        	if (count($etiketten) > 0)									//Etikettendruck
+        	{
+        		if ($yPrevKoord == $sortData['xykoord'][1]+($zeile*$etiketten[3]))     // Druck in derselben Zeile
+        		{
+        			// das Leerzeichen zwischen Texten bzw Bildern in der Groesse der Standardattribute ausgeben,
+					// ansonsten koennten unterschiedlich breite Leerzeichen im Etikett vorhanden sein
+					$pdf->SetFont($attributesDefault['font'], $attributesDefault['style'], $attributesDefault['size']);
+					
+        			if ($sortData['trace'] || $sortData['rect'])         // bei Linien und Rechtecken die absoluten Koordinaten verwenden, keinen Etikettendruck anwenden 
+        			{
+        				$koordX = $sortData['xykoord'][0]+($spalte*$etiketten[1]);
+         				$koordY = $sortData['xykoord'][1]+($zeile*$etiketten[3]);	
+        			}
+        			elseif ($sortData['image']['path'] <> '')				// bei Bildern ein Leerzeichen vorher und die Bildweite mit einbauen
+        			{
+						$pdf->Write(0,utf8_decode('  '));
+						$koordX = $pdf->GetX();
+						$koordY = $pdf->GetY();
+						$pdf->SetX($koordX+$width);		
+					}
+					else 												// bei Texten innerhalb derselben Zeile nur ein Leerzeichen dazwischen
+					{
+						$pdf->Write(0,utf8_decode(' '));
+        			}
+        		}
+        		else                                                 	// eine neue Zeile des Etikettes wurde angefangen
+        		{
+        			$koordX=$sortData['xykoord'][0]+($spalte*$etiketten[1]);
+         			$koordY=$sortData['xykoord'][1]+($zeile*$etiketten[3]);	
+         			$pdf->SetXY($koordX+$width,$koordY);
+        		}
+        		
+        		// yKoordinate (=Zeile) zwischenspeichern um im naechsten Durchgang erkennen zu koennen,
+        		// ob in einer neuen Zeile gedruckt wird
+        		$yPrevKoord = $sortData['xykoord'][1]+($zeile*$etiketten[3]);
+        	
+        		$koordX2 = $koordX2+($spalte*$etiketten[1]);
+        		$koordY2 = $koordY2+($zeile*$etiketten[3]);	
+        	}
+       	 	else 														//Formulardruck
+        	{
+         		$pdf->SetXY($sortData['xykoord'][0], $sortData['xykoord'][1]);
+         		$koordX = $sortData['xykoord'][0];
+         		$koordY = $sortData['xykoord'][1];
+        	}
+       
+			if ($sortData['image']['path'] <> '')						//Bild in PDF-Datei schreiben
+			{
+       			$pdf->Image($sortData['image']['path'], $koordX, $koordY, $width, $height);
+			}
+			elseif ($sortData['trace']) 								// Linie in PDF-Datei schreiben
+			{
+				$pdf->SetLineWidth($sortData['attributes']['linewidth']);
+				$color = explode(',', $sortData['attributes']['drawcolor']);
+				$pdf->SetDrawColor($color[0],$color[1],$color[2]);
+				$pdf->Line($koordX,$koordY,$koordX2,$koordY2);
+			}
+			elseif ($sortData['rect']) 								// Rechteck in PDF-Datei schreiben
+			{
+				$pdf->SetLineWidth($sortData['attributes']['linewidth']);
+				$color = explode(',', $sortData['attributes']['drawcolor']);
+				$pdf->SetDrawColor($color[0],$color[1],$color[2]);
+				$color = explode(',', $sortData['attributes']['fillcolor']);
+				$pdf->SetFillColor($color[0],$color[1],$color[2]);
+				$pdf->Rect($koordX,$koordY,$width,$height,$sortData['attributes']['rectstyle']);
+			}
+			else 													// Text in PDF-Datei schreiben
+			{
+				$color = explode(',', $sortData['attributes']['color']);
+				$pdf->SetTextColor($color[0],$color[1],$color[2]);
+				$pdf->SetFont($sortData['attributes']['font'], $sortData['attributes']['style'], $sortData['attributes']['size']);	
+				$pdf->Write(0,utf8_decode($sortData['text']));	
+			}
+				
+			// ggf. eine temporaer erzeugte Bilddatei wieder loeschen
+			if(file_exists( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png'))
+       	 	{
+        		unlink( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png');
+        	}	
+		}	
+		$pageCounter++;							// genutzt bei importierten PDFs mit mehreren Seiten
+	}
+	
 	if (count($etiketten) > 0)
     {
 		$spalte++;
