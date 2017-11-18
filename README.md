@@ -10,4 +10,4 @@ Eine Online-Dokumentation gibt es hier: https://www.admidio.org/dokuwiki/doku.ph
 
 ## Änderungshistorie
 
-In der [Änderungshistorie](http://www.admidio.de/dokuwiki/doku.php?id=de:plugins:formfiller#aenderungshistorie) gibt es detaillierte Informationen über die Fehlerbehebungen und Verbesserungen in jeder Version.
+In der [Änderungshistorie](https://www.admidio.org/dokuwiki/doku.php?id=de:plugins:formfiller#aenderungshistorie) gibt es detaillierte Informationen über die Fehlerbehebungen und Verbesserungen in jeder Version.

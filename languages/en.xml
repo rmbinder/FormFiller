@@ -58,7 +58,7 @@
     <string name="PLG_FORMFILLER_IMPORT_ERROR_OTHER">When uploading and checking file a general error occurred. Cause of error might as be a wrong file extension or a too large file.</string>
     <string name="PLG_FORMFILLER_IMPORT_SUCCESS">The configuration has been added.</string>
     <string name="PLG_FORMFILLER_INTERFACE_KEYMANAGER">Interface for plugin KeyManager</string>
-    <string name="PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC">FormFiller provides an interface to the lugin KeyManager. To do this, select the additional field "Text" under "Content" and use the following syntax under Position after the X and Y coordinates: K = internal name of the KeyManager key field, e.g. 50,100;K=KEYNAME.</string>       
+    <string name="PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC">FormFiller provides an interface to the plugin KeyManager. To do this, select the additional field "Text" under "Content" and use the following syntax under Position after the X and Y coordinates: K = internal name of the KeyManager key field, e.g. 50,100;K=KEYNAME.</string>       
     <string name="PLG_FORMFILLER_LABELS">Labels</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">To print labels following information in the label field are required: Number of columns, column spacing, line number, line spacing (e.g. 5,50,10,40 means array of labels to 5 columns at a distance of 50mm and 10 lines at a distance of 40mm)</string>
     <string name="PLG_FORMFILLER_LINE">Line</string> 
