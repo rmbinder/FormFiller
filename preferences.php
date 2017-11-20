@@ -22,7 +22,8 @@ require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
 // Initialize and check the parameters
-$getAdd = admFuncVariableIsValid($_GET, 'add', 'boolean', array('defaultValue' => false));
+$getAdd        = admFuncVariableIsValid($_GET, 'add', 'bool');
+$getFullScreen = admFuncVariableIsValid($_GET, 'full_screen',  'bool');
 
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
@@ -63,6 +64,11 @@ $gNavigation->addUrl(CURRENT_URL, $headline);
 // create html page object
 $page = new HtmlPage($headline);
 $page->enableModal();
+
+if ($getFullScreen)
+{
+	$page->hideThemeHtml();
+}
 
 // open the module configurations if a new configuration is added 
 if ($getAdd)
@@ -152,7 +158,7 @@ $page->addJavascript('
                 
         var newCellPosition = newTableRow.insertCell(-1);        
       
-        htmlPosFields = "<input type=\"text\" class=\"form-control\" id=\"position" + fieldNumberShow + "\" name=\"position'.$conf.'_" + fieldNumberShow + "\" maxlength=\"100\" ";
+        htmlPosFields = "<input type=\"text\" class=\"form-control\" id=\"position" + fieldNumberShow + "\" name=\"position'.$conf.'_" + fieldNumberShow + "\" maxlength=\"200\" ";
                 
         for(var counter = 1; counter < arr_user_fields'.$conf.'.length; counter++)
         {   
@@ -345,6 +351,17 @@ $page->addJavascript($javascriptCode, true);
 $preferencesMenu = new HtmlNavbar('menu_preferences', $headline, $page);
 $preferencesMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL10n->get('SYS_BACK'), 'back.png');
 
+if ($getFullScreen)
+{
+	$preferencesMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php?add='.$getAdd.'&amp;full_screen=false',
+			$gL10n->get('SYS_NORMAL_PICTURE'), 'arrow_in.png');
+}
+else
+{
+	$preferencesMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php?add='.$getAdd.'&amp;full_screen=true',
+			$gL10n->get('SYS_FULL_SCREEN'), 'arrow_out.png');
+}
+
 $page->addHtml($preferencesMenu->show(false));
 
 $page->addHtml('
@@ -410,9 +427,9 @@ $page->addHtml('
     							<table class="table table-condensed" id="mylist_fields_table">
         							<thead>
             							<tr>
-                							<th style="width: 15%;">'.$gL10n->get('SYS_ABR_NO').'</th>
-                							<th style="width: 45%;">'.$gL10n->get('SYS_CONTENT').'</th> 
-                							<th style="width: 40%;">'.$gL10n->get('PLG_FORMFILLER_POSITION').'</th>    
+                							<th style="width: 10%;">'.$gL10n->get('SYS_ABR_NO').'</th>
+                							<th style="width: 25%;">'.$gL10n->get('SYS_CONTENT').'</th> 
+                							<th style="width: 65%;">'.$gL10n->get('PLG_FORMFILLER_POSITION').'</th>    
             							</tr>
         							</thead>
         							<tbody id="mylist_fields_tbody'.$conf.'">
@@ -429,7 +446,7 @@ $page->addHtml('
 						}
                         $form->addDescription('</div>');
                         $form->addLine();
-                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php?add=true"><img
+                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php?full_screen='.$getFullScreen.'&add=true"><img
                                     src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
 						$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
                         $form->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
