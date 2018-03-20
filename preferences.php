@@ -220,7 +220,7 @@ $page->addJavascript('
     { 
         var user_fields = new Array(); ';
         $i = 1;
-        foreach ($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->getProfileFields() as $field)
         {    
             // add profile fields to user field array
             if ($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
@@ -235,7 +235,7 @@ $page->addJavascript('
             }
         }  
        
-        foreach ($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->getProfileFields() as $field)
         {
         	// add profile fields to user field array
         	if (($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers()) && $field->getValue('cat_name') == $gL10n->get('SYS_MASTER_DATA'))
@@ -284,7 +284,7 @@ $page->addJavascript('
     { 
         var user_fields = new Array(); ';
         $i = 1;
-        foreach ($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->getProfileFields() as $field)
         {    
             // add profile fields to user field array
             if ($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
