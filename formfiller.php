@@ -19,59 +19,99 @@
  ***********************************************************************************************
  */
 
-//$gNavigation ist zwar definiert, aber in diesem Script nicht immer sichtbar
-global $gNavigation;
-
 require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
-$plugin_folder = '/'.substr(__DIR__,strrpos(__DIR__,DIRECTORY_SEPARATOR)+1);
-
 // Einbinden der Sprachdatei
-$gL10n->addLanguagePath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/languages');
+$gL10n->addLanguageFolderPath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/languages');
 
+// Konfiguration einlesen          
 $pPreferences = new ConfigTablePFF();
-
-//Initialisierung und Anzeige des Links nur, wenn vorher keine Deinstallation stattgefunden hat
-// sonst waere die Deinstallation hinfaellig, da hier wieder Default-Werte der config in die DB geschrieben werden
-// Zweite Voraussetzung: Ein User muss erfolgreich eingeloggt sein
-if (strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false && $gValidLogin)
+if ($pPreferences->checkforupdate())
 {
-	if ($pPreferences->checkforupdate())
-	{
-		$pPreferences->init();
-	}
-	else 
-	{
-		$pPreferences->read();
-	}
+	$pPreferences->init();
+}
+else
+{
+	$pPreferences->read();
+}
 
-	//$url und $user_id einlesen, falls von der Profilanzeige aufgerufen wurde
-	$url = $_SERVER['REQUEST_URI'];
-	$user_id = (isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : '');
+// only authorized user are allowed to start this module
+if (!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']))
+{
+	$gMessage->setForwardUrl($gHomepage, 3000);
+    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
 
-	// Zeige Link zum Plugin
-	if (check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']) )
-	{
-		// wenn in der my_body_bottom.php ein $pluginMenu definiert wurde, dann innerhalb dieses Menues anzeigen,
-		// wenn nicht, dann innerhalb des (immer vorhandenen) Module-Menus anzeigen
-		if (isset($pluginMenu))
-		{
-			$menue = $pluginMenu;
-		}
-		else 
-		{
-			$menue = $moduleMenu;
-		}
+// define title (html) and headline
+$title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
+$headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
-		$menue->addItem('formfiller_show', FOLDER_PLUGINS . $plugin_folder .'/formfiller_show.php',$gL10n->get('PLG_FORMFILLER_FORMFILLER'), '/icons/page_white_acrobat.png');
-		if (strstr($url, 'adm_program/modules/profile/profile.php?user_id=') != null )
-		{
-			foreach ($pPreferences->config['Formular']['desc'] as $key => $data)
-			{		
-				$menue->addItem($data, FOLDER_PLUGINS . $plugin_folder .'/createpdf.php?user_id='.$user_id.'&form_id='.$key, '['.$data.']', '/icons/page_white_acrobat.png');
-			}
-		}
-	}
-}		
+// Navigation faengt hier im Modul an
+$gNavigation->clear();
+$gNavigation->addUrl(CURRENT_URL, $headline);
+    
+$page = new HtmlPage($headline);
+$page->setTitle($title);
+        
+// create module menu
+$listsMenu = new HtmlNavbar('menu_lists_list', $headline, $page);
+
+if (check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+{
+	// show link to pluginpreferences 
+	$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php',
+                        $gL10n->get('PLG_FORMFILLER_SETTINGS'), 'options.png', 'right');        
+}
+        
+// show module menu
+$page->addHtml($listsMenu->show(false));
+ 
+// show form
+$form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/createpdf.php', $page, array('class' => 'form-preferences'));
+
+$form->addCustomContent('', '<p>');
+
+$form->addDescription('1. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_LISTSELECTION'));
+$sql = 'SELECT lst_id, lst_name, lst_global 
+		  FROM '. TBL_LISTS .'
+         WHERE lst_org_id = '. $gCurrentOrganization->getValue('org_id'). '
+           AND (  lst_usr_id = '. $gCurrentUser->getValue('usr_id'). '
+            OR lst_global = 1)
+           AND lst_name IS NOT NULL
+      ORDER BY lst_global ASC, lst_name ASC';
+$configurations = array();
+$statement = $gDb->query($sql);     
+if ($statement->rowCount() > 0)
+{
+	while ($row = $statement->fetch())
+    {
+    	$configurations[] = array($row['lst_id'],$row['lst_name'],($row['lst_global'] == 0 ? $gL10n->get('LST_YOUR_LISTS') : $gL10n->get('LST_GENERAL_LISTS') ));
+    }        
+}    
+$form->addSelectBox('lst_id', $gL10n->get('LST_CONFIGURATION_LIST'), $configurations, array('property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC'));
+                    	
+$form->addCustomContent('', '<p>');  
+         	
+$form->addDescription('2. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_ROLESELECTION'));
+$sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
+          FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+         WHERE cat.cat_id = rol.rol_cat_id
+           AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+            OR cat.cat_org_id IS NULL )';
+$form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array('property' => FIELD_REQUIRED , 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
+/*$selectBoxEntries = array($gL10n->get('LST_ACTIVE_MEMBERS'),$gL10n->get('LST_FORMER_MEMBERS'),$gL10n->get('LST_ACTIVE_FORMER_MEMBERS') );
+$form->addSelectBox('show_members', $gL10n->get('LST_MEMBER_STATUS'), $selectBoxEntries);*/
+                      
+$form->addCustomContent('', '<p>');	 
+       
+$form->addDescription('3. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_CONFIGURATION'));
+$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array('property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
+        
+$form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => THEME_URL .'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
+                        
+$page->addHtml($form->show(false));
+        
+// show complete html page
+$page->show();

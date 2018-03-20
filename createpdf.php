@@ -181,7 +181,7 @@ if ($pPreferences->config['Formular']['pdfid'][$getpostFormID] > 0)
 	$file->getFileForDownload($pPreferences->config['Formular']['pdfid'][$getpostFormID]);
     
 	//kompletten Pfad der Datei holen
-	$completePath = $file->getCompletePathOfFile();
+	$completePath = $file->getFullFilePath();
 
 	//pruefen ob File ueberhaupt physikalisch existiert
 	if (!file_exists($completePath))
