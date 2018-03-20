@@ -21,19 +21,18 @@ require_once(__DIR__ . '/../../adm_program/system/login_valid.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
+// only authorized user are allowed to start this module
+if (!$gCurrentUser->isAdministrator())
+{
+	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 // Initialize and check the parameters
 $getAdd        = admFuncVariableIsValid($_GET, 'add', 'bool');
 $getFullScreen = admFuncVariableIsValid($_GET, 'full_screen',  'bool');
 
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
-
-// only authorized user are allowed to start this module
-if (!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
-{
-	$gMessage->setForwardUrl($gHomepage, 3000);
-    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
-}
 
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
@@ -480,32 +479,6 @@ $page->addHtml('
                         			<img src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
                         $form->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
-                        $page->addHtml($form->show(false));
-                    	$page->addHtml('
-                    </div>
-                </div>
-            </div>
-            
-            <div class="panel panel-default" id="panel_plugin_control">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_plugin_control">
-                            <img src="'. THEME_URL .'/icons/lock.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_CONTROL').'
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse_plugin_control" class="panel-collapse collapse">
-                    <div class="panel-body">');
-                        // show form
-                        $form = new HtmlForm('plugin_control_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?form=plugin_control', $page, array('class' => 'form-preferences'));
-                        $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
-                                  FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
-                                 WHERE cat.cat_id = rol.rol_cat_id
-                                   AND ( cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                                    OR cat.cat_org_id IS NULL )';
-				        $form->addSelectBoxFromSql('freigabe', $gL10n->get('PLG_FORMFILLER_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC','multiselect' => true));				                                                 
-                        $form->addSelectBoxFromSql('freigabe_config', '', $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe_config'], 'helpTextIdInline' => 'PLG_FORMFILLER_ROLE_SELECTION_DESC2','multiselect' => true));
-                        $form->addSubmitButton('btn_save_plugin_control_preferences', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
                         $page->addHtml($form->show(false));
                     	$page->addHtml('
                     </div>

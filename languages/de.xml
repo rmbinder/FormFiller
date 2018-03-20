@@ -83,7 +83,6 @@
     <string name="PLG_FORMFILLER_PDF_FILE_GENERATE">PDF-Datei erzeugen</string>
     <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES">PDF-Dateien mit mehreren Seiten</string>
     <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC">Besteht die ausgewählte PDF-Datei aus mehreren Seiten, so kann in der Feldwahl für jedes Feld bestimmt werden, auf welcher Seite es gedruckt wird. Die Syntax hierfür lautet: P=Seite.\nP=2 bedeutet z.B., dass dieses Feld nur auf die Seite 2 der PDF-Datei gedruckt wird. Für einen Druck auf Seite 1 kann entweder der Parameter P=x entfallen oder P=1 verwendet werden.</string>
-    <string name="PLG_FORMFILLER_PLUGIN_CONTROL">Pluginfreigabe</string>
     <string name="PLG_FORMFILLER_PLUGIN_DATE">Stand</string>
     <string name="PLG_FORMFILLER_PLUGIN_INFORMATION">Plugininformationen</string>
     <string name="PLG_FORMFILLER_PLUGIN_NAME">Name des Plugins</string>
@@ -94,9 +93,6 @@
     <string name="PLG_FORMFILLER_RED">rot</string>
     <string name="PLG_FORMFILLER_RELATION">Beziehung</string>  
     <string name="PLG_FORMFILLER_RELATION_DESC">Um bei Etikettendruck Ehepartner zu drucken kann hier die Beziehung "Ehepartner/-in" gewählt werden. Nach dem Speichern und der Aktualisierung der Seite gibt es in der Feldwahl zusätzliche Wahlmöglichkeiten für diese Beziehung.</string>     
-    <string name="PLG_FORMFILLER_ROLE_SELECTION">Rollenauswahl</string>
-    <string name="PLG_FORMFILLER_ROLE_SELECTION_DESC">Wähle die Rollen aus, deren Mitglieder das Plugin aufrufen dürfen.</string>
-    <string name="PLG_FORMFILLER_ROLE_SELECTION_DESC2">Wähle die Rollen aus, deren Mitglieder die Einstellungen des Plugins aufrufen dürfen.</string>
     <string name="PLG_FORMFILLER_SETTINGS">Einstellungen</string>
     <string name="PLG_FORMFILLER_VALUE">Text</string>
 </resources>

@@ -55,11 +55,11 @@ $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
 // only authorized user are allowed to start this module
-if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']))
+/*if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']))
 {
 	$gMessage->setForwardUrl($gHomepage, 3000);
     $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
-}
+}*/
 
 $userArray = array();
 unset($role_ids);

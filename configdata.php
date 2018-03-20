@@ -12,12 +12,7 @@
 
 global $gL10n, $gProfileFields;
 
-//Standardwerte einer Neuinstallation oder beim Anfuegen einer zusaetzlichen Konfiguration
-$config_default['Pluginfreigabe']['freigabe']        = array(getRole_IDPFF($gL10n->get('SYS_ADMINISTRATOR')),
-													         getRole_IDPFF($gL10n->get('SYS_MEMBER')));    		
-$config_default['Pluginfreigabe']['freigabe_config'] = array(getRole_IDPFF($gL10n->get('SYS_ADMINISTRATOR')),
-															 getRole_IDPFF($gL10n->get('SYS_MEMBER')));    		
-
+//Standardwerte einer Neuinstallation oder beim Anfuegen einer zusaetzlichen Konfiguration		
 $config_default['Formular'] = array('desc' 			=> array($gL10n->get('PLG_FORMFILLER_PATTERN'),
 															 $gL10n->get('PLG_FORMFILLER_ENVELOPE'),
 															 $gL10n->get('PLG_FORMFILLER_ADDRESSLABELS') ),

@@ -21,15 +21,14 @@ require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
+// only authorized user are allowed to start this module
+if (!$gCurrentUser->isAdministrator())
+{
+	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
-
-// only authorized user are allowed to start this module
-if (!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
-{
-	$gMessage->setForwardUrl($gHomepage, 3000);
-    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
-}
 
 // Initialize and check the parameters
 $getMode = admFuncVariableIsValid($_GET, 'mode', 'numeric', array('defaultValue' => 1));
@@ -111,17 +110,6 @@ switch ($getMode)
         			$pPreferences->config['Optionen']['maxpdfview'] = $_POST['maxpdfview'];
         			$pPreferences->config['Optionen']['pdfform_addsizes'] = $_POST['pdfform_addsizes'];
             		break; 
-                
-        		case 'plugin_control':
-            		if (isset($_POST['freigabe']))
-            		{
-    					$pPreferences->config['Pluginfreigabe']['freigabe'] = $_POST['freigabe'];
-            		}
-            		if (isset($_POST['freigabe_config']))
-            		{
-    					$pPreferences->config['Pluginfreigabe']['freigabe_config'] = $_POST['freigabe_config'];
-            		}
-    				break;
             
         		default:
            			$gMessage->show($gL10n->get('SYS_INVALID_PAGE_VIEW'));

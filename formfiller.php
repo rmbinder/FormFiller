@@ -26,6 +26,12 @@ require_once(__DIR__ . '/classes/configtable.php');
 // Einbinden der Sprachdatei
 $gL10n->addLanguageFolderPath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/languages');
 
+// only authorized user are allowed to start this module
+if (!isUserAuthorized($_SERVER['SCRIPT_NAME']))
+{
+	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 // Konfiguration einlesen          
 $pPreferences = new ConfigTablePFF();
 if ($pPreferences->checkforupdate())
@@ -35,13 +41,6 @@ if ($pPreferences->checkforupdate())
 else
 {
 	$pPreferences->read();
-}
-
-// only authorized user are allowed to start this module
-if (!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']))
-{
-	$gMessage->setForwardUrl($gHomepage, 3000);
-    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
 }
 
 // define title (html) and headline
@@ -58,7 +57,7 @@ $page->setTitle($title);
 // create module menu
 $listsMenu = new HtmlNavbar('menu_lists_list', $headline, $page);
 
-if (check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+if ($gCurrentUser->isAdministrator())
 {
 	// show link to pluginpreferences 
 	$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php',
