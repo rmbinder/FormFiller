@@ -50,7 +50,7 @@ switch ($getMode)
     	$page->addHtml($exportimportMenu->show(false));
 
     	// show form
-    	$form = new HtmlForm('export_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/export_import.php?mode=2', $page);
+    	$form = new HtmlForm('export_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php?mode=2', $page);
 		$form->openGroupBox('export', $headline = $gL10n->get('PLG_FORMFILLER_EXPORT'));
     	$form->addDescription($gL10n->get('PLG_FORMFILLER_EXPORT_DESC'));
 		$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION').':', $pPreferences->config['Formular']['desc'], array( 'showContextDependentFirstEntry' => false));
@@ -61,7 +61,7 @@ switch ($getMode)
     	$page->addHtml($form->show(false));
     
     	// show form
-    	$form = new HtmlForm('import_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/export_import.php?mode=3', $page, array('enableFileUpload' => true));
+    	$form = new HtmlForm('import_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php?mode=3', $page, array('enableFileUpload' => true));
     	$form->openGroupBox('import', $headline = $gL10n->get('PLG_FORMFILLER_IMPORT'));
     	$form->addDescription($gL10n->get('PLG_FORMFILLER_IMPORT_DESC'));
 		$form->addFileUpload('importfile', $gL10n->get('SYS_FILE').':', array( 'allowedMimeTypes' => array('application/octet-stream,text/plain')));
