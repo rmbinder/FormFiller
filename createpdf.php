@@ -39,6 +39,12 @@ require_once(__DIR__ . '/classes/configtable.php');
 require_once(__DIR__ . '/libs/fpdf/fpdf.php');
 require_once(__DIR__ . '/libs/fpdi/src/autoload.php');
 
+// only the main script or the plugin keymanager can call and start this module
+if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavigation->getUrl(), 'keys_export_to_pff.php') === false)
+{
+	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 // Initialize and check the parameters
 $postFormID      = admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
 $postListId      = admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
@@ -47,13 +53,6 @@ $postShowMembers = admFuncVariableIsValid($_POST, 'show_members', 'numeric', arr
 
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
-
-// only authorized user are allowed to start this module
-/*if(!check_showpluginPFF($pPreferences->config['Pluginfreigabe']['freigabe']))
-{
-	$gMessage->setForwardUrl($gHomepage, 3000);
-    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
-}*/
 
 $userArray = array();
 unset($role_ids);
