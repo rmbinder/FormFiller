@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="PLG_FORMFILLER_ADDITIONAL_FIELDS">Zusatzfelder</string>
-    <string name="PLG_FORMFILLER_ADDRESSLABELS">Adressetiketten</string>
     <string name="PLG_FORMFILLER_ADD_ANOTHER_CONFIG">Weitere Konfiguration hinzufügen</string>
     <string name="PLG_FORMFILLER_ADD_ANOTHER_FIELD">Weiteres Feld hinzufügen</string>
+    <string name="PLG_FORMFILLER_ADDITIONAL_FIELDS">Zusatzfelder</string>
+    <string name="PLG_FORMFILLER_ADDRESSLABELS">Adressetiketten</string>
     <string name="PLG_FORMFILLER_BLACK">schwarz</string>
     <string name="PLG_FORMFILLER_BLUE">blau</string>
-    <string name="PLG_FORMFILLER_CHOOSE_CONFIGURATION">Wähle eine Formularkonfiguration aus</string>
     <string name="PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC">Hier wir eine Formularkonfiguration ausgewählt, auf deren Basis die PDF-Datei erzeugt wird.\n\nÜber den Menüpunkt -Einstellungen- können beliebig viele Konfigurationen erzeugt werden.</string>
-    <string name="PLG_FORMFILLER_CHOOSE_LISTSELECTION">Wähle eine Liste aus, deren Konfiguration verwendet werden soll</string>
     <string name="PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC">Hier wird die Liste ausgewählt, deren Konfiguration verwendet werden soll.\n\nAusgewertet werden nur Bedingungen, die bei einem Feld angegeben sind. Felder ohne Bedingung sind für diese Abfrage nicht von Bedeutung.</string>
-    <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION">Wähle eine Rolle aus, deren Mitgliederliste verwendet werden soll</string>
     <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC">Hier wird die Rolle ausgewählt, deren Mitgliederliste verwendet werden soll</string>
+    <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Anstelle von Listenkonfiguration und Rolle können hier einzelne Benutzer ausgewählt werden.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Konfiguration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string>
     <string name="PLG_FORMFILLER_DATE">Datum</string>
-    <string name="PLG_FORMFILLER_DEINSTALLATION">Deinstallation</string>
-    <string name="PLG_FORMFILLER_DEINSTALLATION_DESC">Über die Deinstallation können vom Plugin erzeugte Einträge in der Datenbank gelöscht werden.</string>
-    <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Wähle den Installationsumfang aus.\n\n***ACHTUNG: Diese Routine löscht nur Einträge in der Admidio-Datenbank. Programmdateien und der Link im Menü werden nicht gelöscht! ***</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Nur Daten der aktuellen Organisation löschen.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Daten in allen Organisationen löschen.</string>
     <string name="PLG_FORMFILLER_DEINST_DATA_DELETE_ERROR">- Beim Löschen der Daten ist ein Fehler aufgetreten.\n</string>
@@ -26,6 +21,9 @@
     <string name="PLG_FORMFILLER_DEINST_STARTMESSAGE">Folgende Löschvorgänge wurden durchgeführt:\n\n</string>
     <string name="PLG_FORMFILLER_DEINST_TABLE_DELETE_ERROR">- Die Tabelle "adm_plugin_preferences" konnte nicht gelöscht werden, da sich darin noch Daten eines anderen Plugins befinden.\n</string>
     <string name="PLG_FORMFILLER_DEINST_TABLE_DELETE_SUCCESS">- Die vom Plugin angelegte Tabelle "adm_plugin_preferences" wurde gelöscht.\n</string>
+    <string name="PLG_FORMFILLER_DEINSTALLATION">Deinstallation</string>
+    <string name="PLG_FORMFILLER_DEINSTALLATION_DESC">Über die Deinstallation können vom Plugin erzeugte Einträge in der Datenbank gelöscht werden.</string>
+    <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Wähle den Installationsumfang aus.\n\n***ACHTUNG: Diese Routine löscht nur Einträge in der Admidio-Datenbank. Programmdateien und der Link im Menü werden nicht gelöscht! ***</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Bezeichnung</string>
     <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Hier wird die Bezeichnung der Konfiguration eingegeben.\n\nEine Konfiguration kann gelöscht werden, indem der Inhalt des Feldes Bezeichnung gelöscht wird.</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION">Dokumentation</string>
@@ -34,23 +32,24 @@
     <string name="PLG_FORMFILLER_ENVELOPE">Umschlag DL</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_CONFIG">FEHLER: Mindestens eine Konfiguration muss vorhanden sein!</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_DATA">FEHLER: In jeder Konfiguration muss mindestens ein Feld mit Inhalt und Position angegeben sein!</string>
-    <string name="PLG_FORMFILLER_FIELD">Feld</string>
     <string name="PLG_FORMFILLER_EXPORT">Export</string>
     <string name="PLG_FORMFILLER_EXPORT_DESC">Wähle die zu exportierende Formularkonfiguration aus. Export erstellt dabei eine Datei mit der Endung .cfg und dem Namen der Konfiguration.</string>
     <string name="PLG_FORMFILLER_EXPORT_IMPORT">Export/Import</string>
     <string name="PLG_FORMFILLER_EXPORT_IMPORT_DESC">Hiermit können Konfigurationen zur Datensicherung oder zur Weitergabe sowohl exportiert als auch importiert werden.</string>
+    <string name="PLG_FORMFILLER_FIELD">Feld</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION">Feldwahl</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION_DESC">Hier werden die Profil- und Zusatzfelder ausgewählt, die in das PDF-Dokument gedruckt werden sollen. An "Position" werden die X- und Y-Koordinaten angegeben.\n\nZusätzlich kann für jedes Feld eine, gegenüber den Standardeinstellungen abweichende Konfiguration erstellt werden.\n\nSyntax:\nSchriftart: F=Text (z.B. F=Arial)\nSchriftstil: A=B oder I oder U (z.B. A=B)\nSchriftgröße: S=Wert in pt (z.B. S=20)\nSchriftfarbe:C=RGB-Wert (z.B. C=0,0,255)\nOptions-/Dropdownfelder: T=Text für 1. Wert,Text für 2. Wert, usw. (z.B. T=Herrn,Frau; gibt man keinen Text über T= an, wird der Text des Options- bzw. Dropdownfeldes genommen)\nVortext: {=Text vor einem Feld (z.B. {=Hallo )\nNachtext: }=Text nach einem Feld (z.B. }=,)\n\nSyntax der Zusatzfelder:\nDatum: D=Formatparameter der Funktion date() (z.B. D=d.m.y), Standardeinstellung ist d.m.Y\nText: V=beliebiger Text (z.B. V=Hinweis)\nProfilfoto: L=Dateiname (z.B. L=logo.jpg), ohne Angabe eines Parameters wird ein evtl. vorhandenes Profilfoto angezeigt.\nLinie: LW=Linienbreite in mm (z.B. LW=0.3); DC=Zeichenfarbe (z.B. DC=255,0,0)\nRechteck: LW=Linienbreite in mm (z.B. LW=2); DC=Zeichenfarbe (z.B. DC=255,0,0); FC=Füllfarbe (z.B. FC=255,0,0); RS=Stil (z.B. RS=D(mit Rahmen) oder RS=F(ausgefüllt) oder RS=DF (ausgefüllt mit Rahmen))\n\n Beispiel:\nBezeichnung: Beitrittserklärung\nNachname: 10,20 (-> bedeutet Nachname auf Position 10,20) \nVorname: 10,40;S=7;F=Arial (-> bedeutet Vorname auf Position 10,40 mit Schriftart Arial in 7pt) \nAdresse: 40,20;C=255,102,255;A=B (-> bedeutet Adresse auf Position 40,20 mit Schriftfarbe rosa in Fettschrift)\nGeschlecht: 40,20,60,20;T=Herrn,Frau (-> bedeutet, abhängig vom Geschlecht, den Text Herrn an Position 40,20 oder den Text Frau an Position 60,20\nLinie: 20,40,60,80;LW=0.5;DC=255,0,0 (-> bedeutet Linie von Position 20,40 nach Position 60,80 mit Linienbreite 0.5 mm und Zeichenfarbe 255,0,0)\nRechteck: 60,70,20,40;LW=2;RS=FD;DC=255,0,0;FC=0,255,255 (-> bedeutet Rechteck an Position 60,70 mit Breite 20 und Höhe 40, ausgefüllter Rahmen mit Rahmenbreite 2 mm, Rahmenfarbe 255,0,0 und Füllfarbe 0,255,255)</string>
     <string name="PLG_FORMFILLER_FONT">Schriftart</string>
+    <string name="PLG_FORMFILLER_FONT_DESC">Hier wird die Standardschriftart eingestellt.</string>
     <string name="PLG_FORMFILLER_FONTCOLOR">Schriftfarbe</string>
     <string name="PLG_FORMFILLER_FONTCOLOR_DESC">Hier wird die Standardschriftfarbe eingestellt.</string>
     <string name="PLG_FORMFILLER_FONTSIZE">Schriftgröße</string>
     <string name="PLG_FORMFILLER_FONTSIZE_DESC">Hier wird die Standardschriftgröße eingestellt.</string>
     <string name="PLG_FORMFILLER_FONTSTYLE">Schriftstil</string>
     <string name="PLG_FORMFILLER_FONTSTYLE_DESC">Hier wird der Standardschriftstil eingestellt.</string>
-    <string name="PLG_FORMFILLER_FONT_DESC">Hier wird die Standardschriftart eingestellt.</string>
-    <string name="PLG_FORMFILLER_FORMFILLER">Formular-Füller</string>
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Hier können beliebig viele Konfigurationen für Formulare erstellt werden. Das Feld Bezeichnung muss dabei immer befüllt sein.\n\nUm die Daten eines Profil- oder Zusatzfeldes anzuzeigen muss mindestens eine X- und eine Y-Koordinate angegeben sein. Die Angaben für X und Y definieren hierbei die horizontale und vertikale Position in Millimeter bezogen auf die linke, obere Ecke des ausgewählten PDF-Dokumentes.</string>
+    <string name="PLG_FORMFILLER_FORM_CONFIGURATION">Formularkonfiguration</string>
+    <string name="PLG_FORMFILLER_FORMFILLER">Formular-Füller</string>
     <string name="PLG_FORMFILLER_GREEN">grün</string>
     <string name="PLG_FORMFILLER_IMPORT">Import</string>
     <string name="PLG_FORMFILLER_IMPORT_DESC">Wähle die zu importierende Formularkonfiguration aus (Hinweis: Es können nur Dateien mit der Endung .cfg importiert werden). </string>
@@ -70,6 +69,11 @@
     <string name="PLG_FORMFILLER_OPTIONS">Optionen</string>
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organisationswahl</string>
     <string name="PLG_FORMFILLER_PATTERN">Musterformular</string>
+    <string name="PLG_FORMFILLER_PDF_FILE">PDF-Datei</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_DESC">Hier wird die PDF-Datei gewählt, in die die Daten geschrieben werden.\n\nWird keine Datei ausgewählt, so wird ein neues,leeres PDF-Dokument anhand der Werte von Ausrichtung, Größe und Einheit erzeugt und mit den Daten befüllt.</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_GENERATE">PDF-Datei erzeugen</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES">PDF-Dateien mit mehreren Seiten</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC">Besteht die ausgewählte PDF-Datei aus mehreren Seiten, so kann in der Feldwahl für jedes Feld bestimmt werden, auf welcher Seite es gedruckt wird. Die Syntax hierfür lautet: P=Seite.\nP=2 bedeutet z.B., dass dieses Feld nur auf die Seite 2 der PDF-Datei gedruckt wird. Für einen Druck auf Seite 1 kann entweder der Parameter P=x entfallen oder P=1 verwendet werden.</string>
     <string name="PLG_FORMFILLER_PDFFORM_ADDSIZES">Zusätzliche PDF-Größen</string>
     <string name="PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC">Hier können neben den Standardgrößen A3, A4 usw., zusätzliche Größen für das zu erzeugende PDF-Dokument angegeben werden. Werte sind im Format Breite x Höhe anzugeben. Mehrere Größen sind durch Semikolon zu trennen (z.B. 160x100;120x60).</string>    
     <string name="PLG_FORMFILLER_PDFFORM_ORIENTATION">PDF-Form-Ausrichtung</string>
@@ -78,11 +82,6 @@
     <string name="PLG_FORMFILLER_PDFFORM_SIZE_DESC">Hier wird die Größe des zu erzeugenden PDF-Dokumentes angegeben; Standardeinstellung ist A4.</string>    
     <string name="PLG_FORMFILLER_PDFFORM_UNIT">PDF-Form-Einheit</string>
     <string name="PLG_FORMFILLER_PDFFORM_UNIT_DESC">Hier wird die Einheit des zu erzeugenden PDF-Dokumentes angegeben; Standardeinstellung ist mm.</string>
-    <string name="PLG_FORMFILLER_PDF_FILE">PDF-Datei</string>
-    <string name="PLG_FORMFILLER_PDF_FILE_DESC">Hier wird die PDF-Datei gewählt, in die die Daten geschrieben werden.\n\nWird keine Datei ausgewählt, so wird ein neues,leeres PDF-Dokument anhand der Werte von Ausrichtung, Größe und Einheit erzeugt und mit den Daten befüllt.</string>
-    <string name="PLG_FORMFILLER_PDF_FILE_GENERATE">PDF-Datei erzeugen</string>
-    <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES">PDF-Dateien mit mehreren Seiten</string>
-    <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC">Besteht die ausgewählte PDF-Datei aus mehreren Seiten, so kann in der Feldwahl für jedes Feld bestimmt werden, auf welcher Seite es gedruckt wird. Die Syntax hierfür lautet: P=Seite.\nP=2 bedeutet z.B., dass dieses Feld nur auf die Seite 2 der PDF-Datei gedruckt wird. Für einen Druck auf Seite 1 kann entweder der Parameter P=x entfallen oder P=1 verwendet werden.</string>
     <string name="PLG_FORMFILLER_PLUGIN_DATE">Stand</string>
     <string name="PLG_FORMFILLER_PLUGIN_INFORMATION">Plugininformationen</string>
     <string name="PLG_FORMFILLER_PLUGIN_NAME">Name des Plugins</string>
@@ -93,6 +92,9 @@
     <string name="PLG_FORMFILLER_RED">rot</string>
     <string name="PLG_FORMFILLER_RELATION">Beziehung</string>  
     <string name="PLG_FORMFILLER_RELATION_DESC">Um bei Etikettendruck Ehepartner zu drucken kann hier die Beziehung "Ehepartner/-in" gewählt werden. Nach dem Speichern und der Aktualisierung der Seite gibt es in der Feldwahl zusätzliche Wahlmöglichkeiten für diese Beziehung.</string>     
+    <string name="PLG_FORMFILLER_SELECT_ROLE_OR_USER">Wähle entweder Listenkonfiguration und Rolle als Quelle aus oder Benutzer.</string>
     <string name="PLG_FORMFILLER_SETTINGS">Einstellungen</string>
+    <string name="PLG_FORMFILLER_SOURCE">Quelle</string>
+    <string name="PLG_FORMFILLER_USER">Benutzer</string>
     <string name="PLG_FORMFILLER_VALUE">Text</string>
 </resources>

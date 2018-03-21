@@ -11,16 +11,12 @@
  *
  * user_id : 		ID des Mitglieds, dessen Daten ausgelesen werden
  * form_id :		interne Nummer des verwendeten PDF-Formulars
- * 					Hinweis: form_id wird abhaengig vom aufrufenden Programm
- * 						     entweder über $_GET oder über $_POST übergeben
  * lst_id : 		Liste, deren Konfiguration verwendet wird
  * rol_id : 		ID der verwendeten Rolle
  * show_members : 	0 - (Default) aktive Mitglieder der Rolle anzeigen
  *                	1 - Ehemalige Mitglieder der Rolle anzeigen
  *                	2 - Aktive und ehemalige Mitglieder der Rolle anzeigen
  *
- * Hinweis: Abhaengig vom aufrufenden Programm wird
- * 	   entweder user_id oder (lst_id und rol_id und show_members) übergeben
  * 
  * Mit Aenderungen zur Formatierung von kossihh (Juni 2016)
  * 
@@ -44,8 +40,6 @@ require_once(__DIR__ . '/libs/fpdf/fpdf.php');
 require_once(__DIR__ . '/libs/fpdi/src/autoload.php');
 
 // Initialize and check the parameters
-$getUserId       = admFuncVariableIsValid($_GET, 'user_id', 'numeric', array('defaultValue' => 0));
-$getFormID       = admFuncVariableIsValid($_GET, 'form_id', 'numeric', array('defaultValue' => 0));
 $postFormID      = admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
 $postListId      = admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
 $postRoleId      = admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
@@ -63,7 +57,6 @@ $pPreferences->read();
 
 $userArray = array();
 unset($role_ids);
-$getpostFormID = 0;
 $spalte = 0;
 $zeile = 0;	
 $attributes = array();
@@ -72,12 +65,9 @@ $user = new User($gDb, $gProfileFields);
 $relation = new TableUserRelation($gDb);
 $relationArray = array();
 
-// wenn von der Profilanzeige aufgerufen wurde, dann ist $getUserId > 0
-// und form_id wurde über $_GET uebergeben
-if ($getUserId > 0)
+if (isset($_POST['user_id']))
 {
-	$userArray[] = $getUserId ;
-	$getpostFormID = $getFormID;
+	$userArray = $_POST['user_id'];
 }
 elseif (($postListId > 0) && ($postRoleId > 0))
 {
@@ -97,7 +87,6 @@ elseif (($postListId > 0) && ($postRoleId > 0))
 	{
 		$userArray[] = $row['usr_id'] ;
 	}
-	$getpostFormID = $postFormID;
 }
 elseif (isset($_POST['kmf-RECEIVER']))
 {	//'kmf-RECEIVER' ist als 'Systemfeld' deklariert, kann nicht geloescht werden und eignet sich deshalb hervorragend zur Ueberpruefung
@@ -113,7 +102,6 @@ elseif (isset($_POST['kmf-RECEIVER']))
 	}
 
 	$userArray[] = $pkmArray['RECEIVER'] > 0 ? $pkmArray['RECEIVER'] : 0;
-	$getpostFormID = $postFormID;
 }
 else 
 {
@@ -122,31 +110,31 @@ else
 }
 
 //initiate FPDF
-if (!empty($pPreferences->config['Formular']['pdfform_orientation'][$getpostFormID]))
+if (!empty($pPreferences->config['Formular']['pdfform_orientation'][$postFormID]))
 {
-	$orientation = $pPreferences->config['Formular']['pdfform_orientation'][$getpostFormID];
+	$orientation = $pPreferences->config['Formular']['pdfform_orientation'][$postFormID];
 }
 else 
 {
 	$orientation = 'P';				//Default
 }	
-if (!empty($pPreferences->config['Formular']['pdfform_unit'][$getpostFormID]))
+if (!empty($pPreferences->config['Formular']['pdfform_unit'][$postFormID]))
 {
-	$unit = $pPreferences->config['Formular']['pdfform_unit'][$getpostFormID];
+	$unit = $pPreferences->config['Formular']['pdfform_unit'][$postFormID];
 }
 else 
 {
 	$unit = 'mm';					//Default
 }	
-if (!empty($pPreferences->config['Formular']['pdfform_size'][$getpostFormID]))
+if (!empty($pPreferences->config['Formular']['pdfform_size'][$postFormID]))
 {
-	if (strstr($pPreferences->config['Formular']['pdfform_size'][$getpostFormID], ','))
+	if (strstr($pPreferences->config['Formular']['pdfform_size'][$postFormID], ','))
 	{
-		$size = explode(',', $pPreferences->config['Formular']['pdfform_size'][$getpostFormID]);	
+		$size = explode(',', $pPreferences->config['Formular']['pdfform_size'][$postFormID]);	
 	}
 	else 
 	{
-		$size = $pPreferences->config['Formular']['pdfform_size'][$getpostFormID];	
+		$size = $pPreferences->config['Formular']['pdfform_size'][$postFormID];	
 	}
 }
 else 
@@ -157,12 +145,12 @@ else
 $pdf = new FPDI($orientation, $unit, $size);
 
 // falls ein Formular definiert wurde, dann ist der Wert der form_pdfid > 0
-if ($pPreferences->config['Formular']['pdfid'][$getpostFormID] > 0)
+if ($pPreferences->config['Formular']['pdfid'][$postFormID] > 0)
 {
 	//pruefen, ob das Formular noch in der DB existiert
 	$sql = 'SELECT fil_id 
               FROM '. TBL_FILES .' , '. TBL_CATEGORIES. ' , '. TBL_FOLDERS. '
-             WHERE fil_id = \''.$pPreferences->config['Formular']['pdfid'][$getpostFormID].'\' 
+             WHERE fil_id = \''.$pPreferences->config['Formular']['pdfid'][$postFormID].'\' 
                AND fil_fol_id = fol_id
                AND (  fol_org_id = '.$gCurrentOrganization->getValue('org_id').'
                 OR fol_org_id IS NULL ) ';
@@ -178,7 +166,7 @@ if ($pPreferences->config['Formular']['pdfid'][$getpostFormID] > 0)
 	// get recordset of current file from databse
 	$file = new TableFile($gDb);
 	
-	$file->getFileForDownload($pPreferences->config['Formular']['pdfid'][$getpostFormID]);
+	$file->getFileForDownload($pPreferences->config['Formular']['pdfid'][$postFormID]);
     
 	//kompletten Pfad der Datei holen
 	$completePath = $file->getFullFilePath();
@@ -191,7 +179,7 @@ if ($pPreferences->config['Formular']['pdfid'][$getpostFormID] > 0)
 }
 
 //sind Daten für Etiketten definiert?  (dann die Etikettendaten überpruefen)
-$etiketten = explode(',', $pPreferences->config['Formular']['labels'][$getpostFormID]);
+$etiketten = explode(',', $pPreferences->config['Formular']['labels'][$postFormID]);
 		
 if (count($etiketten) == 4)
 {
@@ -224,9 +212,9 @@ $attributesDefault = array(
 // Textattribute mit den Daten der jeweiligen Konfiguration überschreiben (falls vorhanden)
 foreach ($attributesDefault as $attribute => $dummy)
 {
-	if (isset($pPreferences->config['Formular'][$attribute][$getpostFormID]))
+	if (isset($pPreferences->config['Formular'][$attribute][$postFormID]))
 	{
-		$attributesDefault[$attribute] = $pPreferences->config['Formular'][$attribute][$getpostFormID];
+		$attributesDefault[$attribute] = $pPreferences->config['Formular'][$attribute][$postFormID];
 	}
 }
 	
@@ -238,14 +226,14 @@ foreach ($userScanArray as $userId)
 {
 	$user->readDataById($userId);
 
-	if (!empty($pPreferences->config['Formular']['relation'][$getpostFormID]) && $user->getValue('GENDER', 'text') === $gL10n->get('SYS_MALE'))
+	if (!empty($pPreferences->config['Formular']['relation'][$postFormID]) && $user->getValue('GENDER', 'text') === $gL10n->get('SYS_MALE'))
 	{
 		$sql = 'SELECT *
                   FROM '.TBL_USER_RELATIONS.'
             INNER JOIN '.TBL_USER_RELATION_TYPES.'
                     ON ure_urt_id  = urt_id
                  WHERE ure_usr_id1 = '.$userId.'
-            	   AND urt_id = '.$pPreferences->config['Formular']['relation'][$getpostFormID].'
+            	   AND urt_id = '.$pPreferences->config['Formular']['relation'][$postFormID].'
                    AND urt_name        <> \'\'
                    AND urt_name_male   <> \'\'
                    AND urt_name_female <> \'\'
@@ -281,7 +269,7 @@ foreach ($userArray as $userId)
 	while ($pageCounter <= $pageNumber )            // Schleife bei importierten PDFs mit mehreren Seiten
 	{
 		$sortArray = array();
-		if ($pPreferences->config['Formular']['pdfid'][$getpostFormID]>0 && $zeile == 0 && $spalte == 0)
+		if ($pPreferences->config['Formular']['pdfid'][$postFormID]>0 && $zeile == 0 && $spalte == 0)
 		{
 			// set the sourcefile
 			$pageNumber = $pdf->setSourceFile($completePath);
@@ -299,7 +287,7 @@ foreach ($userArray as $userId)
 		}
 		
 		// jetzt alle Felder durchlaufen
-		foreach ($pPreferences->config['Formular']['fields'][$getpostFormID] as $fieldkey => $fielddata)
+		foreach ($pPreferences->config['Formular']['fields'][$postFormID] as $fieldkey => $fielddata)
 		{ 
 			//der zu schreibende Text koennte auch direkt in $sortArray geschrieben werden,
 			//aber anhand der Variablen $text ist der Code etwas übersichtlicher :-) 
@@ -309,7 +297,7 @@ foreach ($userArray as $userId)
         	$fieldtype = substr($fielddata, 0, 1);
         	$fieldid = (int) substr($fielddata, 1);
         	
-        	$formdata = $pPreferences->config['Formular']['positions'][$getpostFormID][$fieldkey];
+        	$formdata = $pPreferences->config['Formular']['positions'][$postFormID][$fieldkey];
 			  
 			if (!empty($formdata))
 			{
@@ -841,7 +829,7 @@ foreach ($userArray as $userId)
 
 if ($pdf->PageNo() > $pPreferences->config['Optionen']['maxpdfview'] )
 {
-	$pdf->Output($pPreferences->config['Formular']['desc'][$getpostFormID].'.pdf', 'D');	
+	$pdf->Output($pPreferences->config['Formular']['desc'][$postFormID].'.pdf', 'D');	
 }
 else 
 {

@@ -70,9 +70,10 @@ $page->addHtml($listsMenu->show(false));
 // show form
 $form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/createpdf.php', $page, array('class' => 'form-preferences'));
 
-$form->addCustomContent('', '<p>');
+$form->openGroupBox('select_role_or_user', $gL10n->get('PLG_FORMFILLER_SOURCE'));
+$form->addDescription($gL10n->get('PLG_FORMFILLER_SELECT_ROLE_OR_USER'));
 
-$form->addDescription('1. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_LISTSELECTION'));
+$form->openGroupBox('select_role');
 $sql = 'SELECT lst_id, lst_name, lst_global 
 		  FROM '. TBL_LISTS .'
          WHERE lst_org_id = '. $gCurrentOrganization->getValue('org_id'). '
@@ -80,6 +81,7 @@ $sql = 'SELECT lst_id, lst_name, lst_global
             OR lst_global = 1)
            AND lst_name IS NOT NULL
       ORDER BY lst_global ASC, lst_name ASC';
+
 $configurations = array();
 $statement = $gDb->query($sql);     
 if ($statement->rowCount() > 0)
@@ -89,25 +91,58 @@ if ($statement->rowCount() > 0)
     	$configurations[] = array($row['lst_id'],$row['lst_name'],($row['lst_global'] == 0 ? $gL10n->get('LST_YOUR_LISTS') : $gL10n->get('LST_GENERAL_LISTS') ));
     }        
 }    
-$form->addSelectBox('lst_id', $gL10n->get('LST_CONFIGURATION_LIST'), $configurations, array('property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC'));
+$form->addSelectBox('lst_id', $gL10n->get('LST_CONFIGURATION_LIST'), $configurations, array( 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC'));
                     	
-$form->addCustomContent('', '<p>');  
-         	
-$form->addDescription('2. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_ROLESELECTION'));
 $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
           FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
          WHERE cat.cat_id = rol.rol_cat_id
            AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
             OR cat.cat_org_id IS NULL )';
-$form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array('property' => FIELD_REQUIRED , 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
+
+$form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
 /*$selectBoxEntries = array($gL10n->get('LST_ACTIVE_MEMBERS'),$gL10n->get('LST_FORMER_MEMBERS'),$gL10n->get('LST_ACTIVE_FORMER_MEMBERS') );
 $form->addSelectBox('show_members', $gL10n->get('LST_MEMBER_STATUS'), $selectBoxEntries);*/
-                      
-$form->addCustomContent('', '<p>');	 
-       
-$form->addDescription('3. '.$gL10n->get('PLG_FORMFILLER_CHOOSE_CONFIGURATION'));
+  
+$form->closeGroupBox();			//select_role
+
+$form->openGroupBox('select_user');
+$sqlData['query']= 'SELECT DISTINCT 
+		usr_id, CONCAT(last_name.usd_value, \' \', first_name.usd_value) AS name, SUBSTRING(last_name.usd_value,1,1) AS letter
+              FROM '.TBL_MEMBERS.'
+        INNER JOIN '.TBL_ROLES.'
+                ON rol_id = mem_rol_id
+        INNER JOIN '.TBL_CATEGORIES.'
+                ON cat_id = rol_cat_id
+        INNER JOIN '.TBL_USERS.'
+                ON usr_id = mem_usr_id
+         LEFT JOIN '.TBL_USER_DATA.' AS last_name
+                ON last_name.usd_usr_id = usr_id
+               AND last_name.usd_usf_id = ? -- $gProfileFields->getProperty(\'LAST_NAME\', \'usf_id\')
+         LEFT JOIN '.TBL_USER_DATA.' AS first_name
+                ON first_name.usd_usr_id = usr_id
+               AND first_name.usd_usf_id = ? -- $gProfileFields->getProperty(\'FIRST_NAME\', \'usf_id\')
+             WHERE usr_valid  = 1
+               AND cat_org_id = ? -- $gCurrentOrganization->getValue(\'org_id\')
+               AND mem_begin <= ? -- DATE_NOW
+               AND mem_end    > ? -- DATE_NOW
+          ORDER BY last_name.usd_value, first_name.usd_value, usr_id';
+
+$sqlData['params']= array(
+		$gProfileFields->getProperty('LAST_NAME', 'usf_id'),
+		$gProfileFields->getProperty('FIRST_NAME', 'usf_id'),
+		$gCurrentOrganization->getValue('org_id'),
+		DATE_NOW,
+		DATE_NOW  );
+
+$form->addSelectBoxFromSql('user_id', $gL10n->get('PLG_FORMFILLER_USER'), $gDb, $sqlData, array( 'property' => FIELD_REQUIRED , 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC', 'multiselect' => true));				                                                 
+
+$form->closeGroupBox();			//select_user
+$form->closeGroupBox();			//select_role_or_user
+
+$form->openGroupBox('select_config', $gL10n->get('PLG_FORMFILLER_FORM_CONFIGURATION'));
 $form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array('property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
-        
+$form->closeGroupBox();
+
 $form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => THEME_URL .'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
                         
 $page->addHtml($form->show(false));
