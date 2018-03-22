@@ -49,6 +49,7 @@
     <string name="PLG_FORMFILLER_FONTSTYLE_DESC">Here, the default font style is set.</string>
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Here arbitrary forms can be configured. The Description field must be filled.\n\nA configuration can be deleted by the contents of the field description will be deleted. To view the data of a profile field must be specified at least one X and a Y coordinate. The data for X and Y define here the horizontal and vertical position relative to the upper left corner of the form. .\n\nYou can also specify for each profile field a different configuration.</string>
     <string name="PLG_FORMFILLER_FORM_CONFIGURATION">Form configuration</string>
+    <string name="PLG_FORMFILLER_FORMER_MEMBERS_ONLY">Only former members</string>    
     <string name="PLG_FORMFILLER_FORMFILLER">Form filler</string>
     <string name="PLG_FORMFILLER_GREEN">green</string>
     <string name="PLG_FORMFILLER_IMPORT">Import</string>

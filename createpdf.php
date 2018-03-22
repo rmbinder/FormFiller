@@ -9,14 +9,12 @@
  *
  * Parameters:
  *
- * user_id : 		ID des Mitglieds, dessen Daten ausgelesen werden
- * form_id :		interne Nummer des verwendeten PDF-Formulars
- * lst_id : 		Liste, deren Konfiguration verwendet wird
- * rol_id : 		ID der verwendeten Rolle
- * show_members : 	0 - (Default) aktive Mitglieder der Rolle anzeigen
- *                	1 - Ehemalige Mitglieder der Rolle anzeigen
- *                	2 - Aktive und ehemalige Mitglieder der Rolle anzeigen
- *
+ * user_id : 			ID des Mitglieds, dessen Daten ausgelesen werden
+ * form_id :			interne Nummer des verwendeten PDF-Formulars
+ * lst_id : 			Liste, deren Konfiguration verwendet wird
+ * rol_id : 			ID der verwendeten Rolle
+ * show_former_members: 0 - (Default) Nur aktive Mitglieder der Rolle anzeigen
+ *                      1 - Nur ehemalige Mitglieder der Rolle anzeigen
  * 
  * Mit Aenderungen zur Formatierung von kossihh (Juni 2016)
  * 
@@ -46,10 +44,10 @@ if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavig
 }
 
 // Initialize and check the parameters
-$postFormID      = admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
-$postListId      = admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
-$postRoleId      = admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
-$postShowMembers = admFuncVariableIsValid($_POST, 'show_members', 'numeric', array('defaultValue' => 0));
+$postFormID      		= admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
+$postListId      		= admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
+$postRoleId      		= admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
+$postShowFormerMembers 	= admFuncVariableIsValid($_POST, 'show_former_members', 'bool', array('defaultValue' => false));
 
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
@@ -70,14 +68,14 @@ if (isset($_POST['user_id']))
 }
 elseif (($postListId > 0) && ($postRoleId > 0))
 {
-	//$list->getSQL($role_ids, $postShowMembers) erwartet als Parameter für 
+	//$list->getSQL($role_ids, $postShowFormerMembers) erwartet als Parameter für 
 	//$role_ids ein Array, deshalb $postRoleId in ein Array umwandeln
 	$role_ids[] = $postRoleId;
 	$sql        = '';   // enthaelt das Sql-Statement fuer die Liste
 
 	// create list configuration object and create a sql statement out of it
 	$list = new ListConfiguration($gDb, $postListId);
-	$sql = $list->getSQL($role_ids, $postShowMembers);
+	$sql = $list->getSQL($role_ids, $postShowFormerMembers);
 		
 	// SQL-Statement der Liste ausfuehren und pruefen ob Daten vorhanden sind
 	$statement = $gDb->query($sql);

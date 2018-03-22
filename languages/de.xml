@@ -49,6 +49,7 @@
     <string name="PLG_FORMFILLER_FONTSTYLE_DESC">Hier wird der Standardschriftstil eingestellt.</string>
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Hier können beliebig viele Konfigurationen für Formulare erstellt werden. Das Feld Bezeichnung muss dabei immer befüllt sein.\n\nUm die Daten eines Profil- oder Zusatzfeldes anzuzeigen muss mindestens eine X- und eine Y-Koordinate angegeben sein. Die Angaben für X und Y definieren hierbei die horizontale und vertikale Position in Millimeter bezogen auf die linke, obere Ecke des ausgewählten PDF-Dokumentes.</string>
     <string name="PLG_FORMFILLER_FORM_CONFIGURATION">Formularkonfiguration</string>
+    <string name="PLG_FORMFILLER_FORMER_MEMBERS_ONLY">Nur ehemalige Mitglieder</string>    
     <string name="PLG_FORMFILLER_FORMFILLER">Formular-Füller</string>
     <string name="PLG_FORMFILLER_GREEN">grün</string>
     <string name="PLG_FORMFILLER_IMPORT">Import</string>
