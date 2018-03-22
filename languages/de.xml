@@ -65,6 +65,7 @@
     <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Zu Export/Import wechseln</string>    
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF-Anzeige</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">max. PDF-Anzeige ist die maximale Seitenzahl, die ein PDF-Dokument aufweisen darf, damit es noch am Bildschirm angezeigt wird. Ist die Anzahl der Seiten größer, wird sofort der Download der Datei angeboten.</string>
+    <string name="PLG_FORMFILLER_MENU_URL_ERROR">Die Authorisierungsprüfung des Plugins ist fehlgeschlagen. Es ist mehr als ein Menüpunkt mit derselben URL definiert.\n\n=> #VAR1_BOLD#</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">Mindestens ein Parameter fehlt.</string>
     <string name="PLG_FORMFILLER_OPTIONS">Optionen</string>
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organisationswahl</string>
