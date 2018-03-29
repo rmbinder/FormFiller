@@ -16,6 +16,11 @@ if(!defined('PLUGIN_FOLDER'))
 	define('PLUGIN_FOLDER', '/'.substr(__DIR__,strrpos(__DIR__,DIRECTORY_SEPARATOR)+1));
 }
 
+if(!defined('ORG_ID'))
+{
+	define('ORG_ID', (int) $gCurrentOrganization->getValue('org_id'));
+}
+
 /**
  * Funktion liest die Role-ID einer Rolle aus
  * @param   string  $role_name Name der zu pruefenden Rolle
@@ -23,14 +28,14 @@ if(!defined('PLUGIN_FOLDER'))
  */
 function getRole_IDPFF($role_name)
 {
-    global $gDb, $gCurrentOrganization;
+    global $gDb;
 	
     $sql    = 'SELECT rol_id
                  FROM '. TBL_ROLES. ', '. TBL_CATEGORIES. '
                 WHERE rol_name   = \''.$role_name.'\'
                   AND rol_valid  = 1 
                   AND rol_cat_id = cat_id
-                  AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                  AND (  cat_org_id = '.ORG_ID.'
                    OR cat_org_id IS NULL ) ';
                       
     $statement = $gDb->query($sql);

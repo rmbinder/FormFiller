@@ -149,7 +149,7 @@ if ($pPreferences->config['Formular']['pdfid'][$postFormID] > 0)
               FROM '. TBL_FILES .' , '. TBL_CATEGORIES. ' , '. TBL_FOLDERS. '
              WHERE fil_id = \''.$pPreferences->config['Formular']['pdfid'][$postFormID].'\' 
                AND fil_fol_id = fol_id
-               AND (  fol_org_id = '.$gCurrentOrganization->getValue('org_id').'
+               AND (  fol_org_id = '.ORG_ID.'
                 OR fol_org_id IS NULL ) ';
     $statement = $gDb->query($sql);
     $row = $statement->fetchObject();

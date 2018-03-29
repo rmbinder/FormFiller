@@ -76,7 +76,7 @@ $form->addDescription($gL10n->get('PLG_FORMFILLER_SELECT_ROLE_OR_USER'));
 $form->openGroupBox('select_role');
 $sql = 'SELECT lst_id, lst_name, lst_global 
 		  FROM '. TBL_LISTS .'
-         WHERE lst_org_id = '. $gCurrentOrganization->getValue('org_id'). '
+         WHERE lst_org_id = '. ORG_ID. '
            AND (  lst_usr_id = '. $gCurrentUser->getValue('usr_id'). '
             OR lst_global = 1)
            AND lst_name IS NOT NULL
@@ -96,7 +96,7 @@ $form->addSelectBox('lst_id', $gL10n->get('LST_CONFIGURATION_LIST'), $configurat
 $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
           FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
          WHERE cat.cat_id = rol.rol_cat_id
-           AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+           AND (  cat.cat_org_id = '.ORG_ID.'
             OR cat.cat_org_id IS NULL )';
 
 $form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
@@ -120,7 +120,7 @@ $sqlData['query']= 'SELECT DISTINCT
                 ON first_name.usd_usr_id = usr_id
                AND first_name.usd_usf_id = ? -- $gProfileFields->getProperty(\'FIRST_NAME\', \'usf_id\')
              WHERE usr_valid  = 1
-               AND cat_org_id = ? -- $gCurrentOrganization->getValue(\'org_id\')
+               AND cat_org_id = ? -- ORG_ID
                AND mem_begin <= ? -- DATE_NOW
                AND mem_end    > ? -- DATE_NOW
           ORDER BY last_name.usd_value, first_name.usd_value, usr_id';
@@ -128,7 +128,7 @@ $sqlData['query']= 'SELECT DISTINCT
 $sqlData['params']= array(
 		$gProfileFields->getProperty('LAST_NAME', 'usf_id'),
 		$gProfileFields->getProperty('FIRST_NAME', 'usf_id'),
-		$gCurrentOrganization->getValue('org_id'),
+		ORG_ID,
 		DATE_NOW,
 		DATE_NOW  );
 
