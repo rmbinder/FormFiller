@@ -167,13 +167,16 @@ switch ($getMode)
 		//dabei werden nur Werte eingelesen, die in der aktuellen $pPreferences->config vorhanden sind
 		foreach ($pPreferences->config['Formular'] as $key => $data)
 		{
-			if (isset($parsedArray[$key]) && !is_array($parsedArray[$key]))
+			if (isset($parsedArray[$key]))
 			{
-				$importArray[$key] = $parsedArray[$key];
-			}
-			else 
-			{
-				$importArray[$key] = '';
+				if (is_array($parsedArray[$key]))
+				{
+					$importArray[$key] = array();
+				}
+				else
+				{
+					$importArray[$key] = $parsedArray[$key];
+				}
 			}
 		}
 	
