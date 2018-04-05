@@ -51,19 +51,9 @@ switch ($getMode)
             	case 'configurations':
             	
 					unset($pPreferences->config['Formular']);
-					$konf_neu = 0;
 				
     				for ($conf = 0; isset($_POST['desc'. $conf]); $conf++)
-    				{
-    					if (empty($_POST['desc'. $conf]))	
-    					{
-    						continue;
-    					}
-    					else 
-    					{            			
-            				$konf_neu++;
-    					}
-    				
+    				{  				
         				$pPreferences->config['Formular']['desc'][] = $_POST['desc'. $conf];
     					$pPreferences->config['Formular']['font'][] = $_POST['font'. $conf];
     					$pPreferences->config['Formular']['style'][] = $_POST['style'. $conf];
@@ -96,12 +86,6 @@ switch ($getMode)
     					}
     					$pPreferences->config['Formular']['fields'][] = $fields;	
     					$pPreferences->config['Formular']['positions'][] = $positions;		
-    				}
-    			
-    				// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen geloescht (was nicht sein darf)
-    				if ($konf_neu == 0)
-    				{
-    					$gMessage->show($gL10n->get('PLG_FORMFILLER_ERROR_MIN_CONFIG'));
     				}
             		break;
             	

@@ -12,7 +12,9 @@
  *
  * Parameters:
  *
- * add	:	Anlegen einer weiteren Konfiguration (true or false)
+ * add_delete : -1 - Erzeugen einer Konfiguration
+ * 				>0 - Löschen einer Konfiguration
+ * 
  ***********************************************************************************************
  */
 
@@ -28,7 +30,7 @@ if (!$gCurrentUser->isAdministrator())
 }
 
 // Initialize and check the parameters
-$getAdd        = admFuncVariableIsValid($_GET, 'add', 'bool');
+$getAddDelete  = admFuncVariableIsValid($_GET, 'add_delete', 'numeric', array('defaultValue' => 0));
 $getFullScreen = admFuncVariableIsValid($_GET, 'full_screen',  'bool');
 
 $pPreferences = new ConfigTablePFF();
@@ -36,15 +38,23 @@ $pPreferences->read();
 
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
-$num_configs = count($pPreferences->config['Formular']['desc']);
-if ($getAdd)
+if ($getAddDelete === -1)
 {
-	foreach ($pPreferences->config['Formular'] as $key => $dummy)
+	foreach($pPreferences->config['Formular'] as $key => $dummy)
 	{
-		$pPreferences->config['Formular'][$key][$num_configs] = $pPreferences->config_default['Formular'][$key][0];
+		$pPreferences->config['Formular'][$key][] = $pPreferences->config_default['Formular'][$key][0];
 	}
-	$num_configs++;
 }
+elseif ($getAddDelete > 0)
+{
+	foreach($pPreferences->config['Formular'] as $key => $dummy)
+	{
+		array_splice($pPreferences->config[Formular][$key], $getAddDelete-1, 1);
+	}
+}
+
+$num_configs = count($pPreferences->config['Formular']['desc']);
+$pPreferences->save();
 
 //ggf. zusaetzlich definierte Groessen an das Auswahl-Array anfuegen
 $selectBoxSizesEntries = array('A3'=>'A3', 'A4'=>'A4', 'A5'=>'A5', 'Letter'=>'Letter', 'Legal'=>'Legal' );
@@ -69,8 +79,8 @@ if ($getFullScreen)
 	$page->hideThemeHtml();
 }
 
-// open the module configurations if a new configuration is added 
-if ($getAdd)
+// open the module configurations if a configuration is added or deleted 
+if ($getAddDelete != 0)
 {
     $page->addJavascript('$("#tabs_nav_common").attr("class", "active");
         $("#tabs-common").attr("class", "tab-pane active");
@@ -352,12 +362,12 @@ $preferencesMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL1
 
 if ($getFullScreen)
 {
-	$preferencesMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add='.$getAdd.'&amp;full_screen=false',
+	$preferencesMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen=false',
 			$gL10n->get('SYS_NORMAL_PICTURE'), 'arrow_in.png');
 }
 else
 {
-	$preferencesMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add='.$getAdd.'&amp;full_screen=true',
+	$preferencesMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen=true',
 			$gL10n->get('SYS_FULL_SCREEN'), 'arrow_out.png');
 }
 
@@ -392,7 +402,7 @@ $page->addHtml('
                         for ($conf = 0; $conf < $num_configs; $conf++)
 						{                           			
 							$form->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PLG_FORMFILLER_CONFIGURATION'));
-							$form->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf]);
+							$form->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf], array('property' => FIELD_REQUIRED));
 							$form->addSelectBox('font'.$conf, $gL10n->get('PLG_FORMFILLER_FONT'), array('Courier'=>'Courier','Arial'=>'Arial','Times'=>'Times','Symbol'=>'Symbol','ZapfDingbats'=>'ZapfDingbats' ), array('defaultValue' => $pPreferences->config['Formular']['font'][$conf], 'showContextDependentFirstEntry' => false));
 							$form->addSelectBox('style'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSTYLE'), array(''=>'Normal','B'=>'Fett','I'=>'Kursiv','U'=>'Unterstrichen','BI'=>'Fett-Kursiv','BU'=>'Fett-Unterstrichen','IU'=>'Kursiv-Unterstrichen'), array('defaultValue' => $pPreferences->config['Formular']['style'][$conf],  'showContextDependentFirstEntry' => false));
 							$form->addInput('size'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], 
@@ -441,11 +451,17 @@ $page->addHtml('
     							</table>
     						</div>';
                         	$form->addCustomContent($gL10n->get('PLG_FORMFILLER_FIELD_SELECTION'), $html); 
+                        	if($num_configs != 1)
+                        	{
+                        		$html = '<a id="delete_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen='.$getFullScreen.'&add_delete='.($conf+1).'"><img
+                                        src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_DELETE_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_DELETE_CONFIG').'</a>';
+                        		$form->addCustomContent('', $html);
+                        	}
                         	$form->closeGroupBox();
 						}
                         $form->addDescription('</div>');
                         $form->addLine();
-                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen='.$getFullScreen.'&add=true"><img
+                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen='.$getFullScreen.'&add_delete=-1"><img
                                     src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
 						$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
                         $form->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
