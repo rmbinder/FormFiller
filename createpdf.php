@@ -13,6 +13,7 @@
  * form_id :			interne Nummer des verwendeten PDF-Formulars
  * lst_id : 			Liste, deren Konfiguration verwendet wird
  * rol_id : 			ID der verwendeten Rolle
+ * pdf_id : 			(optional) ID der verwendeten PDF-Datei
  * show_former_members: 0 - (Default) Nur aktive Mitglieder der Rolle anzeigen
  *                      1 - Nur ehemalige Mitglieder der Rolle anzeigen
  * 
@@ -47,6 +48,7 @@ if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavig
 $postFormID      		= admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
 $postListId      		= admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
 $postRoleId      		= admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
+$postPdfID      		= admFuncVariableIsValid($_POST, 'pdf_id', 'numeric', array('defaultValue' => 0));
 $postShowFormerMembers 	= admFuncVariableIsValid($_POST, 'show_former_members', 'bool', array('defaultValue' => false));
 
 $pPreferences = new ConfigTablePFF();
@@ -141,13 +143,23 @@ else
 
 $pdf = new FPDI($orientation, $unit, $size);
 
-// falls ein Formular definiert wurde, dann ist der Wert der form_pdfid > 0
+$pdfID = 0;
 if ($pPreferences->config['Formular']['pdfid'][$postFormID] > 0)
+{
+	$pdfID = $pPreferences->config['Formular']['pdfid'][$postFormID];
+}
+elseif ($postPdfID > 0)
+{
+	$pdfID = $postPdfID;
+}
+
+// wenn $pdfID != 0 ist, dann wurde ein PDF-File zum Beschreiben übergeben
+if ($pdfID != 0)
 {
 	//pruefen, ob das Formular noch in der DB existiert
 	$sql = 'SELECT fil_id 
               FROM '. TBL_FILES .' , '. TBL_CATEGORIES. ' , '. TBL_FOLDERS. '
-             WHERE fil_id = \''.$pPreferences->config['Formular']['pdfid'][$postFormID].'\' 
+             WHERE fil_id = \''.$pdfID.'\' 
                AND fil_fol_id = fol_id
                AND (  fol_org_id = '.ORG_ID.'
                 OR fol_org_id IS NULL ) ';
@@ -163,7 +175,7 @@ if ($pPreferences->config['Formular']['pdfid'][$postFormID] > 0)
 	// get recordset of current file from databse
 	$file = new TableFile($gDb);
 	
-	$file->getFileForDownload($pPreferences->config['Formular']['pdfid'][$postFormID]);
+	$file->getFileForDownload($pdfID);
     
 	//kompletten Pfad der Datei holen
 	$completePath = $file->getFullFilePath();
@@ -266,7 +278,7 @@ foreach ($userArray as $userId)
 	while ($pageCounter <= $pageNumber )            // Schleife bei importierten PDFs mit mehreren Seiten
 	{
 		$sortArray = array();
-		if ($pPreferences->config['Formular']['pdfid'][$postFormID]>0 && $zeile == 0 && $spalte == 0)
+		if ($pdfID>0 && $zeile == 0 && $spalte == 0)
 		{
 			// set the sourcefile
 			$pageNumber = $pdf->setSourceFile($completePath);

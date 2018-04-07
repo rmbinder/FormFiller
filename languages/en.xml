@@ -69,10 +69,12 @@
     <string name="PLG_FORMFILLER_MENU_URL_ERROR">The authorization check of the plugin failed. There is more than one menu item with the same URL defined.\n\n=> #VAR1_BOLD#</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">At least one parameter is missing.</string>
     <string name="PLG_FORMFILLER_OPTIONS">Options</string>
+    <string name="PLG_FORMFILLER_OPTIONAL">optional</string>
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organizational choice</string>
     <string name="PLG_FORMFILLER_PATTERN">Pattern form</string>
     <string name="PLG_FORMFILLER_PDF_FILE">PDF File</string>
     <string name="PLG_FORMFILLER_PDF_FILE_DESC">Here the PDF file is selected, in which the data is written.\n\nIf no file is selected, a new, blank PDF document is created based on the values of orientation, size and unit and filled with data.</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_DESC2">Here you can optionally select a PDF file into which the data will be written. An existing PDF file entry in a configuration overwrites the entry selected here.</string>   
     <string name="PLG_FORMFILLER_PDF_FILE_GENERATE">Generate PDF file</string>
     <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES">PDF files with multiple pages</string>
     <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC">If the selected PDF file consists of several pages, then in the field selection for each field it can be determined on which page it will be printed. The syntax for this is: P=page.\nFor example, P=2 means that this field will only be printed on page 2 of the PDF file. For a pressure on page 1 either the parameter P=x can be omitted or P=1 can be used.</string>
