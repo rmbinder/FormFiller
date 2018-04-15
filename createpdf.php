@@ -30,9 +30,6 @@
 use setasign\Fpdi\Fpdi;
 
 require_once(__DIR__ . '/../../adm_program/system/common.php');
-require_once(__DIR__ . '/../../adm_program/system/classes/tablefile.php');
-require_once(__DIR__ . '/../../adm_program/system/classes/listconfiguration.php');
-require_once(__DIR__ . '/../../adm_program/system/classes/image.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 require_once(__DIR__ . '/libs/fpdf/fpdf.php');
