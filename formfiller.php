@@ -145,7 +145,7 @@ $sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
            AND fil.fil_name LIKE \'%.PDF\'
            AND ( fol.fol_org_id = '.ORG_ID.'
             OR fol.fol_org_id IS NULL )';
-$form->addSelectBoxFromSql('pdf_id'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC2'));				                                            
+$form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC2'));				                                            
 $form->closeGroupBox();
 
 $form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => THEME_URL .'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
