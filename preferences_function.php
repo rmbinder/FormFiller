@@ -64,7 +64,7 @@ switch ($getMode)
     					$pPreferences->config['Formular']['pdfform_size'][] = $_POST['pdfform_size'. $conf];
     					$pPreferences->config['Formular']['pdfform_unit'][] = $_POST['pdfform_unit'. $conf];
     					$pPreferences->config['Formular']['pdfid'][] = (isset($_POST['pdfid'. $conf]) ? $_POST['pdfid'. $conf] : 0);
-    					$pPreferences->config['Formular']['relation'][] = $_POST['relationtype_id'. $conf];
+    					$pPreferences->config['Formular']['relation'][] = (isset($_POST['relationtype_id'. $conf]) ? $_POST['relationtype_id'. $conf] : '');
     				
     					$allColumnsEmpty = true;
 
