@@ -3,8 +3,8 @@
  ***********************************************************************************************
  * FormFiller
  *
- * Version 2.3.0
- *
+ * Version 2.3.1
+ * 
  * Dieses Plugin für Admidio ermoeglicht das Ausfuellen von PDF-Formularen sowie das Erstellen von Etiketten.
  *
  * Autor: rmb
@@ -23,8 +23,11 @@ require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
+//$scriptName ist der Name wie er im Menue eingetragen werden muss, also ohne evtl. vorgelagerte Ordner wie z.B. /playground/adm_plugins/formfiller...
+$scriptName = substr($_SERVER['SCRIPT_NAME'], strpos($_SERVER['SCRIPT_NAME'], FOLDER_PLUGINS));
+
 // only authorized user are allowed to start this module
-if (!isUserAuthorized($_SERVER['SCRIPT_NAME']))
+if (!isUserAuthorized($scriptName))
 {
 	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
 }
