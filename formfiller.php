@@ -123,7 +123,7 @@ $sqlData['query']= 'SELECT DISTINCT
                AND cat_org_id = ? -- ORG_ID
                AND mem_begin <= ? -- DATE_NOW
                AND mem_end    > ? -- DATE_NOW
-          ORDER BY last_name.usd_value, first_name.usd_value, usr_id';
+          ORDER BY CONCAT(last_name.usd_value, \' \', first_name.usd_value), usr_id';
 
 $sqlData['params']= array(
 		$gProfileFields->getProperty('LAST_NAME', 'usf_id'),
