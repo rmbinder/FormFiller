@@ -263,33 +263,36 @@ unset($userScanArray);
 foreach ($userArray as $userId)
 {
 	$user->readDataById($userId);
-	$pageCounter = 1;								// notwendig bei importierten PDFs mit mehreren Seiten
-	$pageNumber = 1;							    // notwendig bei importierten PDFs mit mehreren Seiten
-	
-	if ($zeile == 0 && $spalte == 0)
-	{
-		$pdf->AddPage();
-		$pdf->SetAutoPageBreak(false);
-	}
+	$pageCounter = 1;								// notwendig bei importierten PDFs mit mehreren Seiten (Seitenzähler)
+	$pageNumber = 1;							    // notwendig bei importierten PDFs mit mehreren Seiten (Seitenanzahl)
 	
 	while ($pageCounter <= $pageNumber )            // Schleife bei importierten PDFs mit mehreren Seiten
 	{
 		$sortArray = array();
-		if ($pdfID>0 && $zeile == 0 && $spalte == 0)
-		{
+		if ( $zeile == 0 && $spalte == 0)
+		{			
+			$pdf->AddPage();
+			$pdf->SetAutoPageBreak(false);
+		
 			// set the sourcefile
-			$pageNumber = $pdf->setSourceFile($completePath);
-		
-			if ($pageCounter > 1)
+			if ($pdfID > 0)
 			{
-				$pdf->AddPage();                   // zusaetzliches AddPage bei importierten PDFs mit mehreren Seiten
-			}
-			
-			//import page
-			$tplIdx = $pdf->importPage($pageCounter);
+				$pageNumber = $pdf->setSourceFile($completePath);			// $pagenumber: Seitenanzahl der importieren PDF-Datei
+				
+				// Klassischer Etikettendruck (mehrere Etiketten nebeneinander, mehrere Etiketten untereinander, Druck über mehrere Seiten)
+				// kann nicht angewendet werden, wenn die importierte PDF-Datei mehrere Seiten aufweist
+				// In diesem Fall wird von der importierten PDF-Datei nur die erste Seite eingelesen und verwendet
+				if ( isset($etiketten[0]) && $etiketten[0] != 1 && isset($etiketten[2]) && $etiketten[2] != 1)
+				{
+					$pageNumber = 1;
+				}
+				
+				//import page
+				$tplIdx = $pdf->importPage($pageCounter);
 		
-			//use the imported page...
-			$pdf->useTemplate($tplIdx,0,0,null,null,true);
+				//use the imported page...
+				$pdf->useTemplate($tplIdx,0,0,null,null,true);
+			}
 		}
 		
 		// jetzt alle Felder durchlaufen
