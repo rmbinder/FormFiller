@@ -324,15 +324,6 @@ foreach ($userArray as $userId)
 					continue ;
 				}
 			
-				$sortArray[] = array(
-			 		'xykoord'    => $xyKoord, 
-			 		'attributes' => $attributesDefault,
-			 		'image'      => array('path'=>'', 'zufall'=>0),
-			 		'text'       => $text,
-					'trace'      => false ,
-					'rect'       => false     );	
-				$pointer = count($sortArray)-1;	
-			
 				//arrSplit zerlegen in ein assoziatives Array
 				$fontData = array();		
 				foreach ($arrSplit as $splitData)
@@ -355,7 +346,16 @@ foreach ($userArray as $userId)
 					{
 						continue;                     //Feld bei Pruefung durchgefallen; zum naechsten Feld
 					}
-				}			
+				}
+				
+				$sortArray[] = array(
+						'xykoord'    => $xyKoord,
+						'attributes' => $attributesDefault,
+						'image'      => array('path'=>'', 'zufall'=>0),
+						'text'       => $text,
+						'trace'      => false ,
+						'rect'       => false     );
+				$pointer = count($sortArray)-1;	
 			
 				// wurde eine abweichende Schriftfarbe definiert? ->  pruefen und ggf. überschreiben
 				if (array_key_exists('C', $fontData))
