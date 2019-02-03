@@ -30,6 +30,8 @@
     <string name="PLG_FORMFILLER_DOCUMENTATION">Dokumentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN">Dokumentation öffnen</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Hiermit kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>
+    <string name="PLG_FORMFILLER_DYNAMIC_FIELDS">Dynamische Felder</string>
+    <string name="PLG_FORMFILLER_DYNAMIC_FIELDS_DESC">Die X- und Y-Koordinaten bei dynamischen Feldern bestimmen die erste Zeile des Drucks. Alle weiteren Zeilen werden dynamisch angefügt. Mit dem Parameter OW=x (z.B. OW=10) kann der Abstand in Millimeter angegeben werden. Standardeinstellung ist 5 mm.\n\n Um mehrere dynamische Felder untereinander zu drucken, kann über den Parameter OI=x eine Reihenfolge definiert werden. HINWEIS: Der Paramter OI=x sollte nicht bei Bildern oder Rechtecken verwendet werden.</string>
     <string name="PLG_FORMFILLER_ENVELOPE">Umschlag DL</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_DATA">FEHLER: In jeder Konfiguration muss mindestens ein Feld mit Inhalt und Position angegeben sein!</string>
     <string name="PLG_FORMFILLER_EXPORT">Export</string>

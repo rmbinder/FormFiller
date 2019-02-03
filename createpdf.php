@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * Erzeugt und befuellt die PDF-Datei fuer das Admidio-Plugin FormFiller
  *
- * @copyright 2004-2018 The Admidio Team
+ * @copyright 2004-2019 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
@@ -269,6 +269,8 @@ foreach ($userArray as $userId)
 	while ($pageCounter <= $pageNumber )            // Schleife bei importierten PDFs mit mehreren Seiten
 	{
 		$sortArray = array();
+		$orderArray = array();
+		
 		if ( $zeile == 0 && $spalte == 0)
 		{			
 			$pdf->AddPage();
@@ -353,6 +355,8 @@ foreach ($userArray as $userId)
 						'attributes' => $attributesDefault,
 						'image'      => array('path'=>'', 'zufall'=>0),
 						'text'       => $text,
+				        'orderindex' => '',
+				        'orderwidth' => 5 ,
 						'trace'      => false ,
 						'rect'       => false     );
 				$pointer = count($sortArray)-1;	
@@ -442,6 +446,19 @@ foreach ($userArray as $userId)
 				if (array_key_exists('RS', $fontData ) && strstr_multiple('DF', $fontData['RS'])) 
 				{
 					$sortArray[$pointer]['attributes']['rectstyle'] = $fontData['RS'];
+				}
+				
+				// wurde eine Reihenfolge definiert?   (order index = OI)                 
+				if (array_key_exists('OI', $fontData ) && is_numeric($fontData['OI']))
+				{
+				    $sortArray[$pointer]['orderindex'] = $fontData['OI'];
+				    $orderArray[] =  $fontData['OI'];
+				}
+				
+				// wurde ein Abstand für dynamische Felder definiert?   (order width = OW)
+				if (array_key_exists('OW', $fontData ) && is_numeric($fontData['OW']))
+				{
+				    $sortArray[$pointer]['orderwidth'] = $fontData['OW'];
 				}
 							
 				switch ($fieldtype)
@@ -666,7 +683,48 @@ foreach ($userArray as $userId)
 						}
 				
 						$sortArray[$pointer]['rect'] = true;
-						break;  				
+						break; 
+						
+				    case 'm':              // memberships
+				        $role = new TableRoles($gDb);
+				        $roleMemberships = $user->getRoleMemberships();
+				        
+				        foreach ($roleMemberships as $roleId)
+				        {
+				            $role->readDataById($roleId);
+
+				            $sortArray[$pointer]['text'] = $role->getValue('rol_name');
+				            $sortArray[] = $sortArray[$pointer];
+				            $pointer = count($sortArray)-1;	
+				            $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
+				        }
+					    break;
+					    
+				    case 'f':              // former memberships
+				        $sql = 'SELECT *
+                                  FROM '.TBL_MEMBERS.'
+                            INNER JOIN '.TBL_ROLES.'
+                                    ON rol_id = mem_rol_id
+                            INNER JOIN '.TBL_CATEGORIES.'
+                                    ON cat_id = rol_cat_id
+                                 WHERE mem_usr_id  = ? -- $userId
+                                   AND mem_end     < ? -- DATE_NOW
+                                   AND rol_valid   = 1
+                                   AND cat_name_intern <> \'EVENTS\'
+                                   AND (  cat_org_id  = ? -- $gCurrentOrganization->getValue(\'org_id\')
+                                    OR cat_org_id IS NULL )
+                              ORDER BY cat_org_id, cat_sequence, rol_name';
+				    
+				        $formerRolesStatement = $gDb->queryPrepared($sql, array($userId, DATE_NOW, $gCurrentOrganization->getValue('org_id')));
+		
+				        while ($row = $formerRolesStatement->fetch())
+				        {
+				            $sortArray[$pointer]['text'] = $row['rol_name'];
+				            $sortArray[] = $sortArray[$pointer];
+				            $pointer = count($sortArray)-1;
+				            $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
+				        }
+				        break; 
 				}
 			
 				// wurde optionaler Text angegeben?   (von lagro)
@@ -682,6 +740,46 @@ foreach ($userArray as $userId)
 			}	
 		}  // zum naechsten Profilfeld 
 	
+		if (count($orderArray) > 0)								// mind. bei einem Feld wurden Eintragungen für eine Reihenfolge gesetzt
+		{
+		    $orderIndexMin = min($orderArray);                  // den kleinsten Index bestimmen
+		    $sortFirst  = array();
+		    $sortSecond = array();
+		    foreach ($sortArray as $key => $row)
+		    {
+		        $sortFirst[$key] = $row['orderindex'];
+		        $sortSecond[$key] = $row['xykoord'][1];
+		    }
+		    
+		    array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortArray);
+		    
+		    foreach ($sortArray as $key => $sortData)
+		    {
+		        if (!isset($newY) && $sortData['orderindex'] == $orderIndexMin )
+		        {
+		            $newY = $sortData['xykoord'][1];
+		            continue;
+		        }
+		        
+		        if ($sortData['orderindex'] != '')        
+		        {
+		            $diff = 0;
+		            $newY += $sortData['orderwidth'];
+		            $sortArray[$key]['xykoord'][1] = $newY;
+		            
+		            if (isset($sortData['xykoord'][3]))
+		            {
+		                $diff = $sortData['xykoord'][3] - $sortData['xykoord'][1];
+		                $sortArray[$key]['xykoord'][3] = $sortArray[$key]['xykoord'][1] + $diff;
+		            }
+		        }
+		    }
+		    unset($newY);
+		}
+		
+		//Etikettendruck
+		$sortFirst  = array();
+		$sortSecond = array();
 		foreach ($sortArray as $key => $row) 
 		{
     		$sortFirst[$key] = $row['xykoord'][1];          

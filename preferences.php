@@ -290,7 +290,17 @@ $page->addJavascript('
         user_fields['. ($i+4). '] = new Object();
         user_fields['. ($i+4). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
         user_fields['. ($i+4). ']["id"]   = "rdummy";      //r wie rectangle
-        user_fields['. ($i+4). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_RECTANGLE').'";        
+        user_fields['. ($i+4). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_RECTANGLE').'"; 
+
+        user_fields['. ($i+5). '] = new Object();
+        user_fields['. ($i+5). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
+        user_fields['. ($i+5). ']["id"]   = "mdummy";      //m wie memberships
+        user_fields['. ($i+5). ']["data"] = "'.$gL10n->get('ROL_ROLE_MEMBERSHIPS').'";       
+
+        user_fields['. ($i+6). '] = new Object();
+        user_fields['. ($i+6). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
+        user_fields['. ($i+6). ']["id"]   = "fdummy";      //f wie former memberships
+        user_fields['. ($i+6). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";  
         
         return user_fields;
     }    
@@ -339,7 +349,17 @@ $page->addJavascript('
         user_fields['. ($i+4). '] = new Object();
         user_fields['. ($i+4). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_ADDITIONAL_FIELDS').'";
         user_fields['. ($i+4). ']["id"]   = "rdummy";      //r wie rectangle
-        user_fields['. ($i+4). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_RECTANGLE').'";        
+        user_fields['. ($i+4). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_RECTANGLE').'";    
+
+        user_fields['. ($i+5). '] = new Object();
+        user_fields['. ($i+5). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
+        user_fields['. ($i+5). ']["id"]   = "mdummy";      //m wie membership
+        user_fields['. ($i+5). ']["data"] = "'.$gL10n->get('ROL_ROLE_MEMBERSHIPS').'";   
+
+        user_fields['. ($i+6). '] = new Object();
+        user_fields['. ($i+6). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
+        user_fields['. ($i+6). ']["id"]   = "fdummy";      //f wie former
+        user_fields['. ($i+6). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";        
         
         return user_fields;
     }

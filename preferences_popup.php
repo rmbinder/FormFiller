@@ -2,7 +2,7 @@
 /**
  * Zeigt im Menue Einstellungen ein Popup-Fenster mit Hinweisen an
  *
- * @copyright 2004-2018 The Admidio Team
+ * @copyright 2004-2019 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
@@ -49,6 +49,8 @@ echo '
 	'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION_DESC').'<br><br> 
 	<strong>'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC').'
+	<strong>'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC').'<br><br>
+    <strong>'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS_DESC').'
 </div>';
