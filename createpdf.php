@@ -36,7 +36,7 @@ require_once(__DIR__ . '/libs/fpdf/fpdf.php');
 require_once(__DIR__ . '/libs/fpdi/src/autoload.php');
 
 $awardsIsActiv = false;
-if (file_exists(__DIR__ . '/../awards/awards_acommon.php'))
+if (file_exists(__DIR__ . '/../awards/awards_common.php'))
 {
     require_once(__DIR__ . '/../awards/awards_common.php');
     if (isAwardsDbInstalled())
