@@ -23,6 +23,16 @@ require_once(__DIR__ . '/../../adm_program/system/login_valid.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
+$awardsIsActiv = false;
+if (file_exists(__DIR__ . '/../awards/awards_common.php'))
+{
+    require_once(__DIR__ . '/../awards/awards_common.php');
+    if (isAwardsDbInstalled())
+    {
+        $awardsIsActiv = true;
+    }
+}
+
 // only authorized user are allowed to start this module
 if (!$gCurrentUser->isAdministrator())
 {
@@ -300,8 +310,18 @@ $page->addJavascript('
         user_fields['. ($i+6). '] = new Object();
         user_fields['. ($i+6). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
         user_fields['. ($i+6). ']["id"]   = "fdummy";      //f wie former memberships
-        user_fields['. ($i+6). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";  
+        user_fields['. ($i+6). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";  ';
         
+        if ($awardsIsActiv)
+        {
+            $javascriptCode .= '
+            user_fields['. ($i+7). '] = new Object();
+            user_fields['. ($i+7). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
+            user_fields['. ($i+7). ']["id"]   = "adummy";      //a wie awards
+            user_fields['. ($i+7). ']["data"] = "'.$gL10n->get('AWA_HEADLINE').'";  ';
+        }
+        
+        $javascriptCode .= '
         return user_fields;
     }    
         		
@@ -359,7 +379,18 @@ $page->addJavascript('
         user_fields['. ($i+6). '] = new Object();
         user_fields['. ($i+6). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
         user_fields['. ($i+6). ']["id"]   = "fdummy";      //f wie former
-        user_fields['. ($i+6). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";        
+        user_fields['. ($i+6). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";  ';
+        
+        if ($awardsIsActiv)
+        {
+            $javascriptCode .= '
+            user_fields['. ($i+7). '] = new Object();
+            user_fields['. ($i+7). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
+            user_fields['. ($i+7). ']["id"]   = "adummy";      //a wie awards
+            user_fields['. ($i+7). ']["data"] = "'.$gL10n->get('AWA_HEADLINE').'";  ';
+        }
+        
+        $javascriptCode .= '        
         
         return user_fields;
     }

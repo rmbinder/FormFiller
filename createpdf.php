@@ -35,6 +35,16 @@ require_once(__DIR__ . '/classes/configtable.php');
 require_once(__DIR__ . '/libs/fpdf/fpdf.php');
 require_once(__DIR__ . '/libs/fpdi/src/autoload.php');
 
+$awardsIsActiv = false;
+if (file_exists(__DIR__ . '/../awards/awards_acommon.php'))
+{
+    require_once(__DIR__ . '/../awards/awards_common.php');
+    if (isAwardsDbInstalled())
+    {
+        $awardsIsActiv = true;
+    }
+}
+
 // only the main script or the plugin keymanager can call and start this module
 if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavigation->getUrl(), 'keys_export_to_pff.php') === false)
 {
@@ -725,6 +735,24 @@ foreach ($userArray as $userId)
 				            $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
 				        }
 				        break; 
+				        
+				    case 'a':              // awards
+				        if ($awardsIsActiv)
+				        {
+				            $awards=awa_load_awards($userId,true);
+
+				            foreach ($awards as $row)
+				            {
+				                $sortArray[$pointer]['text'] = $row['awa_cat_name'].' - '.$row['awa_name'];
+				                $sortArray[$pointer]['text'] .= (strlen($row['awa_info'])>0) ? ' ('.$row['awa_info'].')' : '';
+                                $sortArray[$pointer]['text'] .= ' ('.$gL10n->get('AWA_SINCE').' '.date('d.m.Y',strtotime($row['awa_date'])).')' ;
+				                $sortArray[] = $sortArray[$pointer];
+				                $pointer = count($sortArray)-1;
+				                $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
+				            }
+				        }
+				        break; 
+				        
 				}
 			
 				// wurde optionaler Text angegeben?   (von lagro)
