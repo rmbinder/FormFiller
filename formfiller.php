@@ -97,7 +97,8 @@ $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
           FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
          WHERE cat.cat_id = rol.rol_cat_id
            AND (  cat.cat_org_id = '.ORG_ID.'
-            OR cat.cat_org_id IS NULL )';
+            OR cat.cat_org_id IS NULL )
+      ORDER BY cat.cat_name DESC';
 
 $form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
 $form->addCheckbox('show_former_members', $gL10n->get('PLG_FORMFILLER_FORMER_MEMBERS_ONLY'));
