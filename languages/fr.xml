@@ -65,7 +65,8 @@
     <string name="PLG_FORMFILLER_LABELS_DESC">Pour imprimer des étiquettes, les informations suivantes sont requises dans le champ Etiquettes : nombre de colonnes, espacement des colonnes, nombre de lignes, espacement des lignes.\n\nExemple:\n 5,50,10,40\nsignifie que les étiquettes sont disposées sur 5 colonnes à une distance de 50mm et 10 lignes à une distance de 40mm</string>
     <string name="PLG_FORMFILLER_LINE">Ligne</string>
     <string name="PLG_FORMFILLER_LINK_TO_DEINSTALLATION">Changer à la désinstallation</string>
-    <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Changer à l\'export/import</string>    
+    <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Changer à l\'export/import</string>
+    <string name="PLG_FORMFILLER_LOCAL">local</string>    
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. affichage PDF</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">L\'affichage PDF maximum est le nombre maximum de pages qu\'un document PDF peut avoir afin qu\'il puisse toujours être affiché à l\'écran. Si le nombre de pages est plus grand, le téléchargement du fichier est proposé immédiatement.</string>
     <string name="PLG_FORMFILLER_MENU_URL_ERROR">Le contrôle d\'autorisation du plugin a échoué. Plus d\'un élément de menu est défini avec la même URL.\n\n=> #VAR1_BOLD#</string>
@@ -76,7 +77,8 @@
     <string name="PLG_FORMFILLER_PATTERN">Modèle de formulaire</string>
     <string name="PLG_FORMFILLER_PDF_FILE">Fichier PDF</string>
     <string name="PLG_FORMFILLER_PDF_FILE_DESC">Le fichier PDF dans lequel les données sont écrites est sélectionné ici.\n\nSi aucun fichier n\'est sélectionné, un nouveau document PDF vide est créé sur la base des valeurs d\'alignement, de taille et d\'unité et rempli avec les données.</string>
-    <string name="PLG_FORMFILLER_PDF_FILE_DESC2">Ici, tu peux sélectionner un fichier PDF dans lequel les données sont écrites. Une entrée de fichier PDF existante dans une configuration écrase l\'entrée sélectionnée ici.</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_DESC2">Ici, tu peux sélectionner un fichier PDF dans lequel les données sont écrites. Un fichier PDF sélectionné ici remplace l’entrée d’une configuration.</string>
+    <string name="PLG_FORMFILLER_PDF_FILE_DESC3">Ici, tu peux sélectionner un fichier PDF local dans lequel les données sont écrites. Un fichier PDF sélectionné localement a la priorité la plus élevée et écrase toutes les autres entrées.</string> 
     <string name="PLG_FORMFILLER_PDF_FILE_GENERATE">Créer un fichier PDF</string>
     <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES">Fichiers PDF de plusieurs pages</string>
     <string name="PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC">Si le fichier PDF sélectionné est constitué de plusieurs pages, vous pouvez déterminer pour chaque zone de la sélection de zone sur quelle page elle est imprimée. La syntaxe est la suivante : P=Page.\nsignifie, par exemple, que ce champ n\'est imprimé qu\'à la page 2 du fichier PDF. Pour une impression à la page 1, le paramètre P=x peut être omis ou P=1 peut être utilisé.</string>

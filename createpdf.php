@@ -70,6 +70,7 @@ $attributesDefault = array();
 $user = new User($gDb, $gProfileFields);
 $relation = new TableUserRelation($gDb);
 $relationArray = array();
+$completePath = '';
 
 if (isset($_POST['user_id']))
 {
@@ -151,16 +152,17 @@ else
 $pdf = new FPDI($orientation, $unit, $size);
 
 $pdfID = 0;
-if ($pPreferences->config['Formular']['pdfid'][$postFormID] > 0)
+if ($pPreferences->config['Formular']['pdfid'][$postFormID] > 0)          // ist in der Konfiguration eine PDF-Datei definiert?
 {
 	$pdfID = $pPreferences->config['Formular']['pdfid'][$postFormID];
 }
-elseif ($postPdfID > 0)
+
+if ($postPdfID > 0)                                                       // wird eine optionale PDF-Datei mittels SelectBox übergeben?
 {
-	$pdfID = $postPdfID;
+	$pdfID = $postPdfID; 
 }
 
-// wenn $pdfID != 0 ist, dann wurde ein PDF-File zum Beschreiben übergeben
+// wenn $pdfID != 0 ist, dann wurde ein PDF-File aus dem Download-Bereich zum Beschreiben übergeben
 if ($pdfID != 0)
 {
 	//pruefen, ob das Formular noch in der DB existiert
@@ -193,6 +195,26 @@ if ($pdfID != 0)
 		$gMessage->show($gL10n->get('SYS_FILE_NOT_EXIST'));
 	}
 }
+
+if (strlen($_FILES['userfile']['tmp_name'][0]) != 0)                         // eine lokale PDF-Datei wurde übergeben; diese hat höchste Priorität            
+{
+    // check if Upload was OK
+    if (($_FILES['userfile']['error'][0] !== UPLOAD_ERR_OK) && ($_FILES['userfile']['error'][0] !== UPLOAD_ERR_NO_FILE))
+    {
+        $gMessage->show($gL10n->get('SYS_ERROR'));
+        // => EXIT
+    }
+        
+    // check if file was really uploaded
+    if(!file_exists($_FILES['userfile']['tmp_name'][0]) || !is_uploaded_file($_FILES['userfile']['tmp_name'][0]))
+    {
+        $gMessage->show($gL10n->get('SYS_FILE_NOT_EXIST'));
+        // => EXIT
+    }
+        
+    // Pfad der Datei holen
+    $completePath = $_FILES['userfile']['tmp_name'][0];
+}   
 
 //sind Daten für Etiketten definiert?  (dann die Etikettendaten überpruefen)
 $etiketten = explode(',', $pPreferences->config['Formular']['labels'][$postFormID]);
@@ -287,7 +309,7 @@ foreach ($userArray as $userId)
 			$pdf->SetAutoPageBreak(false);
 		
 			// set the sourcefile
-			if ($pdfID > 0)
+			if ($completePath != '')
 			{
 				$pageNumber = $pdf->setSourceFile($completePath);			// $pagenumber: Seitenanzahl der importieren PDF-Datei
 				
