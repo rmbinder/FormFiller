@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * Erzeugt und befuellt die PDF-Datei fuer das Admidio-Plugin FormFiller
  *
- * @copyright 2004-2019 The Admidio Team
+ * @copyright 2004-2020 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
@@ -292,13 +292,27 @@ foreach ($userScanArray as $userId)
 }
 unset($userScanArray);
 
+$pageCounter = 1;                                               // notwendig bei importierten PDFs mit mehreren Seiten (Seitenzähler)
+$pageNumber = 1;                                                // notwendig bei importierten PDFs mit mehreren Seiten (Seitenanzahl)
+
+if ($completePath != '')                                        // wenn nicht leer, dann wurde eine PDF-Datei zum Befüllen übergeben
+{
+    $pageNumber = $pdf->setSourceFile($completePath);			// Seitenanzahl der importieren PDF-Datei
+}
+	
 foreach ($userArray as $userId)
 {
+    if ($pageCounter > $pageNumber)
+    {
+        $completePath = '';                                     // es gibt mehr user als Seitenanzahl der importierten Datei, d.h. Leerseiten anfügen
+    }
+    
 	$user->readDataById($userId);
-	$pageCounter = 1;								// notwendig bei importierten PDFs mit mehreren Seiten (Seitenzähler)
-	$pageNumber = 1;							    // notwendig bei importierten PDFs mit mehreren Seiten (Seitenanzahl)
 	
-	while ($pageCounter <= $pageNumber )            // Schleife bei importierten PDFs mit mehreren Seiten
+	$pageCounterUser = 1;								        // notwendig bei Verwendung des Parameters P (Seitenzähler je user)
+	$pageToPrintUser = 1;							            // notwendig bei Verwendung des Parameters P (max. Seitenanzahl je user)
+	
+	while ($pageCounterUser <= $pageToPrintUser )               // Schleife bei Verwendung des Parameters P
 	{
 		$sortArray = array();
 		$orderArray = array();
@@ -311,14 +325,14 @@ foreach ($userArray as $userId)
 			// set the sourcefile
 			if ($completePath != '')
 			{
-				$pageNumber = $pdf->setSourceFile($completePath);			// $pagenumber: Seitenanzahl der importieren PDF-Datei
-				
-				// Klassischer Etikettendruck (mehrere Etiketten nebeneinander, mehrere Etiketten untereinander, Druck über mehrere Seiten)
-				// kann nicht angewendet werden, wenn die importierte PDF-Datei mehrere Seiten aufweist
-				// In diesem Fall wird von der importierten PDF-Datei nur die erste Seite eingelesen und verwendet
-				if ( isset($etiketten[0]) && $etiketten[0] != 1 && isset($etiketten[2]) && $etiketten[2] != 1)
+				// Sonderfälle absichern:
+				// 1.   Klassischer Etikettendruck (mehrere Etiketten nebeneinander, mehrere Etiketten untereinander, Druck über mehrere Seiten)
+				//      kann nicht angewendet werden, wenn die importierte PDF-Datei mehrere Seiten aufweist
+				// 2.   Wenn der Parameter P=x (Druck über mehrere Seiten) verwendet wird und die importierte PDF-Datei aber nur eine Seite enthält
+				// In diesen Fällen wird von der importierten PDF-Datei nur die erste Seite eingelesen und verwendet (1), bzw. immer nur die einzige Seite verwendet (2)
+			    if ( (isset($etiketten[0]) && $etiketten[0] != 1 && isset($etiketten[2]) && $etiketten[2] != 1) || $pageNumber == 1)
 				{
-					$pageNumber = 1;
+				    $pageCounter = 1;
 				}
 				
 				//import page
@@ -365,18 +379,19 @@ foreach ($userArray as $userId)
 					$attr = explode('=', $splitData);
 					$fontData[$attr[0]] = $attr[1];
 				}
-			
+								
 				// Parameter "P" auswerten (importierte PDF-Dokumente mit mehreren Seiten) 
-				if ($pageCounter == 1)                // die erste Seite
+				if ($pageCounterUser == 1)                // die erste Seite
 				{
 					if (array_key_exists('P', $fontData) && $fontData['P'] <> 1)
 					{
+					    $pageToPrintUser = max($fontData['P'], $pageToPrintUser);
 						continue;                     //Feld bei Pruefung durchgefallen; zum naechsten Feld
 					}
 				}
 				else 
 				{
-					if (!array_key_exists('P', $fontData) || (array_key_exists('P', $fontData) && $fontData['P'] <> $pageCounter))
+					if (!array_key_exists('P', $fontData) || (array_key_exists('P', $fontData) && $fontData['P'] <> $pageCounterUser))
 					{
 						continue;                     //Feld bei Pruefung durchgefallen; zum naechsten Feld
 					}
@@ -961,12 +976,13 @@ foreach ($userArray as $userId)
 			}
 				
 			// ggf. eine temporaer erzeugte Bilddatei wieder loeschen
-			if(file_exists( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png'))
+			if (file_exists( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png'))
        	 	{
         		unlink( ADMIDIO_PATH . FOLDER_DATA . '/PFF'.$sortData['image']['zufall'].'.png');
         	}	
 		}	
-		$pageCounter++;							// genutzt bei importierten PDFs mit mehreren Seiten
+		$pageCounter++;							
+        $pageCounterUser++;
 	}
 	
 	if (count($etiketten) > 0)
