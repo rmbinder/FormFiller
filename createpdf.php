@@ -638,78 +638,80 @@ foreach ($userArray as $userId)
 						}
 						break;
 				
-					case 'b'  &&  array_key_exists($userId, $relationArray):
-				
-						$user->readDataById($relationArray[$userId]);
+                    case 'b':  
+                        if (array_key_exists($userId, $relationArray))
+					    {
+                            $user->readDataById($relationArray[$userId]);
 
-						switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
-						{
-							case 'RADIO_BUTTON':
-							case 'DROPDOWN':
+						    switch ($gProfileFields->getPropertyById($fieldid, 'usf_type'))
+                            {
+                                case 'RADIO_BUTTON':
+							    case 'DROPDOWN':
 				
-								$pos = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
+                                    $pos = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
 				
-								if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
-								{
-									$textarray = explode(',', $fontData['T']);
-									if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
-									{
-										$text = $textarray[$pos];
-									}
-									else                                      // sonst schreibe Leerzeichen
-									{
-										$text = ' ';
-									}
-								}
-								else    // lese Wert aus Datenbank
-								{
-									$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-									if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
-									{
-										// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
-										$doc = new DOMDocument();
-										$doc->loadXML($text);
-										$nodeList = $doc->getElementsByTagName('img');
-										$nodes = iterator_to_array($nodeList);
-										$node = $nodes[0];
-										if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
-										{
-											// Kein Tooltip in der Option, nehme Icon-Name als Wert
-											$text = $node->getattribute('src');
-											$text = substr($text, strrpos($text, '/') + 1);
-											$texttemp = explode('.', $text, 2);
-											$text = $texttemp[0];
-										}
-										else
-										{
-											$text = $node->getattribute('title');
-										}
-									}
-								}
+								    if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
+								    {
+									   $textarray = explode(',', $fontData['T']);
+									   if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
+									   {
+										  $text = $textarray[$pos];
+									   }
+									   else                                      // sonst schreibe Leerzeichen
+									   {
+										  $text = ' ';
+									   }
+								    }
+								    else    // lese Wert aus Datenbank
+								    {
+									   $text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+									   if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
+									   {
+										  // Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
+										  $doc = new DOMDocument();
+										  $doc->loadXML($text);
+										  $nodeList = $doc->getElementsByTagName('img');
+										  $nodes = iterator_to_array($nodeList);
+										  $node = $nodes[0];
+										  if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
+										  {
+											 // Kein Tooltip in der Option, nehme Icon-Name als Wert
+											 $text = $node->getattribute('src');
+											 $text = substr($text, strrpos($text, '/') + 1);
+											 $texttemp = explode('.', $text, 2);
+											 $text = $texttemp[0];
+										  }
+										  else
+										  {
+											 $text = $node->getattribute('title');
+										  }
+									   }
+								    }
 				
-								if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
-								{
-									if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
-									{
-										//beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
-										//deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
-										$sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
-										$sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
-									}
-								}
-								break;
+								    if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
+								    {
+									   if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
+									   {
+										  //beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+										  //deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+										  $sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
+										  $sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
+									   }
+								    }
+								    break;
 							
-							case 'CHECKBOX':
-								if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
-								{
-									$text = 'x';
-								}
-								break;
+							    case 'CHECKBOX':
+                                    if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')))
+								    {
+									   $text = 'x';
+								    }
+								    break;
 							
-							default:
-							$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-						}
-						$user->readDataById($userId);
+                                default:
+							         $text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+                            }
+                            $user->readDataById($userId);
+					    }
 						break;
 					
 					case 't':              // trace				
