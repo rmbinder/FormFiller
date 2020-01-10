@@ -551,6 +551,9 @@ $page->addHtml('
                         $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?mode=2">
                         			<img src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
                         $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
+                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/assort.php">
+                        			<img src="'. THEME_URL . '/icons/list-point.png" alt="'.$gL10n->get('PLG_FORMFILLER_ASSORT').'" />'.$gL10n->get('PLG_FORMFILLER_ASSORT').'</a>';
+                        $form->addCustomContent($gL10n->get('PLG_FORMFILLER_ASSORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_ASSORT_DESC', 'helpTextIdLabel' => 'PLG_FORMFILLER_ASSORT_NOTE'));
                         $form->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
                         $page->addHtml($form->show(false));
                     	$page->addHtml('
