@@ -148,7 +148,8 @@ $sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
          WHERE fol.fol_id = fil.fil_fol_id
            AND fil.fil_name LIKE \'%.PDF\'
            AND ( fol.fol_org_id = '.ORG_ID.'
-            OR fol.fol_org_id IS NULL )';
+            OR fol.fol_org_id IS NULL )
+      ORDER BY fol.fol_name ASC, fil.fil_name ASC ';
 $form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC2'));	
 $form->addFileUpload('importpdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_LOCAL').')', array( 'allowedMimeTypes' => array('application/pdf'), 'helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC3'));
 $form->closeGroupBox();
