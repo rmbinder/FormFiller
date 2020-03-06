@@ -304,7 +304,7 @@ foreach ($userArray as $userId)
 {
     if ($pageCounter > $pageNumber)
     {
-        $completePath = '';                                     // es gibt mehr user als Seitenanzahl der importierten Datei, d.h. Leerseiten anfügen
+        $pageCounter = 1;                                       // die importierte PDF-Datei hat zuwenig Seiten, deshalb wieder bei Seite 1 beginnen
     }
     
 	$user->readDataById($userId);
