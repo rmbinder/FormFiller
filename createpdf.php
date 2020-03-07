@@ -302,11 +302,6 @@ if ($completePath != '')                                        // wenn nicht le
 	
 foreach ($userArray as $userId)
 {
-    if ($pageCounter > $pageNumber)
-    {
-        $pageCounter = 1;                                       // die importierte PDF-Datei hat zuwenig Seiten, deshalb wieder bei Seite 1 beginnen
-    }
-    
 	$user->readDataById($userId);
 	
 	$pageCounterUser = 1;								        // notwendig bei Verwendung des Parameters P (Seitenzähler je user)
@@ -314,6 +309,11 @@ foreach ($userArray as $userId)
 	
 	while ($pageCounterUser <= $pageToPrintUser )               // Schleife bei Verwendung des Parameters P
 	{
+	    if ($pageCounter > $pageNumber)
+	    {
+	        $pageCounter = 1;                                   // die importierte PDF-Datei hat zuwenig Seiten, deshalb wieder bei Seite 1 beginnen
+	    }
+	    
 		$sortArray = array();
 		$orderArray = array();
 		
