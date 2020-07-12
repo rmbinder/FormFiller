@@ -24,14 +24,15 @@ require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
 $awardsIsActiv = false;
-if (file_exists(__DIR__ . '/../awards/awards_common.php'))
+//Awards ist noch nicht kompatibel zu Admidio 4
+/*if (file_exists(__DIR__ . '/../awards/awards_common.php'))
 {
     require_once(__DIR__ . '/../awards/awards_common.php');
     if (isAwardsDbInstalled())
     {
         $awardsIsActiv = true;
     }
-}
+}*/
 
 // only authorized user are allowed to start this module
 if (!$gCurrentUser->isAdministrator())
@@ -41,7 +42,6 @@ if (!$gCurrentUser->isAdministrator())
 
 // Initialize and check the parameters
 $getAddDelete  = admFuncVariableIsValid($_GET, 'add_delete', 'numeric', array('defaultValue' => 0));
-$getFullScreen = admFuncVariableIsValid($_GET, 'full_screen',  'bool');
 
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
@@ -59,7 +59,7 @@ elseif ($getAddDelete > 0)
 {
 	foreach($pPreferences->config['Formular'] as $key => $dummy)
 	{
-		array_splice($pPreferences->config[Formular][$key], $getAddDelete-1, 1);
+	    array_splice($pPreferences->config['Formular'][$key], $getAddDelete-1, 1);
 	}
 }
 
@@ -79,65 +79,66 @@ foreach ($sizes as $data)
 }
 
 // add current url to navigation stack if last url was not the same page
-if (!admStrContains($gNavigation->getUrl(), 'preferences.php'))
+if ( !StringUtils::strContains($gNavigation->getUrl(), 'preferences.php'))
 {
-    $gNavigation->addUrl(CURRENT_URL, $headline);
+    $gNavigation->addUrl(CURRENT_URL);
 }
 
 // create html page object
 $page = new HtmlPage($headline);
-$page->enableModal();
-
-if ($getFullScreen)
-{
-	$page->hideThemeHtml();
-}
+$page->setUrlPreviousPage($gNavigation->getPreviousUrl());
 
 // open the module configurations if a configuration is added or deleted 
-if ($getAddDelete != 0)
+if ($getAddDelete)
 {
-    $page->addJavascript('$("#tabs_nav_common").attr("class", "active");
-        $("#tabs-common").attr("class", "tab-pane active");
-        $("#collapse_configurations").attr("class", "panel-collapse collapse in");
-        location.hash = "#" + "panel_configurations";', true);
+    $page->addJavascript('
+        $("#tabs_nav_common").attr("class", "nav-link active");
+        $("#tabs-common").attr("class", "tab-pane fade show active");
+        $("#collapse_configurations").attr("class", "collapse show");
+        location.hash = "#" + "panel_configurations";',
+        true
+        );
 }
 else
 {
-    $page->addJavascript('$("#tabs_nav_common").attr("class", "active");
-     $("#tabs-common").attr("class", "tab-pane active");
-     ', true);
+    $page->addJavascript('
+        $("#tabs_nav_common").attr("class", "nav-link active");
+        $("#tabs-common").attr("class", "tab-pane active");
+    ', true);
 }
 
-$page->addJavascript('   
+$page->addJavascript('
     $(".form-preferences").submit(function(event) {
         var id = $(this).attr("id");
         var action = $(this).attr("action");
-        $("#"+id+" .form-alert").hide();
-
+        var formAlert = $("#" + id + " .form-alert");
+        formAlert.hide();
+    
         // disable default form submit
         event.preventDefault();
-        
-        $.ajax({
-            type:    "POST",
-            url:     action,
-            data:    $(this).serialize(),
+    
+        $.post({
+    
+            url: action,
+            data: $(this).serialize(),
             success: function(data) {
-                if(data == "success") {
-                    $("#"+id+" .form-alert").attr("class", "alert alert-success form-alert");
-                    $("#"+id+" .form-alert").html("<span class=\"glyphicon glyphicon-ok\"></span><strong>'.$gL10n->get('SYS_SAVE_DATA').'</strong>");
-                    $("#"+id+" .form-alert").fadeIn("slow");
-                    $("#"+id+" .form-alert").animate({opacity: 1.0}, 2500);
-                    $("#"+id+" .form-alert").fadeOut("slow");
-                }
-                else {
-                    $("#"+id+" .form-alert").attr("class", "alert alert-danger form-alert");
-                    $("#"+id+" .form-alert").fadeIn();
-                    $("#"+id+" .form-alert").html("<span class=\"glyphicon glyphicon-remove\"></span>"+data);
+                if (data === "success") {
+    
+                    formAlert.attr("class", "alert alert-success form-alert");
+                    formAlert.html("<i class=\"fas fa-check\"></i><strong>'.$gL10n->get('SYS_SAVE_DATA').'</strong>");
+                    formAlert.fadeIn("slow");
+                    formAlert.animate({opacity: 1.0}, 2500);
+                    formAlert.fadeOut("slow");
+                } else {
+                    formAlert.attr("class", "alert alert-danger form-alert");
+                    formAlert.fadeIn();
+                    formAlert.html("<i class=\"fas fa-exclamation-circle\"></i>" + data);
                 }
             }
-        });    
-    });
-    ', true);
+        });
+    });',
+    true
+    );
 
 	$javascriptCode = '';
 	
@@ -411,182 +412,162 @@ $javascriptCode = '$(document).ready(function() {
 $javascriptCode .= '
 });
 ';
+
 $page->addJavascript($javascriptCode, true);  
 
-// create module menu with back link
-$preferencesMenu = new HtmlNavbar('menu_preferences', $headline, $page);
-$preferencesMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL10n->get('SYS_BACK'), 'back.png');
-
-if ($getFullScreen)
+/**
+ * @param string $group
+ * @param string $id
+ * @param string $title
+ * @param string $icon
+ * @param string $body
+ * @return string
+ */
+function getPreferencePanel($group, $id, $title, $icon, $body)
 {
-	$preferencesMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen=false',
-			$gL10n->get('SYS_NORMAL_PICTURE'), 'arrow_in.png');
-}
-else
-{
-	$preferencesMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen=true',
-			$gL10n->get('SYS_FULL_SCREEN'), 'arrow_out.png');
-}
-
-$page->addHtml($preferencesMenu->show(false));
-
-$page->addHtml('
-<ul class="nav nav-tabs" id="preferences_tabs">
-  	<li id="tabs_nav_common"><a href="#tabs-common" data-toggle="tab">'.$gL10n->get('SYS_SETTINGS').'</a></li>
-</ul>
-
-<div class="tab-content">
-    <div class="tab-pane" id="tabs-common">
-        <div class="panel-group" id="accordion_common">
-            <div class="panel panel-default" id="panel_configurations">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_configurations">
-                            <img src="'. THEME_URL .'/icons/application_form_edit.png" alt="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'" />'.$gL10n->get('PLG_FORMFILLER_CONFIGURATIONS').'
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse_configurations" class="panel-collapse collapse">
-                    <div class="panel-body">');
-                        // show form
-                        $form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?form=configurations', $page, array('class' => 'form-preferences'));
-                        
-                        $html = '<a class="admidio-icon-link" data-toggle="modal" data-target="#admidio_modal" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php? " >
-                        		<img src="'. THEME_URL . '/icons/help.png" alt="'.$gL10n->get('SYS_HELP').'" />'.$gL10n->get('SYS_HELP').'</a>';
-                        $form->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
-                    	$form->addLine();
-                        $form->addDescription('<div style="width:100%; height:550px; overflow:auto; border:20px;">');
-                        for ($conf = 0; $conf < $num_configs; $conf++)
-						{                           			
-							$form->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PLG_FORMFILLER_CONFIGURATION'));
-							$form->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf], array('property' => FIELD_REQUIRED));
-							$form->addSelectBox('font'.$conf, $gL10n->get('PLG_FORMFILLER_FONT'), array('Courier'=>'Courier','Arial'=>'Arial','Times'=>'Times','Symbol'=>'Symbol','ZapfDingbats'=>'ZapfDingbats' ), array('defaultValue' => $pPreferences->config['Formular']['font'][$conf], 'showContextDependentFirstEntry' => false));
-							$form->addSelectBox('style'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSTYLE'), array(''=>'Normal','B'=>'Fett','I'=>'Kursiv','U'=>'Unterstrichen','BI'=>'Fett-Kursiv','BU'=>'Fett-Unterstrichen','IU'=>'Kursiv-Unterstrichen'), array('defaultValue' => $pPreferences->config['Formular']['style'][$conf],  'showContextDependentFirstEntry' => false));
-							$form->addInput('size'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], 
-                            	array('step' => 2,'type' => 'number', 'minNumber' => 6, 'maxNumber' => 40));
-							$form->addSelectBox('color'.$conf, $gL10n->get('PLG_FORMFILLER_FONTCOLOR'), array('0,0,0'=>$gL10n->get('PLG_FORMFILLER_BLACK'),'255,0,0'=>$gL10n->get('PLG_FORMFILLER_RED'),'0,255,0'=>$gL10n->get('PLG_FORMFILLER_GREEN'),'0,0,255'=>$gL10n->get('PLG_FORMFILLER_BLUE')), array('defaultValue' => $pPreferences->config['Formular']['color'][$conf],  'showContextDependentFirstEntry' => false));
-							$form->addSelectBox('pdfform_orientation'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION'), array('P'=>'Hochformat','L'=>'Querformat' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_orientation'][$conf], 'showContextDependentFirstEntry' => true));
-							$form->addSelectBox('pdfform_size'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE'), $selectBoxSizesEntries, array('defaultValue' => $pPreferences->config['Formular']['pdfform_size'][$conf], 'showContextDependentFirstEntry' => true));
-							$form->addSelectBox('pdfform_unit'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT'), array('pt'=>'Punkt','mm'=>'Millimeter','cm'=>'Zentimeter','in'=>'Inch' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_unit'][$conf], 'showContextDependentFirstEntry' => true));							
-							
-							$sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
-                                      FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
-                                     WHERE fol.fol_id = fil.fil_fol_id
-                                       AND fil.fil_name LIKE \'%.PDF\' 
-                                       AND (  fol.fol_org_id = '.ORG_ID.'
-                                        OR fol.fol_org_id IS NULL )';
-				        	$form->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf]));				                                            
-                     		$form->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf]);
-						
-                     		if ($gPreferences['members_enable_user_relations'] == 1)
-                     		{
-                     			// select box showing all relation types
-                     			$sql = 'SELECT urt_id, urt_name
-              						      FROM '.TBL_USER_RELATION_TYPES.'
-          							  ORDER BY urt_name';
-                     			$form->addSelectBoxFromSql('relationtype_id'.$conf, $gL10n->get('PLG_FORMFILLER_RELATION'), $gDb, $sql,
-                     				array('defaultValue' => $pPreferences->config['Formular']['relation'][$conf],'showContextDependentFirstEntry' => true, 'multiselect' => false));
-                     		}
-                     		
-							$html = '
-							<div class="table-responsive">
-    							<table class="table table-condensed" id="mylist_fields_table">
-        							<thead>
-            							<tr>
-                							<th style="width: 10%;">'.$gL10n->get('SYS_ABR_NO').'</th>
-                							<th style="width: 25%;">'.$gL10n->get('SYS_CONTENT').'</th> 
-                							<th style="width: 65%;">'.$gL10n->get('PLG_FORMFILLER_POSITION').'</th>    
-            							</tr>
-        							</thead>
-        							<tbody id="mylist_fields_tbody'.$conf.'">
-            							<tr id="table_row_button">
-                							<td colspan="3">
-                    							<a class="icon-text-link" href="javascript:addColumn'.$conf.'()"><img src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'</a>
-                							</td>
-            							</tr>
-        							</tbody>
-    							</table>
-    						</div>';
-                        	$form->addCustomContent($gL10n->get('PLG_FORMFILLER_FIELD_SELECTION'), $html); 
-                        	if($num_configs != 1)
-                        	{
-                        		$html = '<a id="delete_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen='.$getFullScreen.'&add_delete='.($conf+1).'"><img
-                                        src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_DELETE_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_DELETE_CONFIG').'</a>';
-                        		$form->addCustomContent('', $html);
-                        	}
-                        	$form->closeGroupBox();
-						}
-                        $form->addDescription('</div>');
-                        $form->addLine();
-                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?full_screen='.$getFullScreen.'&add_delete=-1"><img
-                                    src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
-						$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
-                        $form->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
-                        $form->addSubmitButton('btn_save_configurations', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
-                        
-                        $page->addHtml($form->show(false));
-                    	$page->addHtml('
-                    </div>
-                </div>
-            </div>           
-            
-            <div class="panel panel-default" id="panel_options">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_options">
-                            <img src="'. THEME_URL .'/icons/options.png" alt="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" title="'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'" />'.$gL10n->get('PLG_FORMFILLER_OPTIONS').'
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse_options" class="panel-collapse collapse">
-                    <div class="panel-body">');
-                        // show form
-                        $form = new HtmlForm('options_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?form=options', $page, array('class' => 'form-preferences'));
-                        $form->addInput('maxpdfview', $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], 
-                            	array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'));
-                        $form->addInput('pdfform_addsizes', $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'), $pPreferences->config['Optionen']['pdfform_addsizes'], array('helpTextIdInline' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC'));
-                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php?mode=1">
-                        			<img src="'. THEME_URL . '/icons/database_save.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'</a>';
-                        $form->addCustomContent($gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_EXPORT_IMPORT_DESC'));
-                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?mode=2">
-                        			<img src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'" />'.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
-                        $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
-                        $html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/assort.php">
-                        			<img src="'. THEME_URL . '/icons/list-point.png" alt="'.$gL10n->get('PLG_FORMFILLER_ASSORT').'" />'.$gL10n->get('PLG_FORMFILLER_ASSORT').'</a>';
-                        $form->addCustomContent($gL10n->get('PLG_FORMFILLER_ASSORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_ASSORT_DESC', 'helpTextIdLabel' => 'PLG_FORMFILLER_ASSORT_NOTE'));
-                        $form->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL .'/icons/disk.png', 'class' => ' col-sm-offset-3'));
-                        $page->addHtml($form->show(false));
-                    	$page->addHtml('
-                    </div>
-                </div>
+    $html = '
+        <div class="card" id="panel_' . $id . '">
+            <div class="card-header">
+                <a type="button" data-toggle="collapse" data-target="#collapse_' . $id . '">
+                    <i class="' . $icon . ' fa-fw"></i>' . $title . '
+                </a>
             </div>
-            
-            <div class="panel panel-default" id="panel_plugin_informations">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="icon-text-link" data-toggle="collapse" data-parent="#accordion_common" href="#collapse_plugin_informations">
-                            <img src="'. THEME_URL .'/icons/info.png" alt="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" title="'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'" />'.$gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION').'
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse_plugin_informations" class="panel-collapse collapse">
-                    <div class="panel-body">');
-                        // create a static form
-                        $form = new HtmlForm('plugin_informations_preferences_form', null, $page);                        
-                        $form->addStaticControl('plg_name', $gL10n->get('PLG_FORMFILLER_PLUGIN_NAME'), $gL10n->get('PLG_FORMFILLER_FORMFILLER'));
-                        $form->addStaticControl('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
-                        $form->addStaticControl('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
-                        $html = '<a class="icon-text-link" href="https://www.admidio.org/dokuwiki/doku.php?id=de:plugins:formfiller#formfiller" target="_blank"><img
-                                    src="'. THEME_URL . '/icons/eye.png" alt="'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'" />'.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'</a>';
-                        $form->addCustomContent($gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC'));
-                        $page->addHtml($form->show(false));
-                   		$page->addHtml('
-                   	</div>
+            <div id="collapse_' . $id . '" class="collapse" aria-labelledby="headingOne" data-parent="#accordion_preferences">
+                <div class="card-body">
+                    ' . $body . '
                 </div>
             </div>
         </div>
+    ';
+    return $html;
+}
+
+$page->addHtml('
+<ul id="preferences_tabs" class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a id="tabs_nav_common" class="nav-link" href="#tabs-common" data-toggle="tab" role="tab">'.$gL10n->get('SYS_SETTINGS').'</a>
+    </li>
+</ul>
+    
+<div class="tab-content">
+    <div class="tab-pane fade" id="tabs-common" role="tabpanel">
+        <div class="accordion" id="accordion_preferences">');
+
+// PANEL: CONFIGURATIONS
+
+$formConfigurations = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?form=configurations', $page, array('class' => 'form-preferences'));
+                        
+$html = '<a class="admidio-icon-link openPopup" href="javascript:void(0);"
+    data-href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php').'">'.
+    '<i class="fas fa-info" data-toggle="tooltip" title="' . $gL10n->get('SYS_HELP') . '"></i> '.$gL10n->get('SYS_HELP').'</a>';
+$formConfigurations->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
+$formConfigurations->addLine();
+$formConfigurations->addDescription('<div style="width:100%; height:550px; overflow:auto; border:20px;">');
+for ($conf = 0; $conf < $num_configs; $conf++)
+{                           			
+        $formConfigurations->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PLG_FORMFILLER_CONFIGURATION'));
+        $formConfigurations->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf], array('property' => HtmlForm::FIELD_REQUIRED));
+        $formConfigurations->addSelectBox('font'.$conf, $gL10n->get('PLG_FORMFILLER_FONT'), array('Courier'=>'Courier','Arial'=>'Arial','Times'=>'Times','Symbol'=>'Symbol','ZapfDingbats'=>'ZapfDingbats' ), array('defaultValue' => $pPreferences->config['Formular']['font'][$conf], 'showContextDependentFirstEntry' => false));
+        $formConfigurations->addSelectBox('style'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSTYLE'), array(''=>'Normal','B'=>'Fett','I'=>'Kursiv','U'=>'Unterstrichen','BI'=>'Fett-Kursiv','BU'=>'Fett-Unterstrichen','IU'=>'Kursiv-Unterstrichen'), array('defaultValue' => $pPreferences->config['Formular']['style'][$conf],  'showContextDependentFirstEntry' => false));
+        $formConfigurations->addInput('size'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], array('step' => 2,'type' => 'number', 'minNumber' => 6, 'maxNumber' => 40));
+        $formConfigurations->addSelectBox('color'.$conf, $gL10n->get('PLG_FORMFILLER_FONTCOLOR'), array('0,0,0'=>$gL10n->get('PLG_FORMFILLER_BLACK'),'255,0,0'=>$gL10n->get('PLG_FORMFILLER_RED'),'0,255,0'=>$gL10n->get('PLG_FORMFILLER_GREEN'),'0,0,255'=>$gL10n->get('PLG_FORMFILLER_BLUE')), array('defaultValue' => $pPreferences->config['Formular']['color'][$conf],  'showContextDependentFirstEntry' => false));
+        $formConfigurations->addSelectBox('pdfform_orientation'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION'), array('P'=>'Hochformat','L'=>'Querformat' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_orientation'][$conf], 'showContextDependentFirstEntry' => true));
+        $formConfigurations->addSelectBox('pdfform_size'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE'), $selectBoxSizesEntries, array('defaultValue' => $pPreferences->config['Formular']['pdfform_size'][$conf], 'showContextDependentFirstEntry' => true));
+        $formConfigurations->addSelectBox('pdfform_unit'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT'), array('pt'=>'Punkt','mm'=>'Millimeter','cm'=>'Zentimeter','in'=>'Inch' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_unit'][$conf], 'showContextDependentFirstEntry' => true));							
+							
+        $sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
+                  FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
+                 WHERE fol.fol_id = fil.fil_fol_id
+                   AND fil.fil_name LIKE \'%.PDF\' 
+                   AND ( fol.fol_org_id = '.ORG_ID.'
+                    OR fol.fol_org_id IS NULL )';
+        $formConfigurations->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf]));				                                            
+        $formConfigurations->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf]);
+						
+        if ($gSettingsManager->getInt('members_enable_user_relations') == 1)
+        {
+            // select box showing all relation types
+            $sql = 'SELECT urt_id, urt_name
+              	      FROM '.TBL_USER_RELATION_TYPES.'
+          			 ORDER BY urt_name';
+            $formConfigurations->addSelectBoxFromSql('relationtype_id'.$conf, $gL10n->get('PLG_FORMFILLER_RELATION'), $gDb, $sql,
+                array('defaultValue' => $pPreferences->config['Formular']['relation'][$conf],'showContextDependentFirstEntry' => true, 'multiselect' => false));
+        }
+                     		
+    	$html = '
+        <div class="table-responsive">
+            <table class="table table-condensed" id="mylist_fields_table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">'.$gL10n->get('SYS_ABR_NO').'</th>
+                        <th style="width: 25%;">'.$gL10n->get('SYS_CONTENT').'</th> 
+                        <th style="width: 65%;">'.$gL10n->get('PLG_FORMFILLER_POSITION').'</th>    
+                    </tr>
+                </thead>
+                <tbody id="mylist_fields_tbody'.$conf.'">
+                    <tr id="table_row_button">
+                        <td colspan="3">
+                            <a class="icon-text-link" href="javascript:addColumn'.$conf.'()"><i class="fas fa-plus-circle"></i> '.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_FIELD').'</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    	</div>';
+
+        $formConfigurations->addCustomContent($gL10n->get('PLG_FORMFILLER_FIELD_SELECTION'), $html); 
+        if ($num_configs != 1)
+        {
+            $formConfigurations->addLine();
+            $html = '<a id="delete_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add_delete='.($conf+1).'">
+                <i class="fas fa-trash-alt"></i> '.$gL10n->get('PLG_FORMFILLER_DELETE_CONFIG').'</a>';
+            $formConfigurations->addCustomContent('', $html);
+        }
+        $formConfigurations->closeGroupBox();
+    }
+$formConfigurations->addDescription('</div>');
+$formConfigurations->addLine();
+$html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add_delete=-1">
+    <i class="fas fa-clone"></i> '.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
+$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
+$formConfigurations->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
+$formConfigurations->addSubmitButton('btn_save_configurations', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => ' col-sm-offset-3'));
+
+$page->addHtml(getPreferencePanel('common', 'configurations', $gL10n->get('PLG_FORMFILLER_CONFIGURATIONS'), 'fas fa-cogs', $formConfigurations->show()));
+                        
+// PANEL: OPTIONS  
+                        
+$formOptions = new HtmlForm('options_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?form=options', $page, array('class' => 'form-preferences'));
+$formOptions->addInput('maxpdfview', $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], 
+    array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'));
+$formOptions->addInput('pdfform_addsizes', $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'), $pPreferences->config['Optionen']['pdfform_addsizes'], array('helpTextIdInline' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC'));
+$html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php?mode=1">
+    <i class="fas fa-exchange-alt"></i> '.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'</a>';
+$formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_EXPORT_IMPORT_DESC'));
+$html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?mode=2">
+    <i class="fas fa-trash-alt"></i> '.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
+$formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
+$html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/assort.php">
+    <i class="fas fa-sort"></i> '.$gL10n->get('PLG_FORMFILLER_ASSORT').'</a>';
+$formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_ASSORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_ASSORT_DESC', 'helpTextIdLabel' => 'PLG_FORMFILLER_ASSORT_NOTE'));
+$formOptions->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => ' col-sm-offset-3'));
+
+$page->addHtml(getPreferencePanel('common', 'options', $gL10n->get('PLG_FORMFILLER_OPTIONS'), 'fas fa-cog', $formOptions->show()));
+                        
+// PANEL: PLUGIN INFORMATIONS
+                        
+$formPluginInformations = new HtmlForm('plugin_informations_preferences_form', null, $page);                        
+$formPluginInformations->addStaticControl('plg_name', $gL10n->get('PLG_FORMFILLER_PLUGIN_NAME'), $gL10n->get('PLG_FORMFILLER_FORMFILLER'));
+$formPluginInformations->addStaticControl('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
+$formPluginInformations->addStaticControl('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
+$html = '<a class="icon-text-link" href="https://www.admidio.org/dokuwiki/doku.php?id=de:plugins:formfiller#formfiller" target="_blank">
+    <i class="fas fa-external-link-square-alt"></i> '.$gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN').'</a>';
+$formPluginInformations->addCustomContent($gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC'));
+
+$page->addHtml(getPreferencePanel('common', 'plugin_informations', $gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION'), 'fas fa-info-circle', $formPluginInformations->show()));
+
+$page->addHtml('
+        </div>
     </div>
-</div>
-');
+</div>');
 
 $page->show();

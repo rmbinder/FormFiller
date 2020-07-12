@@ -53,19 +53,13 @@ $gNavigation->addUrl(CURRENT_URL, $headline);
     
 $page = new HtmlPage($headline);
 $page->setTitle($title);
-        
-// create module menu
-$listsMenu = new HtmlNavbar('menu_lists_list', $headline, $page);
 
 if ($gCurrentUser->isAdministrator())
-{
-	// show link to pluginpreferences 
-	$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php',
-                        $gL10n->get('PLG_FORMFILLER_SETTINGS'), 'options.png', 'right');        
+{  
+	// show link to pluginpreferences
+	$page->addPageFunctionsMenuItem('admMenuItemPreferencesLists', $gL10n->get('PLG_FORMFILLER_SETTINGS'),
+	    ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php',  'fa-cog');
 }
-        
-// show module menu
-$page->addHtml($listsMenu->show(false));
  
 // show form
 $form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/createpdf.php', $page, array('class' => 'form-preferences', 'enableFileUpload' => true));
@@ -73,7 +67,7 @@ $form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGI
 $form->openGroupBox('select_role_or_user', $gL10n->get('PLG_FORMFILLER_SOURCE'));
 $form->addDescription($gL10n->get('PLG_FORMFILLER_SELECT_ROLE_OR_USER'));
 
-$form->openGroupBox('select_role');
+//$form->openGroupBox('select_role');
 $sql = 'SELECT lst_id, lst_name, lst_global 
 		  FROM '. TBL_LISTS .'
          WHERE lst_org_id = '. ORG_ID. '
@@ -102,9 +96,9 @@ $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
 
 $form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
 $form->addCheckbox('show_former_members', $gL10n->get('PLG_FORMFILLER_FORMER_MEMBERS_ONLY'));
-$form->closeGroupBox();			//select_role
-
-$form->openGroupBox('select_user');
+//$form->closeGroupBox();			//select_role
+$form->addLine();
+//$form->openGroupBox('select_user');
 $sqlData['query']= 'SELECT DISTINCT 
 		usr_id, CONCAT(last_name.usd_value, \' \', first_name.usd_value) AS name, SUBSTRING(last_name.usd_value,1,1) AS letter
               FROM '.TBL_MEMBERS.'
@@ -133,13 +127,13 @@ $sqlData['params']= array(
 		DATE_NOW,
 		DATE_NOW  );
 
-$form->addSelectBoxFromSql('user_id', $gL10n->get('PLG_FORMFILLER_USER'), $gDb, $sqlData, array( 'property' => FIELD_REQUIRED , 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC', 'multiselect' => true));				                                                 
+$form->addSelectBoxFromSql('user_id', $gL10n->get('PLG_FORMFILLER_USER'), $gDb, $sqlData, array( 'property' => HtmlForm::FIELD_REQUIRED , 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC', 'multiselect' => true));				                                                 
 
-$form->closeGroupBox();			//select_user
+//$form->closeGroupBox();			//select_user
 $form->closeGroupBox();			//select_role_or_user
 
 $form->openGroupBox('select_config', $gL10n->get('PLG_FORMFILLER_FORM_CONFIGURATION'));
-$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array('property' => FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
+$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array('property' => HtmlForm::FIELD_REQUIRED , 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
 $form->closeGroupBox();
 
 $form->openGroupBox('select_pdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_OPTIONAL').')');
@@ -154,7 +148,7 @@ $form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gD
 $form->addFileUpload('importpdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_LOCAL').')', array( 'allowedMimeTypes' => array('application/pdf'), 'helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC3'));
 $form->closeGroupBox();
 
-$form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => THEME_URL .'/icons/page_white_acrobat.png', 'class' => ' col-sm-offset-3'));
+$form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => 'fa-file-pdf', 'class' => ' col-sm-offset-3'));
                         
 $page->addHtml($form->show(false));
         

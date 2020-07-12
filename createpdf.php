@@ -36,6 +36,8 @@ require_once(__DIR__ . '/libs/fpdf/fpdf.php');
 require_once(__DIR__ . '/libs/fpdi/src/autoload.php');
 
 $awardsIsActiv = false;
+//Awards ist noch nicht kompatibel zu Admidio 4
+/*
 if (file_exists(__DIR__ . '/../awards/awards_common.php'))
 {
     require_once(__DIR__ . '/../awards/awards_common.php');
@@ -43,7 +45,7 @@ if (file_exists(__DIR__ . '/../awards/awards_common.php'))
     {
         $awardsIsActiv = true;
     }
-}
+}*/
 
 // only the main script or the plugin keymanager can call and start this module
 if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavigation->getUrl(), 'keys_export_to_pff.php') === false)
