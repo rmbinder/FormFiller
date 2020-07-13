@@ -90,7 +90,7 @@ elseif (($postListId > 0) && ($postRoleId > 0))
 	$sql = $list->getSQL($role_ids, $postShowFormerMembers);
 		
 	// SQL-Statement der Liste ausfuehren und pruefen ob Daten vorhanden sind
-	$statement = $gDb->query($sql);
+	$statement = $gDb->queryPrepared($sql);
 	
 	while ($row = $statement->fetch())
 	{
@@ -170,11 +170,11 @@ if ($pdfID != 0)
 	//pruefen, ob das Formular noch in der DB existiert
 	$sql = 'SELECT fil_id 
               FROM '. TBL_FILES .' , '. TBL_CATEGORIES. ' , '. TBL_FOLDERS. '
-             WHERE fil_id = \''.$pdfID.'\' 
+             WHERE fil_id = ? 
                AND fil_fol_id = fol_id
-               AND (  fol_org_id = '.ORG_ID.'
+               AND (  fol_org_id = ?
                 OR fol_org_id IS NULL ) ';
-    $statement = $gDb->query($sql);
+    $statement = $gDb->queryPrepared($sql, array($pdfID, ORG_ID));
     $row = $statement->fetchObject();
          
 	// Gibt es das Formular noch in der DB, wenn nicht: Fehlermeldung
@@ -272,13 +272,13 @@ foreach ($userScanArray as $userId)
                   FROM '.TBL_USER_RELATIONS.'
             INNER JOIN '.TBL_USER_RELATION_TYPES.'
                     ON ure_urt_id  = urt_id
-                 WHERE ure_usr_id1 = '.$userId.'
-            	   AND urt_id = '.$pPreferences->config['Formular']['relation'][$postFormID].'
+                 WHERE ure_usr_id1 = ?
+            	   AND urt_id = ?
                    AND urt_name        <> \'\'
                    AND urt_name_male   <> \'\'
                    AND urt_name_female <> \'\'
               ORDER BY urt_name ASC LIMIT 1';
-		$relationStatement = $gDb->query($sql);
+		$relationStatement = $gDb->queryPrepared($sql, array($userId, $pPreferences->config['Formular']['relation'][$postFormID]));
 
 		if ($row = $relationStatement->fetch())
 		{

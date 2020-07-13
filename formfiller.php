@@ -70,14 +70,15 @@ $form->addDescription($gL10n->get('PLG_FORMFILLER_SELECT_ROLE_OR_USER'));
 //$form->openGroupBox('select_role');
 $sql = 'SELECT lst_id, lst_name, lst_global 
 		  FROM '. TBL_LISTS .'
-         WHERE lst_org_id = '. ORG_ID. '
-           AND (  lst_usr_id = '. $gCurrentUser->getValue('usr_id'). '
+         WHERE lst_org_id = ?
+           AND ( lst_usr_id = ?
             OR lst_global = 1)
            AND lst_name IS NOT NULL
       ORDER BY lst_global ASC, lst_name ASC';
 
+$statement = $gDb->queryPrepared($sql, array(ORG_ID, $gCurrentUser->getValue('usr_id')));
 $configurations = array();
-$statement = $gDb->query($sql);     
+
 if ($statement->rowCount() > 0)
 {
 	while ($row = $statement->fetch())
