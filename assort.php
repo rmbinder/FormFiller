@@ -23,6 +23,8 @@ if (!$gCurrentUser->isAdministrator())
 	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
 }
 
+$gNavigation->addUrl(CURRENT_URL);
+
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 

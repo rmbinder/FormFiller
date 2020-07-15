@@ -78,6 +78,17 @@ foreach ($sizes as $data)
 	}	
 }
 
+$showOption = '';
+if ($getAddDelete)
+{
+    $showOption = 'configurations';
+}
+
+if ( StringUtils::strContains($gNavigation->getUrl(), 'export_import.php') || StringUtils::strContains($gNavigation->getUrl(), 'assort.php') || StringUtils::strContains($gNavigation->getUrl(), 'preferences_function.php?mode=2'))
+{
+    $showOption = 'options';
+}
+
 // add current url to navigation stack if last url was not the same page
 if ( !StringUtils::strContains($gNavigation->getUrl(), 'preferences.php'))
 {
@@ -88,16 +99,16 @@ if ( !StringUtils::strContains($gNavigation->getUrl(), 'preferences.php'))
 $page = new HtmlPage($headline);
 $page->setUrlPreviousPage($gNavigation->getPreviousUrl());
 
-// open the module configurations if a configuration is added or deleted 
-if ($getAddDelete)
+// open module configurations or options depending on the last page
+if ($showOption <> '')
 {
     $page->addJavascript('
         $("#tabs_nav_common").attr("class", "nav-link active");
         $("#tabs-common").attr("class", "tab-pane fade show active");
-        $("#collapse_configurations").attr("class", "collapse show");
-        location.hash = "#" + "panel_configurations";',
+        $("#collapse_'.$showOption.'").attr("class", "collapse show");
+        location.hash = "#" + "panel_'.$showOption.'";',
         true
-        );
+    );
 }
 else
 {
