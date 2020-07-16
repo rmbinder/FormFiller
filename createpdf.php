@@ -576,6 +576,7 @@ foreach ($userArray as $userId)
 							case 'RADIO_BUTTON':
 							case 'DROPDOWN':
 
+							    $text = ' ';
 								$pos  = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
 
 								if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
@@ -585,35 +586,15 @@ foreach ($userArray as $userId)
 									{
 										$text = $textarray[$pos];
 									}
-									else                                      // sonst schreibe Leerzeichen
-									{
-										$text = ' ';
-									}
 								}
 								else    // lese Wert aus Datenbank
 								{
-									$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-									if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
-									{
-										// Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
-										$doc = new DOMDocument();
-										$doc->loadXML($text);
-										$nodeList = $doc->getElementsByTagName('img');
-										$nodes = iterator_to_array($nodeList);
-										$node = $nodes[0];
-										if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
-										{
-											// Kein Tooltip in der Option, nehme Icon-Name als Wert
-											$text = $node->getattribute('src');
-											$text = substr($text, strrpos($text, '/') + 1);
-											$texttemp = explode('.', $text, 2);
-											$text = $texttemp[0];
-										}
-										else
-										{
-											$text = $node->getattribute('title');									
-										}
-									}
+								    // show selected text of optionfield or combobox
+								    $arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
+								    if (isset($arrListValues[$pos+1])) 
+								    {
+								        $text = $arrListValues[$pos+1];
+								    }
 								}
 
 								if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
@@ -650,6 +631,7 @@ foreach ($userArray as $userId)
                                 case 'RADIO_BUTTON':
 							    case 'DROPDOWN':
 				
+							        $text = ' ';
                                     $pos = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
 				
 								    if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
@@ -659,35 +641,15 @@ foreach ($userArray as $userId)
 									   {
 										  $text = $textarray[$pos];
 									   }
-									   else                                      // sonst schreibe Leerzeichen
-									   {
-										  $text = ' ';
-									   }
 								    }
 								    else    // lese Wert aus Datenbank
 								    {
-									   $text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
-									   if ((substr($text, 0, 4) == '<img') && (substr($text, -2) == '/>'))
-									   {
-										  // Option wurde mit Icon definiert, wir muessen aus dem HTML Tag das Title-Attribut auslesen
-										  $doc = new DOMDocument();
-										  $doc->loadXML($text);
-										  $nodeList = $doc->getElementsByTagName('img');
-										  $nodes = iterator_to_array($nodeList);
-										  $node = $nodes[0];
-										  if ($node->getattribute('title') == $gProfileFields->getPropertyById($fieldid, 'usf_name'))
-										  {
-											 // Kein Tooltip in der Option, nehme Icon-Name als Wert
-											 $text = $node->getattribute('src');
-											 $text = substr($text, strrpos($text, '/') + 1);
-											 $texttemp = explode('.', $text, 2);
-											 $text = $texttemp[0];
-										  }
-										  else
-										  {
-											 $text = $node->getattribute('title');
-										  }
-									   }
+								        // show selected text of optionfield or combobox
+								        $arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
+								        if (isset($arrListValues[$pos+1]))
+								        {
+								            $text = $arrListValues[$pos+1];
+								        }
 								    }
 				
 								    if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
