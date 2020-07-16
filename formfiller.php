@@ -58,11 +58,11 @@ if ($gCurrentUser->isAdministrator())
 {  
 	// show link to pluginpreferences
 	$page->addPageFunctionsMenuItem('admMenuItemPreferencesLists', $gL10n->get('PLG_FORMFILLER_SETTINGS'),
-	    ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php',  'fa-cog');
+	    SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php'),  'fa-cog');
 }
  
 // show form
-$form = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/createpdf.php', $page, array('class' => 'form-preferences', 'enableFileUpload' => true));
+$form = new HtmlForm('configurations_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/createpdf.php'), $page, array('class' => 'form-preferences', 'enableFileUpload' => true));
 
 $form->openGroupBox('select_role_or_user', $gL10n->get('PLG_FORMFILLER_SOURCE'));
 $form->addDescription($gL10n->get('PLG_FORMFILLER_SELECT_ROLE_OR_USER'));

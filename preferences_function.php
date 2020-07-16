@@ -123,7 +123,7 @@ switch ($getMode)
     	$page->addHtml('<p class="lead">'.$gL10n->get('PLG_FORMFILLER_DEINSTALLATION_FORM_DESC').'</p>');
 
     	// show form
-    	$form = new HtmlForm('deinstallation_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?mode=3', $page);
+    	$form = new HtmlForm('deinstallation_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('mode' => 3)), $page);
     	$radioButtonEntries = array('0' => $gL10n->get('PLG_FORMFILLER_DEINST_ACTORGONLY'), '1' => $gL10n->get('PLG_FORMFILLER_DEINST_ALLORG') );
    	 	$form->addRadioButton('deinst_org_select',$gL10n->get('PLG_FORMFILLER_ORG_CHOICE'),$radioButtonEntries);    
    	 	$form->addSubmitButton('btn_deinstall', $gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), array('icon' => 'fa-trash-alt', 'class' => ' col-sm-offset-3'));

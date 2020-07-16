@@ -466,7 +466,7 @@ $page->addHtml('
 
 // PANEL: CONFIGURATIONS
 
-$formConfigurations = new HtmlForm('configurations_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?form=configurations', $page, array('class' => 'form-preferences'));
+$formConfigurations = new HtmlForm('configurations_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('form' => 'configurations')), $page, array('class' => 'form-preferences'));
                         
 $html = '<a class="admidio-icon-link openPopup" href="javascript:void(0);"
     data-href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php').'">'.
@@ -529,7 +529,7 @@ for ($conf = 0; $conf < $num_configs; $conf++)
         if ($num_configs != 1)
         {
             $formConfigurations->addLine();
-            $html = '<a id="delete_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add_delete='.($conf+1).'">
+            $html = '<a id="delete_config" class="icon-text-link" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => $conf+1)).'">
                 <i class="fas fa-trash-alt"></i> '.$gL10n->get('PLG_FORMFILLER_DELETE_CONFIG').'</a>';
             $formConfigurations->addCustomContent('', $html);
         }
@@ -537,7 +537,7 @@ for ($conf = 0; $conf < $num_configs; $conf++)
     }
 $formConfigurations->addDescription('</div>');
 $formConfigurations->addLine();
-$html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add_delete=-1">
+$html = '<a id="add_config" class="icon-text-link" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => -1)).'">
     <i class="fas fa-clone"></i> '.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
 $htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
 $formConfigurations->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
@@ -547,17 +547,17 @@ $page->addHtml(getPreferencePanel('common', 'configurations', $gL10n->get('PLG_F
                         
 // PANEL: OPTIONS  
                         
-$formOptions = new HtmlForm('options_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?form=options', $page, array('class' => 'form-preferences'));
+$formOptions = new HtmlForm('options_preferences_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('form' => 'options')), $page, array('class' => 'form-preferences'));
 $formOptions->addInput('maxpdfview', $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], 
     array('step' => 1,'type' => 'number', 'minNumber' => 0,  'helpTextIdInline' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'));
 $formOptions->addInput('pdfform_addsizes', $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'), $pPreferences->config['Optionen']['pdfform_addsizes'], array('helpTextIdInline' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC'));
-$html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php?mode=1">
+$html = '<a class="btn" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php', array('mode' => 1)).'">
     <i class="fas fa-exchange-alt"></i> '.$gL10n->get('PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT').'</a>';
 $formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_EXPORT_IMPORT_DESC'));
-$html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?mode=2">
+$html = '<a class="btn" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('mode' => 2)).'">
     <i class="fas fa-trash-alt"></i> '.$gL10n->get('PLG_FORMFILLER_LINK_TO_DEINSTALLATION').'</a>';
 $formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_DEINSTALLATION_DESC'));
-$html = '<a class="btn" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/assort.php">
+$html = '<a class="btn" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/assort.php').'">
     <i class="fas fa-sort"></i> '.$gL10n->get('PLG_FORMFILLER_ASSORT').'</a>';
 $formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_ASSORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_ASSORT_DESC', 'helpTextIdLabel' => 'PLG_FORMFILLER_ASSORT_NOTE'));
 $formOptions->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => ' col-sm-offset-3'));
