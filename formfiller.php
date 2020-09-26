@@ -51,7 +51,7 @@ $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 $gNavigation->clear();
 $gNavigation->addUrl(CURRENT_URL, $headline);
     
-$page = new HtmlPage($headline);
+$page = new HtmlPage('plg-formfiller-mainpage', $headline);
 $page->setTitle($title);
 
 if ($gCurrentUser->isAdministrator())

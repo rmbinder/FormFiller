@@ -39,7 +39,7 @@ switch ($getMode)
 		$headline = $gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT');
 	 
 	    // create html page object
-    	$page = new HtmlPage($headline);
+    	$page = new HtmlPage('plg-formfiller-export-import', $headline);
     
     	// add current url to navigation stack
     	$gNavigation->addUrl(CURRENT_URL, $headline);

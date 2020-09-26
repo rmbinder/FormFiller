@@ -113,7 +113,7 @@ switch ($getMode)
 		$headline = $gL10n->get('PLG_FORMFILLER_DEINSTALLATION');
 	 
 		// create html page object
-   	 	$page = new HtmlPage($headline);
+   	 	$page = new HtmlPage('plg-formfiller-deinstallation', $headline);
     
     	// add current url to navigation stack
     	$gNavigation->addUrl(CURRENT_URL, $headline);
