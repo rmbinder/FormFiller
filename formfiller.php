@@ -67,7 +67,6 @@ $form = new HtmlForm('configurations_form', SecurityUtils::encodeUrl(ADMIDIO_URL
 $form->openGroupBox('select_role_or_user', $gL10n->get('PLG_FORMFILLER_SOURCE'));
 $form->addDescription($gL10n->get('PLG_FORMFILLER_SELECT_ROLE_OR_USER'));
 
-//$form->openGroupBox('select_role');
 $sql = 'SELECT lst_id, lst_name, lst_global 
 		  FROM '. TBL_LISTS .'
          WHERE lst_org_id = ?
@@ -97,9 +96,8 @@ $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
 
 $form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
 $form->addCheckbox('show_former_members', $gL10n->get('PLG_FORMFILLER_FORMER_MEMBERS_ONLY'));
-//$form->closeGroupBox();			//select_role
 $form->addLine();
-//$form->openGroupBox('select_user');
+
 $sqlData['query']= 'SELECT DISTINCT 
 		usr_id, CONCAT(last_name.usd_value, \' \', first_name.usd_value) AS name, SUBSTRING(last_name.usd_value,1,1) AS letter
               FROM '.TBL_MEMBERS.'
@@ -129,8 +127,6 @@ $sqlData['params']= array(
 		DATE_NOW  );
 
 $form->addSelectBoxFromSql('user_id', $gL10n->get('PLG_FORMFILLER_USER'), $gDb, $sqlData, array( 'property' => HtmlForm::FIELD_REQUIRED , 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC', 'multiselect' => true));				                                                 
-
-//$form->closeGroupBox();			//select_user
 $form->closeGroupBox();			//select_role_or_user
 
 $form->openGroupBox('select_config', $gL10n->get('PLG_FORMFILLER_FORM_CONFIGURATION'));

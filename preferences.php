@@ -539,7 +539,9 @@ $formConfigurations->addDescription('</div>');
 $formConfigurations->addLine();
 $html = '<a id="add_config" class="icon-text-link" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => -1)).'">
     <i class="fas fa-clone"></i> '.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'</a>';
-$htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
+$htmlDesc = '<div class="alert alert-warning alert-small" role="alert">
+                <i class="fas fa-exclamation-triangle"></i>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'
+            </div>';
 $formConfigurations->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc)); 
 $formConfigurations->addSubmitButton('btn_save_configurations', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => ' col-sm-offset-3'));
 
