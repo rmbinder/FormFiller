@@ -104,6 +104,7 @@
     <string name="PLG_FORMFILLER_RED">rot</string>
     <string name="PLG_FORMFILLER_RELATION">Beziehung</string>  
     <string name="PLG_FORMFILLER_RELATION_DESC">Um bei Etikettendruck Ehepartner zu drucken kann hier die Beziehung "Ehepartner/-in" gewählt werden. Nach dem Speichern und der Aktualisierung der Seite gibt es in der Feldwahl zusätzliche Wahlmöglichkeiten für diese Beziehung.</string>     
+    <string name="PLG_FORMFILLER_ROLE_MEMBERSHIPS">Rollenmitgliedschaften</string> 
     <string name="PLG_FORMFILLER_SELECT_ROLE_OR_USER">Wähle entweder Listenkonfiguration und Rolle als Quelle aus oder Benutzer.</string>
     <string name="PLG_FORMFILLER_SETTINGS">Einstellungen</string>
     <string name="PLG_FORMFILLER_SOURCE">Quelle</string>

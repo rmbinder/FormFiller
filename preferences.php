@@ -317,7 +317,7 @@ $page->addJavascript('
         user_fields['. ($i+5). '] = new Object();
         user_fields['. ($i+5). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
         user_fields['. ($i+5). ']["id"]   = "mdummy";      //m wie memberships
-        user_fields['. ($i+5). ']["data"] = "'.$gL10n->get('ROL_ROLE_MEMBERSHIPS').'";       
+        user_fields['. ($i+5). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_ROLE_MEMBERSHIPS').'";       
 
         user_fields['. ($i+6). '] = new Object();
         user_fields['. ($i+6). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
@@ -386,7 +386,7 @@ $page->addJavascript('
         user_fields['. ($i+5). '] = new Object();
         user_fields['. ($i+5). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
         user_fields['. ($i+5). ']["id"]   = "mdummy";      //m wie membership
-        user_fields['. ($i+5). ']["data"] = "'.$gL10n->get('ROL_ROLE_MEMBERSHIPS').'";   
+        user_fields['. ($i+5). ']["data"] = "'.$gL10n->get('PLG_FORMFILLER_ROLE_MEMBERSHIPS').'";   
 
         user_fields['. ($i+6). '] = new Object();
         user_fields['. ($i+6). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";

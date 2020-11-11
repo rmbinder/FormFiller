@@ -104,6 +104,7 @@
     <string name="PLG_FORMFILLER_RED">rouge</string>
     <string name="PLG_FORMFILLER_RELATION">Relation</string>  
     <string name="PLG_FORMFILLER_RELATION_DESC">Pour imprimer les conjoints lors de l\'impression d\'étiquettes, tu peux sélectionner ici la relation "Conjoint". Après avoir sauvegardé et mis à jour la page, il existe des options supplémentaires pour cette relation dans la sélection de champs. </string>     
+    <string name="PLG_FORMFILLER_ROLE_MEMBERSHIPS">Adhésion aux rôles</string>
     <string name="PLG_FORMFILLER_SELECT_ROLE_OR_USER">Sélectionne soit la configuration de listes et rôle comme source soit utilisateurs.</string>
     <string name="PLG_FORMFILLER_SETTINGS">Paramétrages</string>
     <string name="PLG_FORMFILLER_SOURCE">Source</string>
