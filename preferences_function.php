@@ -117,8 +117,6 @@ switch ($getMode)
     
     	// add current url to navigation stack
     	$gNavigation->addUrl(CURRENT_URL, $headline);
-
-    	$page->setUrlPreviousPage($gNavigation->getPreviousUrl());
     
     	$page->addHtml('<p class="lead">'.$gL10n->get('PLG_FORMFILLER_DEINSTALLATION_FORM_DESC').'</p>');
 

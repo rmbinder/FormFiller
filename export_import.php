@@ -43,7 +43,6 @@ switch ($getMode)
     
     	// add current url to navigation stack
     	$gNavigation->addUrl(CURRENT_URL, $headline);
-    	$page->setUrlPreviousPage($gNavigation->getPreviousUrl());
 
     	// show form
     	$form = new HtmlForm('export_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php', array('mode' => 2)), $page);

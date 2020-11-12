@@ -97,7 +97,6 @@ if ( !StringUtils::strContains($gNavigation->getUrl(), 'preferences.php'))
 
 // create html page object
 $page = new HtmlPage('plg-formfiller-preferences', $headline);
-$page->setUrlPreviousPage($gNavigation->getPreviousUrl());
 
 // open module configurations or options depending on the last page
 if ($showOption <> '')
