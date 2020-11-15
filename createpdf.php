@@ -682,7 +682,7 @@ foreach ($userArray as $userId)
 						//pruefen, ob Koordinaten x2 und y2 vorhanden sind
 						if (count($xyKoord) < 4)
 						{
-							continue ;      
+							continue 2;      
 						}
 				
 						$sortArray[$pointer]['trace'] = true;
@@ -692,7 +692,7 @@ foreach ($userArray as $userId)
 						//pruefen, ob Koordinaten w und h vorhanden sind
 						if (count($xyKoord) < 4)
 						{
-							continue ;     
+							continue 2;     
 						}
 				
 						$sortArray[$pointer]['rect'] = true;
