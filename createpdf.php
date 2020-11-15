@@ -521,14 +521,14 @@ foreach ($userArray as $userId)
 								$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA .'/'.$downloadFolder->getRootFolderName().'/'.$fontData['L'];
 							}	
 						}
-						elseif ($gPreferences['profile_photo_storage'] == 1)              //Foto aus adm_my_files
+						elseif ((int) $gSettingsManager->get('profile_photo_storage') === 1)              //Foto aus adm_my_files
 						{
 							if (file_exists(ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$userId.'.jpg'))
 							{
 								$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/'.$userId.'.jpg';
 							}
 						}
-						elseif ($gPreferences['profile_photo_storage'] == 0)               //Foto aus der Datenbank
+						elseif ((int) $gSettingsManager->get('profile_photo_storage') === 0)               //Foto aus der Datenbank
 						{		
 							if (strlen($user->getValue('usr_photo')) != NULL)
     						{
