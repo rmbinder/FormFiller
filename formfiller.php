@@ -47,9 +47,7 @@ else
 $title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
-// Navigation faengt hier im Modul an
-$gNavigation->clear();
-$gNavigation->addUrl(CURRENT_URL, $headline);
+$gNavigation->addStartUrl(CURRENT_URL, $headline);
     
 $page = new HtmlPage('plg-formfiller-mainpage', $headline);
 $page->setTitle($title);
