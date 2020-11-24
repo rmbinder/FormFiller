@@ -231,8 +231,8 @@ class ConfigTablePFF
             	else
             	{
  					$sql = 'INSERT INTO '.$this->table_name.' (plp_org_id, plp_name, plp_value) 
-  							VALUES (? , ? , ?)  -- ORG_ID, self::$shortcut.\'__\'.$section.\'__\'.$key, $value '; 
-            		$gDb->queryPrepared($sql, array(ORG_ID, self::$shortcut.'__'.$section.'__'.$key, $value));
+  							VALUES (? , ? , ?)  -- ORG_ID, self::$shortcut.\'__\'.$section.\'__\'.$sectiondatakey, $sectiondatavalue '; 
+ 					$gDb->queryPrepared($sql, array(ORG_ID, self::$shortcut.'__'.$section.'__'.$sectiondatakey, $sectiondatavalue));
             	}   
         	} 
     	}
