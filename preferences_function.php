@@ -115,8 +115,8 @@ switch ($getMode)
 		// create html page object
    	 	$page = new HtmlPage('plg-formfiller-deinstallation', $headline);
     
-    	// add current url to navigation stack
-    	$gNavigation->addUrl(CURRENT_URL, $headline);
+    	$gNavigation->addUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
+    	$gNavigation->addUrl(CURRENT_URL);
     
     	$page->addHtml('<p class="lead">'.$gL10n->get('PLG_FORMFILLER_DEINSTALLATION_FORM_DESC').'</p>');
 

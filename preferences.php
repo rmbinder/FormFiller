@@ -14,6 +14,7 @@
  *
  * add_delete : -1 - Erzeugen einer Konfiguration
  * 				>0 - Löschen einer Konfiguration
+ * show_option: direktes Öffnen eines Panels des Accordeon-Menüs
  * 
  ***********************************************************************************************
  */
@@ -42,6 +43,7 @@ if (!$gCurrentUser->isAdministrator())
 
 // Initialize and check the parameters
 $getAddDelete  = admFuncVariableIsValid($_GET, 'add_delete', 'numeric', array('defaultValue' => 0));
+$showOption    = admFuncVariableIsValid($_GET, 'show_option', 'string');
 
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
@@ -78,22 +80,14 @@ foreach ($sizes as $data)
 	}	
 }
 
-$showOption = '';
 if ($getAddDelete)
 {
     $showOption = 'configurations';
 }
 
-if ( StringUtils::strContains($gNavigation->getUrl(), 'export_import.php') || StringUtils::strContains($gNavigation->getUrl(), 'assort.php') || StringUtils::strContains($gNavigation->getUrl(), 'preferences_function.php?mode=2'))
-{
-    $showOption = 'options';
-}
-
-// add current url to navigation stack if last url was not the same page
-if ( !StringUtils::strContains($gNavigation->getUrl(), 'preferences.php'))
-{
-    $gNavigation->addUrl(CURRENT_URL);
-}
+$gNavigation->clear();
+$gNavigation->addUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/formfiller.php');
+$gNavigation->addUrl(CURRENT_URL);
 
 // create html page object
 $page = new HtmlPage('plg-formfiller-preferences', $headline);

@@ -41,8 +41,8 @@ switch ($getMode)
 	    // create html page object
     	$page = new HtmlPage('plg-formfiller-export-import', $headline);
     
-    	// add current url to navigation stack
-    	$gNavigation->addUrl(CURRENT_URL, $headline);
+    	$gNavigation->addUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
+    	$gNavigation->addUrl(CURRENT_URL);
 
     	// show form
     	$form = new HtmlForm('export_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php', array('mode' => 2)), $page);
@@ -132,14 +132,17 @@ switch ($getMode)
 
 		if (!isset($_FILES['userfile']['name']))
 		{
+		    $gNavigation->clear();
     		$gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_ERROR_OTHER'), $gL10n->get('SYS_ERROR'));	
 		}
 		elseif (strlen($_FILES['userfile']['name'][0]) === 0)
 		{
-    		$gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('SYS_FILE')));
+		    $gNavigation->clear();
+    		$gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_FILE'))));
 		}
 		elseif (strtolower(substr($_FILES['userfile']['name'][0],-4)) <> '.cfg')
 		{
+		    $gNavigation->clear();
 			$gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_ERROR_FILE'), $gL10n->get('SYS_ERROR'));	
 		}
 		
@@ -153,6 +156,7 @@ switch ($getMode)
 			||  !(count($parsedArray['fields']) == count($parsedArray['positions']))
 			||  !(count($parsedArray['fields']) == count($parsedArray['usf_name_intern']))  )
 		{
+		    $gNavigation->clear();
 			$gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_ERROR_FILE'), $gL10n->get('SYS_ERROR'));
 		}
 	
@@ -209,6 +213,9 @@ switch ($getMode)
     	}
 		$pPreferences->save();
 
+		$gNavigation->clear();
+		$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
 		$gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_SUCCESS'));
+		
    		break;
 }

@@ -23,8 +23,6 @@ if (!$gCurrentUser->isAdministrator())
 	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
 }
 
-$gNavigation->addUrl(CURRENT_URL);
-
 $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
@@ -65,5 +63,8 @@ array_multisort($pPreferences->config['Formular']['desc'], SORT_ASC,$pPreference
 
 $pPreferences->save();
 
+$gNavigation->clear();
+$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
 $gMessage->show($gL10n->get('PLG_FORMFILLER_ASSORT_SUCCESS'));
+
    		
