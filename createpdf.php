@@ -198,7 +198,7 @@ if ($pdfID != 0)
 	}
 }
 
-if (strlen($_FILES['userfile']['tmp_name'][0]) != 0)                         // eine lokale PDF-Datei wurde übergeben; diese hat höchste Priorität            
+if (isset($_FILES['userfile']['tmp_name'][0]) && strlen($_FILES['userfile']['tmp_name'][0]) != 0)                         // eine lokale PDF-Datei wurde übergeben; diese hat höchste Priorität            
 {
     // check if Upload was OK
     if (($_FILES['userfile']['error'][0] !== UPLOAD_ERR_OK) && ($_FILES['userfile']['error'][0] !== UPLOAD_ERR_NO_FILE))
