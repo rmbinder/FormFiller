@@ -25,15 +25,14 @@ require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
 $awardsIsActiv = false;
-//Awards ist noch nicht kompatibel zu Admidio 4
-/*if (file_exists(__DIR__ . '/../awards/awards_common.php'))
+if (file_exists(__DIR__ . '/../awards/awards_common.php'))
 {
     require_once(__DIR__ . '/../awards/awards_common.php');
     if (isAwardsDbInstalled())
     {
         $awardsIsActiv = true;
     }
-}*/
+}
 
 // only authorized user are allowed to start this module
 if (!$gCurrentUser->isAdministrator())
