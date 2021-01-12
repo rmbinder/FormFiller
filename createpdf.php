@@ -743,14 +743,17 @@ foreach ($userArray as $userId)
 				        {
 				            $awards=awa_load_awards($userId,true);
 
-				            foreach ($awards as $row)
+				            if (is_array($awards))
 				            {
-				                $sortArray[$pointer]['text'] = $row['awa_cat_name'].' - '.$row['awa_name'];
-				                $sortArray[$pointer]['text'] .= (strlen($row['awa_info'])>0) ? ' ('.$row['awa_info'].')' : '';
-                                $sortArray[$pointer]['text'] .= ' ('.$gL10n->get('AWA_SINCE').' '.date('d.m.Y',strtotime($row['awa_date'])).')' ;
-				                $sortArray[] = $sortArray[$pointer];
-				                $pointer = count($sortArray)-1;
-				                $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
+				                foreach ($awards as $row)
+				                {
+				                    $sortArray[$pointer]['text'] = $row['awa_cat_name'].' - '.$row['awa_name'];
+				                    $sortArray[$pointer]['text'] .= (strlen($row['awa_info'])>0) ? ' ('.$row['awa_info'].')' : '';
+                                    $sortArray[$pointer]['text'] .= ' ('.$gL10n->get('AWA_SINCE').' '.date('d.m.Y',strtotime($row['awa_date'])).')' ;
+				                    $sortArray[] = $sortArray[$pointer];
+				                    $pointer = count($sortArray)-1;
+				                    $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
+				                }
 				            }
 				        }
 				        break; 
