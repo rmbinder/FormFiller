@@ -553,7 +553,7 @@ foreach ($userArray as $userId)
 						{
 							$text = $fontData['V'];	               // Hinweis: der uebergebene Inhalt wird nicht überprueft 
 						}
-						elseif (array_key_exists('K', $fontData))
+						elseif (array_key_exists('K', $fontData) && isset($pkmArray[$fontData['K']]))
 						{
 							$text = $pkmArray[$fontData['K']];	   // Hinweis: der uebergebene Inhalt wird nicht überprueft
 						}
