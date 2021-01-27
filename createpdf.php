@@ -177,7 +177,7 @@ if ($pdfID != 0)
     $row = $statement->fetchObject();
          
 	// Gibt es das Formular noch in der DB, wenn nicht: Fehlermeldung
-    if (!isset($row->fil_id) && !(strlen($row->fil_id) > 0) )
+    if (!isset($row->fil_id))
     {
     	$gMessage->show($gL10n->get('SYS_FILE_NOT_EXIST'));
     }     
