@@ -21,7 +21,7 @@
  * 
  * Interface zum Plugin KeyManager:
  * 
- * kmf-... :		$_POST-Variablen, welche mit kmf- beginnen, werden durch das Plugin KeyManager übergeben
+ * kmf-... :		$_GET-Variablen, welche mit kmf- beginnen, werden durch das Plugin KeyManager übergeben
  * 					FormFiller übernimmt hierbei die Aufgabe des Ausdrucks
  * 
  ***********************************************************************************************
@@ -53,7 +53,7 @@ if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavig
 }
 
 // Initialize and check the parameters
-$postFormID      		= admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
+$formID      		    = admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
 $postListId      		= admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
 $postRoleId      		= admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
 $postPdfID      		= admFuncVariableIsValid($_POST, 'pdf_id', 'numeric', array('defaultValue' => 0));
@@ -96,19 +96,19 @@ elseif (($postListId > 0) && ($postRoleId > 0))
 		$userArray[] = $row['usr_id'] ;
 	}
 }
-elseif (isset($_POST['kmf-RECEIVER']))
+elseif (isset($_GET['kmf-RECEIVER']))
 {	//'kmf-RECEIVER' ist als 'Systemfeld' deklariert, kann nicht geloescht werden und eignet sich deshalb hervorragend zur Ueberpruefung
 	//wenn es vorhanden ist, dann wurde 'createpdf.php' von KeyManager aus aufgerufen
 	
 	$pkmArray = array();                             //Info: pkm = (P)lugin (K)ey(M)anager
-	foreach ($_POST as $postVar => $content)
+	foreach ($_GET as $getVar => $content)
 	{
-		if (strpos($postVar, 'kmf-') === 0)
+	    if (strpos($getVar, 'kmf-') === 0)
 		{
-			$pkmArray[substr($postVar, 4)] = $content;
+		    $pkmArray[substr($getVar, 4)] = $content;
 		}
 	}
-
+	$formID = admFuncVariableIsValid($_GET, 'form_id', 'numeric', array('defaultValue' => 0));
 	$userArray[] = $pkmArray['RECEIVER'] > 0 ? $pkmArray['RECEIVER'] : 0;
 }
 else 
@@ -118,31 +118,31 @@ else
 }
 
 //initiate FPDF
-if (!empty($pPreferences->config['Formular']['pdfform_orientation'][$postFormID]))
+if (!empty($pPreferences->config['Formular']['pdfform_orientation'][$formID]))
 {
-	$orientation = $pPreferences->config['Formular']['pdfform_orientation'][$postFormID];
+	$orientation = $pPreferences->config['Formular']['pdfform_orientation'][$formID];
 }
 else 
 {
 	$orientation = 'P';				//Default
 }	
-if (!empty($pPreferences->config['Formular']['pdfform_unit'][$postFormID]))
+if (!empty($pPreferences->config['Formular']['pdfform_unit'][$formID]))
 {
-	$unit = $pPreferences->config['Formular']['pdfform_unit'][$postFormID];
+	$unit = $pPreferences->config['Formular']['pdfform_unit'][$formID];
 }
 else 
 {
 	$unit = 'mm';					//Default
 }	
-if (!empty($pPreferences->config['Formular']['pdfform_size'][$postFormID]))
+if (!empty($pPreferences->config['Formular']['pdfform_size'][$formID]))
 {
-	if (strstr($pPreferences->config['Formular']['pdfform_size'][$postFormID], ','))
+	if (strstr($pPreferences->config['Formular']['pdfform_size'][$formID], ','))
 	{
-		$size = explode(',', $pPreferences->config['Formular']['pdfform_size'][$postFormID]);	
+		$size = explode(',', $pPreferences->config['Formular']['pdfform_size'][$formID]);	
 	}
 	else 
 	{
-		$size = $pPreferences->config['Formular']['pdfform_size'][$postFormID];	
+		$size = $pPreferences->config['Formular']['pdfform_size'][$formID];	
 	}
 }
 else 
@@ -153,9 +153,9 @@ else
 $pdf = new FPDI($orientation, $unit, $size);
 
 $pdfID = 0;
-if ($pPreferences->config['Formular']['pdfid'][$postFormID] > 0)          // ist in der Konfiguration eine PDF-Datei definiert?
+if ($pPreferences->config['Formular']['pdfid'][$formID] > 0)          // ist in der Konfiguration eine PDF-Datei definiert?
 {
-	$pdfID = $pPreferences->config['Formular']['pdfid'][$postFormID];
+	$pdfID = $pPreferences->config['Formular']['pdfid'][$formID];
 }
 
 if ($postPdfID > 0)                                                       // wird eine optionale PDF-Datei mittels SelectBox übergeben?
@@ -218,7 +218,7 @@ if (isset($_FILES['userfile']['tmp_name'][0]) && strlen($_FILES['userfile']['tmp
 }   
 
 //sind Daten für Etiketten definiert?  (dann die Etikettendaten überpruefen)
-$etiketten = explode(',', $pPreferences->config['Formular']['labels'][$postFormID]);
+$etiketten = explode(',', $pPreferences->config['Formular']['labels'][$formID]);
 		
 if (count($etiketten) == 4)
 {
@@ -251,9 +251,9 @@ $attributesDefault = array(
 // Textattribute mit den Daten der jeweiligen Konfiguration überschreiben (falls vorhanden)
 foreach ($attributesDefault as $attribute => $dummy)
 {
-	if (isset($pPreferences->config['Formular'][$attribute][$postFormID]))
+	if (isset($pPreferences->config['Formular'][$attribute][$formID]))
 	{
-		$attributesDefault[$attribute] = $pPreferences->config['Formular'][$attribute][$postFormID];
+		$attributesDefault[$attribute] = $pPreferences->config['Formular'][$attribute][$formID];
 	}
 }
 	
@@ -265,7 +265,7 @@ foreach ($userScanArray as $userId)
 {
 	$user->readDataById($userId);
 
-	if (!empty($pPreferences->config['Formular']['relation'][$postFormID]) && $user->getValue('GENDER', 'text') === $gL10n->get('SYS_MALE'))
+	if (!empty($pPreferences->config['Formular']['relation'][$formID]) && $user->getValue('GENDER', 'text') === $gL10n->get('SYS_MALE'))
 	{
 		$sql = 'SELECT *
                   FROM '.TBL_USER_RELATIONS.'
@@ -277,7 +277,7 @@ foreach ($userScanArray as $userId)
                    AND urt_name_male   <> \'\'
                    AND urt_name_female <> \'\'
               ORDER BY urt_name ASC LIMIT 1';
-		$relationStatement = $gDb->queryPrepared($sql, array($userId, $pPreferences->config['Formular']['relation'][$postFormID]));
+		$relationStatement = $gDb->queryPrepared($sql, array($userId, $pPreferences->config['Formular']['relation'][$formID]));
 
 		if ($row = $relationStatement->fetch())
 		{
@@ -345,7 +345,7 @@ foreach ($userArray as $userId)
 		}
 		
 		// jetzt alle Felder durchlaufen
-		foreach ($pPreferences->config['Formular']['fields'][$postFormID] as $fieldkey => $fielddata)
+		foreach ($pPreferences->config['Formular']['fields'][$formID] as $fieldkey => $fielddata)
 		{ 
 			//der zu schreibende Text koennte auch direkt in $sortArray geschrieben werden,
 			//aber anhand der Variablen $text ist der Code etwas übersichtlicher :-) 
@@ -355,7 +355,7 @@ foreach ($userArray as $userId)
         	$fieldtype = substr($fielddata, 0, 1);
         	$fieldid = (int) substr($fielddata, 1);
         	
-        	$formdata = $pPreferences->config['Formular']['positions'][$postFormID][$fieldkey];
+        	$formdata = $pPreferences->config['Formular']['positions'][$formID][$fieldkey];
 			  
 			if (!empty($formdata))
 			{
@@ -970,7 +970,7 @@ foreach ($userArray as $userId)
 
 if ($pdf->PageNo() > $pPreferences->config['Optionen']['maxpdfview'] )
 {
-	$pdf->Output($pPreferences->config['Formular']['desc'][$postFormID].'.pdf', 'D');	
+	$pdf->Output($pPreferences->config['Formular']['desc'][$formID].'.pdf', 'D');	
 }
 else 
 {
