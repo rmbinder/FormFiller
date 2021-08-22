@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfParser\CrossReference;
@@ -18,8 +18,6 @@ use setasign\Fpdi\PdfParser\StreamReader;
  *
  * This reader allows a very less overhead parsing of single entries of the cross-reference, because the main entries
  * are only read when needed and not in a single run.
- *
- * @package setasign\Fpdi\PdfParser\CrossReference
  */
 class FixedReader extends AbstractReader implements ReaderInterface
 {
@@ -39,6 +37,7 @@ class FixedReader extends AbstractReader implements ReaderInterface
      * FixedReader constructor.
      *
      * @param PdfParser $parser
+     * @throws CrossReferenceException
      */
     public function __construct(PdfParser $parser)
     {
@@ -63,6 +62,10 @@ class FixedReader extends AbstractReader implements ReaderInterface
     public function getOffsetFor($objectNumber)
     {
         foreach ($this->subSections as $offset => list($startObject, $objectCount)) {
+            /**
+             * @var int $startObject
+             * @var int $objectCount
+             */
             if ($objectNumber >= $startObject && $objectNumber < ($startObject + $objectCount)) {
                 $position = $offset + 20 * ($objectNumber - $startObject);
                 $this->reader->ensure($position, 20);
@@ -71,7 +74,7 @@ class FixedReader extends AbstractReader implements ReaderInterface
                     return false;
                 }
 
-                return (int) substr($line, 0, 10);
+                return (int) \substr($line, 0, 10);
             }
         }
 
@@ -93,13 +96,13 @@ class FixedReader extends AbstractReader implements ReaderInterface
         $startObject = $entryCount = $lastLineStart = null;
         $validityChecked = false;
         while (($line = $this->reader->readLine(20)) !== false) {
-            if (strpos($line, 'trailer') !== false) {
+            if (\strpos($line, 'trailer') !== false) {
                 $this->reader->reset($lastLineStart);
                 break;
             }
 
             // jump over if line content doesn't match the expected string
-            if (2 !== sscanf($line, '%d %d', $startObject, $entryCount)) {
+            if (\sscanf($line, '%d %d', $startObject, $entryCount) !== 2) {
                 continue;
             }
 
@@ -111,7 +114,7 @@ class FixedReader extends AbstractReader implements ReaderInterface
                 /* Check the next line for maximum of 20 bytes and not longer
                  * By catching 21 bytes and trimming the length should be still 21.
                  */
-                if (strlen(trim($nextLine)) !== 21) {
+                if (\strlen(\trim($nextLine)) !== 21) {
                     throw new CrossReferenceException(
                         'Cross-reference entries are larger than 20 bytes.',
                         CrossReferenceException::ENTRIES_TOO_LARGE
@@ -122,7 +125,7 @@ class FixedReader extends AbstractReader implements ReaderInterface
                  * If it would have less bytes the substring would get the first bytes of the next line which would
                  * evaluate to a 20 bytes long string after trimming.
                  */
-                if (strlen(trim(substr($nextLine, 0, 20))) !== 18) {
+                if (\strlen(\trim(\substr($nextLine, 0, 20))) !== 18) {
                     throw new CrossReferenceException(
                         'Cross-reference entries are less than 20 bytes.',
                         CrossReferenceException::ENTRIES_TOO_SHORT
@@ -138,7 +141,10 @@ class FixedReader extends AbstractReader implements ReaderInterface
             $this->reader->reset($lastLineStart);
         }
 
-        if (count($subSections) === 0) {
+        // reset after the last correct parsed line
+        $this->reader->reset($lastLineStart);
+
+        if (\count($subSections) === 0) {
             throw new CrossReferenceException(
                 'No entries found in cross-reference.',
                 CrossReferenceException::NO_ENTRIES
@@ -172,11 +178,11 @@ class FixedReader extends AbstractReader implements ReaderInterface
     public function fixFaultySubSectionShift()
     {
         $subSections = $this->getSubSections();
-        if (count($subSections) > 1) {
+        if (\count($subSections) > 1) {
             return false;
         }
 
-        $subSection = current($subSections);
+        $subSection = \current($subSections);
         if ($subSection[0] != 1) {
             return false;
         }

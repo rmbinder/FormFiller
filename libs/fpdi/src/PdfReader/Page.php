@@ -1,16 +1,18 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfReader;
 
+use setasign\Fpdi\PdfParser\Filter\FilterException;
 use setasign\Fpdi\PdfParser\PdfParser;
+use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfArray;
 use setasign\Fpdi\PdfParser\Type\PdfDictionary;
 use setasign\Fpdi\PdfParser\Type\PdfIndirectObject;
@@ -18,12 +20,12 @@ use setasign\Fpdi\PdfParser\Type\PdfNull;
 use setasign\Fpdi\PdfParser\Type\PdfNumeric;
 use setasign\Fpdi\PdfParser\Type\PdfStream;
 use setasign\Fpdi\PdfParser\Type\PdfType;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use setasign\Fpdi\PdfReader\DataStructure\Rectangle;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 
 /**
  * Class representing a page of a PDF document
- *
- * @package setasign\Fpdi\PdfReader
  */
 class Page
 {
@@ -75,6 +77,9 @@ class Page
      * Get the dictionary of this page.
      *
      * @return PdfDictionary
+     * @throws PdfParserException
+     * @throws PdfTypeException
+     * @throws CrossReferenceException
      */
     public function getPageDictionary()
     {
@@ -91,6 +96,9 @@ class Page
      * @param string $name
      * @param bool $inherited
      * @return PdfType|null
+     * @throws PdfParserException
+     * @throws PdfTypeException
+     * @throws CrossReferenceException
      */
     public function getAttribute($name, $inherited = true)
     {
@@ -101,14 +109,14 @@ class Page
         }
 
         $inheritedKeys = ['Resources', 'MediaBox', 'CropBox', 'Rotate'];
-        if ($inherited && in_array($name, $inheritedKeys, true)) {
-            if (null === $this->inheritedAttributes) {
+        if ($inherited && \in_array($name, $inheritedKeys, true)) {
+            if ($this->inheritedAttributes === null) {
                 $this->inheritedAttributes = [];
-                $inheritedKeys = array_filter($inheritedKeys, function ($key) use ($dict) {
+                $inheritedKeys = \array_filter($inheritedKeys, function ($key) use ($dict) {
                     return !isset($dict->value[$key]);
                 });
 
-                if (count($inheritedKeys) > 0) {
+                if (\count($inheritedKeys) > 0) {
                     $parentDict = PdfType::resolve(PdfDictionary::get($dict, 'Parent'), $this->parser);
                     while ($parentDict instanceof PdfDictionary) {
                         foreach ($inheritedKeys as $index => $key) {
@@ -119,7 +127,7 @@ class Page
                         }
 
                         /** @noinspection NotOptimalIfConditionsInspection */
-                        if (isset($parentDict->value['Parent']) && count($inheritedKeys) > 0) {
+                        if (isset($parentDict->value['Parent']) && \count($inheritedKeys) > 0) {
                             $parentDict = PdfType::resolve(PdfDictionary::get($parentDict, 'Parent'), $this->parser);
                         } else {
                             break;
@@ -140,6 +148,9 @@ class Page
      * Get the rotation value.
      *
      * @return int
+     * @throws PdfParserException
+     * @throws PdfTypeException
+     * @throws CrossReferenceException
      */
     public function getRotation()
     {
@@ -163,17 +174,20 @@ class Page
      * @param string $box
      * @param bool $fallback
      * @return bool|Rectangle
+     * @throws PdfParserException
+     * @throws PdfTypeException
+     * @throws CrossReferenceException
      * @see PageBoundaries
      */
     public function getBoundary($box = PageBoundaries::CROP_BOX, $fallback = true)
     {
         $value = $this->getAttribute($box);
 
-        if (null !== $value) {
+        if ($value !== null) {
             return Rectangle::byPdfArray($value, $this->parser);
         }
 
-        if (false === $fallback) {
+        if ($fallback === false) {
             return false;
         }
 
@@ -195,11 +209,14 @@ class Page
      * @param string $box
      * @param bool $fallback
      * @return array|bool
+     * @throws PdfParserException
+     * @throws PdfTypeException
+     * @throws CrossReferenceException
      */
     public function getWidthAndHeight($box = PageBoundaries::CROP_BOX, $fallback = true)
     {
         $boundary = $this->getBoundary($box, $fallback);
-        if (false === $boundary) {
+        if ($boundary === false) {
             return false;
         }
 
@@ -217,6 +234,9 @@ class Page
      *
      * @return string
      * @throws PdfReaderException
+     * @throws PdfTypeException
+     * @throws FilterException
+     * @throws PdfParserException
      */
     public function getContentStream()
     {
@@ -236,7 +256,7 @@ class Page
                 $result[] = $content->getUnfilteredStream();
             }
 
-            return implode("\n", $result);
+            return \implode("\n", $result);
         }
 
         if ($contents instanceof PdfStream) {

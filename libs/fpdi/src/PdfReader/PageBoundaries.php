@@ -1,19 +1,17 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfReader;
 
 /**
  * An abstract class for page boundary constants and some helper methods
- *
- * @package setasign\Fpdi\PdfReader
  */
 abstract class PageBoundaries
 {
@@ -91,6 +89,6 @@ abstract class PageBoundaries
      */
     public static function isValidName($name)
     {
-        return in_array($name, self::$all, true);
+        return \in_array($name, self::$all, true);
     }
 }

@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfParser\Type;
@@ -16,7 +16,6 @@ use setasign\Fpdi\PdfParser\Tokenizer;
 /**
  * Class representing a PDF array object
  *
- * @package setasign\Fpdi\PdfParser\Type
  * @property array $value The value of the PDF type.
  */
 class PdfArray extends PdfType
@@ -27,6 +26,7 @@ class PdfArray extends PdfType
      * @param Tokenizer $tokenizer
      * @param PdfParser $parser
      * @return bool|self
+     * @throws PdfTypeException
      */
     public static function parse(Tokenizer $tokenizer, PdfParser $parser)
     {
@@ -41,7 +41,7 @@ class PdfArray extends PdfType
             $result[] = $value;
         }
 
-        $v = new self;
+        $v = new self();
         $v->value = $result;
 
         return $v;
@@ -55,7 +55,7 @@ class PdfArray extends PdfType
      */
     public static function create(array $values = [])
     {
-        $v = new self;
+        $v = new self();
         $v->value = $values;
 
         return $v;
@@ -73,9 +73,9 @@ class PdfArray extends PdfType
     {
         $result = PdfType::ensureType(self::class, $array, 'Array value expected.');
 
-        if ($size !== null && count($array->value) !== $size) {
+        if ($size !== null && \count($array->value) !== $size) {
             throw new PdfTypeException(
-                sprintf('Array with %s entries expected.', $size),
+                \sprintf('Array with %s entries expected.', $size),
                 PdfTypeException::INVALID_DATA_SIZE
             );
         }

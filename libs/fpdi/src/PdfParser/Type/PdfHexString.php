@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfParser\Type;
@@ -14,8 +14,6 @@ use setasign\Fpdi\PdfParser\StreamReader;
 
 /**
  * Class representing a hexadecimal encoded PDF string object
- *
- * @package setasign\Fpdi\PdfParser\Type
  */
 class PdfHexString extends PdfType
 {
@@ -29,14 +27,10 @@ class PdfHexString extends PdfType
     {
         $bufferOffset = $streamReader->getOffset();
 
-        /**
-         * @var string $buffer
-         * @var int $pos
-         */
         while (true) {
             $buffer = $streamReader->getBuffer(false);
-            $pos = strpos($buffer, '>', $bufferOffset);
-            if (false === $pos) {
+            $pos = \strpos($buffer, '>', $bufferOffset);
+            if ($pos === false) {
                 if (!$streamReader->increaseLength()) {
                     return false;
                 }
@@ -46,10 +40,10 @@ class PdfHexString extends PdfType
             break;
         }
 
-        $result = substr($buffer, $bufferOffset, $pos - $bufferOffset);
+        $result = \substr($buffer, $bufferOffset, $pos - $bufferOffset);
         $streamReader->setOffset($pos + 1);
 
-        $v = new self;
+        $v = new self();
         $v->value = $result;
 
         return $v;
@@ -63,7 +57,7 @@ class PdfHexString extends PdfType
      */
     public static function create($string)
     {
-        $v = new self;
+        $v = new self();
         $v->value = $string;
 
         return $v;
@@ -74,6 +68,7 @@ class PdfHexString extends PdfType
      *
      * @param mixed $hexString
      * @return self
+     * @throws PdfTypeException
      */
     public static function ensure($hexString)
     {

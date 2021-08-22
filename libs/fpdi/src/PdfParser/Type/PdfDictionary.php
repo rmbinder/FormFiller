@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfParser\Type;
@@ -16,8 +16,6 @@ use setasign\Fpdi\PdfParser\Tokenizer;
 
 /**
  * Class representing a PDF dictionary object
- *
- * @package setasign\Fpdi\PdfParser\Type
  */
 class PdfDictionary extends PdfType
 {
@@ -28,6 +26,7 @@ class PdfDictionary extends PdfType
      * @param StreamReader $streamReader
      * @param PdfParser $parser
      * @return bool|self
+     * @throws PdfTypeException
      */
     public static function parse(Tokenizer $tokenizer, StreamReader $streamReader, PdfParser $parser)
     {
@@ -41,7 +40,7 @@ class PdfDictionary extends PdfType
             }
 
             $key = $parser->readValue($token);
-            if (false === $key) {
+            if ($key === false) {
                 return false;
             }
 
@@ -62,7 +61,7 @@ class PdfDictionary extends PdfType
 
 
             $value = $parser->readValue();
-            if (false === $value) {
+            if ($value === false) {
                 return false;
             }
 
@@ -79,7 +78,7 @@ class PdfDictionary extends PdfType
             $entries[$key->value] = $value;
         }
 
-        $v = new self;
+        $v = new self();
         $v->value = $entries;
 
         return $v;
@@ -93,7 +92,7 @@ class PdfDictionary extends PdfType
      */
     public static function create(array $entries = [])
     {
-        $v = new self;
+        $v = new self();
         $v->value = $entries;
 
         return $v;
@@ -104,8 +103,9 @@ class PdfDictionary extends PdfType
      *
      * @param mixed $dictionary
      * @param string $key
-     * @param PdfType|mixed|null $default
+     * @param PdfType|null $default
      * @return PdfNull|PdfType
+     * @throws PdfTypeException
      */
     public static function get($dictionary, $key, PdfType $default = null)
     {
@@ -125,6 +125,7 @@ class PdfDictionary extends PdfType
      *
      * @param mixed $dictionary
      * @return self
+     * @throws PdfTypeException
      */
     public static function ensure($dictionary)
     {

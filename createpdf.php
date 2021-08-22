@@ -150,7 +150,7 @@ else
 	$size = 'A4';					//Default
 }	
 
-$pdf = new FPDI($orientation, $unit, $size);
+$pdf = new Fpdi($orientation, $unit, $size);
 
 $pdfID = 0;
 if ($pPreferences->config['Formular']['pdfid'][$formID] > 0)          // ist in der Konfiguration eine PDF-Datei definiert?

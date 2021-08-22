@@ -1,19 +1,17 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfParser\Type;
 
 /**
  * Class representing a numeric PDF object
- *
- * @package setasign\Fpdi\PdfParser\Type
  */
 class PdfNumeric extends PdfType
 {
@@ -25,7 +23,7 @@ class PdfNumeric extends PdfType
      */
     public static function create($value)
     {
-        $v = new self;
+        $v = new self();
         $v->value = $value + 0;
 
         return $v;
@@ -36,6 +34,7 @@ class PdfNumeric extends PdfType
      *
      * @param mixed $value
      * @return self
+     * @throws PdfTypeException
      */
     public static function ensure($value)
     {

@@ -1,16 +1,17 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi;
 
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\Type\PdfIndirectObject;
 use setasign\Fpdi\PdfParser\Type\PdfNull;
 
@@ -18,8 +19,6 @@ use setasign\Fpdi\PdfParser\Type\PdfNull;
  * Class Fpdi
  *
  * This class let you import pages of existing PDF documents into a reusable structure for FPDF.
- *
- * @package setasign\Fpdi
  */
 class Fpdi extends FpdfTpl
 {
@@ -30,13 +29,19 @@ class Fpdi extends FpdfTpl
      *
      * @string
      */
-    const VERSION = '2.0.0';
+    const VERSION = '2.3.6';
+
+    protected function _enddoc()
+    {
+        parent::_enddoc();
+        $this->cleanUp();
+    }
 
     /**
      * Draws an imported page or a template onto the page or another template.
      *
-     * Omit one of the size parameters (width, height) to calculate the other one automatically in view to the aspect
-     * ratio.
+     * Give only one of the size parameters (width, height) to calculate the other one automatically in view to the
+     * aspect ratio.
      *
      * @param mixed $tpl The template id
      * @param float|int|array $x The abscissa of upper-left corner. Alternatively you could use an assoc array
@@ -64,8 +69,8 @@ class Fpdi extends FpdfTpl
     /**
      * Get the size of an imported page or template.
      *
-     * Omit one of the size parameters (width, height) to calculate the other one automatically in view to the aspect
-     * ratio.
+     * Give only one of the size parameters (width, height) to calculate the other one automatically in view to the
+     * aspect ratio.
      *
      * @param mixed $tpl The template id
      * @param float|int|null $width The width.
@@ -75,7 +80,7 @@ class Fpdi extends FpdfTpl
     public function getTemplateSize($tpl, $width = null, $height = null)
     {
         $size = parent::getTemplateSize($tpl, $width, $height);
-        if (false === $size) {
+        if ($size === false) {
             return $this->getImportedPageSize($tpl, $width, $height);
         }
 
@@ -84,6 +89,8 @@ class Fpdi extends FpdfTpl
 
     /**
      * @inheritdoc
+     * @throws CrossReferenceException
+     * @throws PdfParserException
      */
     protected function _putimages()
     {
@@ -98,14 +105,13 @@ class Fpdi extends FpdfTpl
             $this->_put('endobj');
         }
 
-        foreach (array_keys($this->readers) as $readerId) {
+        foreach (\array_keys($this->readers) as $readerId) {
             $parser = $this->getPdfReader($readerId)->getParser();
             $this->currentReaderId = $readerId;
 
-            while (($objectNumber = array_pop($this->objectsToCopy[$readerId])) !== null) {
+            while (($objectNumber = \array_pop($this->objectsToCopy[$readerId])) !== null) {
                 try {
                     $object = $parser->getIndirectObject($objectNumber);
-
                 } catch (CrossReferenceException $e) {
                     if ($e->getCode() === CrossReferenceException::OBJECT_NOT_FOUND) {
                         $object = PdfIndirectObject::create($objectNumber, 0, new PdfNull());

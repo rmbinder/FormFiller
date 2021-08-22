@@ -1,19 +1,17 @@
 <?php
+
 /**
  * This file is part of FPDI
  *
  * @package   setasign\Fpdi
- * @copyright Copyright (c) 2017 Setasign - Jan Slabon (https://www.setasign.com)
+ * @copyright Copyright (c) 2020 Setasign GmbH & Co. KG (https://www.setasign.com)
  * @license   http://opensource.org/licenses/mit-license The MIT License
- * @version   2.0.0
  */
 
 namespace setasign\Fpdi\PdfParser;
 
 /**
  * A tokenizer class.
- *
- * @package setasign\Fpdi\PdfParser
  */
 class Tokenizer
 {
@@ -74,8 +72,8 @@ class Tokenizer
      */
     public function getNextToken()
     {
-        $token = array_pop($this->stack);
-        if (null !== $token) {
+        $token = \array_pop($this->stack);
+        if ($token !== null) {
             return $token;
         }
 
@@ -83,14 +81,8 @@ class Tokenizer
             return false;
         }
 
-        if ($byte === "\x20" ||
-            $byte === "\x0A" ||
-            $byte === "\x0D" ||
-            $byte === "\x0C" ||
-            $byte === "\x09" ||
-            $byte === "\x00"
-        ) {
-            if (false === $this->leapWhiteSpaces()) {
+        if (\in_array($byte, ["\x20", "\x0A", "\x0D", "\x0C", "\x09", "\x00"], true)) {
+            if ($this->leapWhiteSpaces() === false) {
                 return false;
             }
             $byte = $this->streamReader->readByte();
@@ -117,7 +109,7 @@ class Tokenizer
         $bufferOffset = $this->streamReader->getOffset();
         do {
             $lastBuffer = $this->streamReader->getBuffer(false);
-            $pos = strcspn(
+            $pos = \strcspn(
                 $lastBuffer,
                 "\x00\x09\x0A\x0C\x0D\x20()<>[]{}/%",
                 $bufferOffset
@@ -127,12 +119,12 @@ class Tokenizer
             // in the current buffer or increase the buffers length
             $lastBuffer !== false &&
             (
-                $bufferOffset + $pos === strlen($lastBuffer) &&
+                $bufferOffset + $pos === \strlen($lastBuffer) &&
                 $this->streamReader->increaseLength()
             )
         );
 
-        $result = substr($lastBuffer, $bufferOffset - 1, $pos + 1);
+        $result = \substr($lastBuffer, $bufferOffset - 1, $pos + 1);
         $this->streamReader->setOffset($bufferOffset + $pos);
 
         return $result;
@@ -151,7 +143,7 @@ class Tokenizer
             }
 
             $buffer = $this->streamReader->getBuffer(false);
-            $matches = strspn($buffer, "\x20\x0A\x0C\x0D\x09\x00", $this->streamReader->getOffset());
+            $matches = \strspn($buffer, "\x20\x0A\x0C\x0D\x09\x00", $this->streamReader->getOffset());
             if ($matches > 0) {
                 $this->streamReader->addOffset($matches);
             }
