@@ -16,6 +16,7 @@
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Au lieu de la configuration de liste et du rôle, les utilisateurs individuels peuvent être sélectionnés ici.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Configuration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Configurations</string>
+    <string name="PLG_FORMFILLER_COPY">Copie</string>    
     <string name="PLG_FORMFILLER_DATE">Date</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Supprimer uniquement les données de l\'organisation actuelle.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Supprimer les données dans toutes les organisations.</string>
@@ -30,7 +31,7 @@
     <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Sélectionne l\'étendue de l\'installation.\n\n***Attention: Cette routine ne supprime que les entrées de la base de données Admidio. Les fichiers de programme et le lien dans le menu ne sont pas effacés ! ***</string>
     <string name="PLG_FORMFILLER_DELETE_CONFIG">Supprimer cette configuration</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Description</string>
-    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Le nom de la configuration est entré ici.\n\nUne configuration peut être supprimée en supprimant le contenu du champ Nom.</string>
+    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Le nom de la configuration est entré ici.</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION">Documentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN">Ouvrir la documentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Cela ouvre la documentation pour le plugin (une connexion Internet existante est nécessaire, car les données se trouvent sur admidio.org).</string>

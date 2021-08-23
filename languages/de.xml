@@ -9,13 +9,14 @@
     <string name="PLG_FORMFILLER_ASSORT_NOTE">Zur Sicherheit sollte vor dem Sortieren ein Export aller Konfigurationen oder ein Datenbank-Backup durchgeführt werden.</string>
     <string name="PLG_FORMFILLER_ASSORT_SUCCESS">Sortierung durchgeführt</string>
     <string name="PLG_FORMFILLER_BLACK">schwarz</string>
-    <string name="PLG_FORMFILLER_BLUE">blau</string>
+    <string name="PLG_FORMFILLER_BLUE">blau</string>  
     <string name="PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC">Hier wir eine Formularkonfiguration ausgewählt, auf deren Basis die PDF-Datei erzeugt wird.\n\nÜber den Menüpunkt -Einstellungen- können beliebig viele Konfigurationen erzeugt werden.</string>
     <string name="PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC">Hier wird die Liste ausgewählt, deren Konfiguration verwendet werden soll.\n\nAusgewertet werden nur Bedingungen, die bei einem Feld angegeben sind. Felder ohne Bedingung sind für diese Abfrage nicht von Bedeutung.</string>
     <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC">Hier wird die Rolle ausgewählt, deren Mitgliederliste verwendet werden soll</string>
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Anstelle von Listenkonfiguration und Rolle können hier einzelne Benutzer ausgewählt werden.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Konfiguration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string>
+    <string name="PLG_FORMFILLER_COPY">Kopie</string>    
     <string name="PLG_FORMFILLER_DATE">Datum</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Nur Daten der aktuellen Organisation löschen.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Daten in allen Organisationen löschen.</string>
@@ -30,7 +31,7 @@
     <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Wähle den Installationsumfang aus.\n\n***ACHTUNG: Diese Routine löscht nur Einträge in der Admidio-Datenbank. Programmdateien und der Link im Menü werden nicht gelöscht! ***</string>
     <string name="PLG_FORMFILLER_DELETE_CONFIG">Diese Konfiguration löschen</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Bezeichnung</string>
-    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Hier wird die Bezeichnung der Konfiguration eingegeben.\n\nEine Konfiguration kann gelöscht werden, indem der Inhalt des Feldes Bezeichnung gelöscht wird.</string>
+    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Hier wird die Bezeichnung der Konfiguration eingegeben.</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION">Dokumentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN">Dokumentation öffnen</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Hiermit kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>

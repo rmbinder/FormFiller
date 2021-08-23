@@ -112,7 +112,7 @@ function createDesc($name)
    
     while (in_array($name, $pPreferences->config['Formular']['desc']))
     {
-        $name .= ' - '.$gL10n->get('MAI_CARBON_COPY');
+        $name .= ' - '.$gL10n->get('PLG_FORMFILLER_COPY');
     }
     
     return $name;

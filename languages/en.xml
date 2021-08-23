@@ -16,6 +16,7 @@
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Instead of list configuration and role, individual users can be selected here.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Configuration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Configurations</string>
+    <string name="PLG_FORMFILLER_COPY">Copie</string>    
     <string name="PLG_FORMFILLER_DATE">Date</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Delete only data of the current organization.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Delete data in all organizations.</string>
@@ -30,7 +31,7 @@
     <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Choose from the scope of the installation.\n\n***ATTENTION: This routine deletes only the entries in the Admidio database. Program files and the link in the menu will not be deleted! ***</string>
     <string name="PLG_FORMFILLER_DELETE_CONFIG">Delete this configuration</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Description</string>
-    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Displays the name of the configuration is entered\n\nA configuration can be deleted by the contents of the field description is deleted.</string>
+    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">The name of the configuration is entered here.</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION">Documentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN">Open documentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Allows the documentation of the plugin can be opened (An existing Internet connection is required because the data is located on admidio.org).</string>

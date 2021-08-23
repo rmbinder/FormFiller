@@ -16,6 +16,7 @@
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Anstelle von Listenkonfiguration und Rolle können hier einzelne Benutzer ausgewählt werden.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Konfiguration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string>
+    <string name="PLG_FORMFILLER_COPY">Kopie</string>    
     <string name="PLG_FORMFILLER_DATE">Datum</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Nur Daten der aktuellen Organisation löschen.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Daten in allen Organisationen löschen.</string>
@@ -30,7 +31,7 @@
     <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Wählen Sie den Installationsumfang aus.\n\n***ACHTUNG: Diese Routine löscht nur Einträge in der Admidio-Datenbank. Programmdateien und der Link im Menü werden nicht gelöscht! ***</string>
     <string name="PLG_FORMFILLER_DELETE_CONFIG">Diese Konfiguration löschen</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Bezeichnung</string>
-    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Hier wird die Bezeichnung der Konfiguration eingegeben.\n\nEine Konfiguration kann gelöscht werden, indem der Inhalt des Feldes Bezeichnung gelöscht wird.</string>
+    <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Hier wird die Bezeichnung der Konfiguration eingegeben.</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION">Dokumentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN">Dokumentation öffnen</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Hiermit kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>
