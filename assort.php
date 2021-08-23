@@ -64,7 +64,7 @@ array_multisort($pPreferences->config['Formular']['desc'], SORT_ASC,$pPreference
 $pPreferences->save();
 
 $gNavigation->clear();
-$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
+$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')), 2000);
 $gMessage->show($gL10n->get('PLG_FORMFILLER_ASSORT_SUCCESS'));
 
    		

@@ -206,15 +206,25 @@ switch ($getMode)
 
     	//pruefen, ob eine PDF-Form-Groesse in der Importdatei übergeben wurde
     	//wenn ja, dann diese PDF-Form-Groesse den 'zusaetzlichen PDF-Groessen' hinzufuegen
+    	//nur hinzufügen, wenn es sich um eine Größe mit xy-Angaben handelt
+    	//nicht hinzufügen, wenn die Größe bereits vorhanden ist
     	if ($importArray['pdfform_size'] <> '')
     	{
     		$addSize = explode(',',$importArray['pdfform_size']);
-    		$pPreferences->config['Optionen']['pdfform_addsizes'] .= ';'.$addSize[0].'x'.$addSize[1];;
+    		
+    		if (count($addSize) == 2 && is_numeric($addSize[0]) && is_numeric($addSize[1])) 
+	        {
+	            $addSizeStr = $addSize[0].'x'.$addSize[1];
+	            if(strpos($pPreferences->config['Optionen']['pdfform_addsizes'], $addSizeStr) === false)
+	            {
+	                $pPreferences->config['Optionen']['pdfform_addsizes'] .= ';'.$addSizeStr;
+	            }
+	        }	
     	}
 		$pPreferences->save();
 
 		$gNavigation->clear();
-		$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
+		$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')), 2000);
 		$gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_SUCCESS'));
 		
    		break;
