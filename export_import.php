@@ -174,7 +174,14 @@ switch ($getMode)
 				}
 				else
 				{
-					$importArray[$key] = $parsedArray[$key];
+				    if ($key == 'desc')
+				    {
+				        $importArray[$key] = createDesc($parsedArray[$key]);
+				    }
+				    else
+				    {
+                        $importArray[$key] = $parsedArray[$key];
+				    }
 				}
 			}
 		}
@@ -215,7 +222,7 @@ switch ($getMode)
     		if (count($addSize) == 2 && is_numeric($addSize[0]) && is_numeric($addSize[1])) 
 	        {
 	            $addSizeStr = $addSize[0].'x'.$addSize[1];
-	            if(strpos($pPreferences->config['Optionen']['pdfform_addsizes'], $addSizeStr) === false)
+	            if (strpos($pPreferences->config['Optionen']['pdfform_addsizes'], $addSizeStr) === false)
 	            {
 	                $pPreferences->config['Optionen']['pdfform_addsizes'] .= ';'.$addSizeStr;
 	            }

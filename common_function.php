@@ -99,3 +99,21 @@ function strstr_multiple($haystack, $needle )
 	}
 	return true;
 }
+
+/**
+ * Funktion prüft, ob es eine Konfiguration mit dem übergebenen Namen bereits gibt
+ * wenn ja: wird "- Kopie" angehängt und rekursiv überprüft
+ * @param   string  $name
+ * @return  string
+ */
+function createDesc($name)
+{
+    global $pPreferences, $gL10n;
+   
+    while (in_array($name, $pPreferences->config['Formular']['desc']))
+    {
+        $name .= ' - '.$gL10n->get('MAI_CARBON_COPY');
+    }
+    
+    return $name;
+}
