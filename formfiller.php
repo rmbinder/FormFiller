@@ -84,15 +84,72 @@ if ($statement->rowCount() > 0)
     }        
 }    
 $form->addSelectBox('lst_id', $gL10n->get('SYS_CONFIGURATION_LIST'), $configurations, array( 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC'));
-                    	
+
+$roles = array();
+$rolesNonEvents = array();
+$rolesEvents = array();
+
+// alle Rollen außer Events
 $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
           FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
          WHERE cat.cat_id = rol.rol_cat_id
-           AND (  cat.cat_org_id = '.ORG_ID.'
+           AND (  cat.cat_org_id = ?
             OR cat.cat_org_id IS NULL )
-      ORDER BY cat.cat_name DESC';
+           AND cat.cat_name_intern <> ? ';
 
-$form->addSelectBoxFromSql('rol_id', $gL10n->get('SYS_ROLE'), $gDb, $sql, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));				                                                 
+$statement = $gDb->queryPrepared($sql, array(ORG_ID, 'EVENTS'));
+
+while ($row = $statement->fetch())
+{
+    $row['cat_name'] = Language::translateIfTranslationStrId($row['cat_name']);
+    $rolesNonEvents[] = array($row['rol_id'], $row['rol_name'], $row['cat_name'] );
+}
+
+$sortFirst  = array();
+$sortSecond = array();
+foreach ($rolesNonEvents as $key => $row)
+{
+    $sortFirst[$key] = $row[2];
+    $sortSecond[$key] = $row[1];
+}
+array_multisort($sortFirst, SORT_ASC, $sortSecond, SORT_ASC, $rolesNonEvents);
+
+// alle Events
+$sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
+          FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+         WHERE cat.cat_id = rol.rol_cat_id
+           AND (  cat.cat_org_id = ?
+            OR cat.cat_org_id IS NULL )
+           AND cat.cat_name_intern = ? ';
+
+$statement = $gDb->queryPrepared($sql, array(ORG_ID, 'EVENTS'));
+
+while ($row = $statement->fetch())
+{
+    $row['cat_name'] = Language::translateIfTranslationStrId($row['cat_name']);
+    $rolesEvents[] = array($row['rol_id'], $row['rol_name'], $row['cat_name'] );
+}
+
+$sortFirst  = array();
+$sortSecond = array();
+$sortThird  = array();
+$sortFourth = array();
+foreach ($rolesEvents as $key => $row)
+{
+    $sortFirst[$key]  = substr($row[1], 6, 4);               // Jahr
+    $sortSecond[$key] = substr($row[1], 3, 2);               // Monat
+    $sortThird[$key]  = substr($row[1], 0, 2);               // Tag
+    $sortFourth[$key] = 0;
+    if (is_numeric(substr($row[1], 22, 1)))                  // wenn es kein Ganztagestermin ist, beginnt an Position 22 die Uhrzeit
+    {
+        $sortFourth[$key] = str_replace(':', '', substr($row[1], 22, 5));
+    }
+}
+array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortThird, SORT_NUMERIC, $sortFourth, SORT_NUMERIC, $rolesEvents);
+$roles = array_merge($rolesNonEvents, $rolesEvents);
+
+$form->addSelectBox('rol_id', $gL10n->get('SYS_ROLE'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC'));	
+
 $form->addCheckbox('show_former_members', $gL10n->get('PLG_FORMFILLER_FORMER_MEMBERS_ONLY'));
 $form->addLine();
 
