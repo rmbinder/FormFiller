@@ -15,8 +15,7 @@
     <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC">Here the role is selected, the Members shall be used</string>
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Instead of list configuration and role, individual users can be selected here.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Configuration</string>
-    <string name="PLG_FORMFILLER_CONFIGURATIONS">Configurations</string>
-    <string name="PLG_FORMFILLER_COPY">Copie</string>    
+    <string name="PLG_FORMFILLER_CONFIGURATIONS">Configurations</string>    
     <string name="PLG_FORMFILLER_DATE">Date</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Delete only data of the current organization.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Delete data in all organizations.</string>

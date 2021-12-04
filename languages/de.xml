@@ -15,8 +15,7 @@
     <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC">Hier wird die Rolle ausgewählt, deren Mitgliederliste verwendet werden soll</string>
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Anstelle von Listenkonfiguration und Rolle können hier einzelne Benutzer ausgewählt werden.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Konfiguration</string>
-    <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string>
-    <string name="PLG_FORMFILLER_COPY">Kopie</string>    
+    <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string>   
     <string name="PLG_FORMFILLER_DATE">Datum</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Nur Daten der aktuellen Organisation löschen.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Daten in allen Organisationen löschen.</string>
