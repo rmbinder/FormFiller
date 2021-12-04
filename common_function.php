@@ -16,11 +16,6 @@ if(!defined('PLUGIN_FOLDER'))
 	define('PLUGIN_FOLDER', '/'.substr(__DIR__,strrpos(__DIR__,DIRECTORY_SEPARATOR)+1));
 }
 
-if(!defined('ORG_ID'))
-{
-	define('ORG_ID', (int) $gCurrentOrganization->getValue('org_id'));
-}
-
 /**
  * Funktion prueft, ob der Nutzer berechtigt ist das Plugin aufzurufen.
  * Zur Prüfung werden die Einstellungen von 'Modulrechte' und 'Sichtbar für'

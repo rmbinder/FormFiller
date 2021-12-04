@@ -479,7 +479,7 @@ for ($conf = 0; $conf < $num_configs; $conf++)
                   FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
                  WHERE fol.fol_id = fil.fil_fol_id
                    AND fil.fil_name LIKE \'%.PDF\' 
-                   AND ( fol.fol_org_id = '.ORG_ID.'
+                   AND ( fol.fol_org_id = '.$gCurrentOrgId.'
                     OR fol.fol_org_id IS NULL )';
         $formConfigurations->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf]));				                                            
         $formConfigurations->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf]);

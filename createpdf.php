@@ -173,7 +173,7 @@ if ($pdfID != 0)
                AND fil_fol_id = fol_id
                AND (  fol_org_id = ?
                 OR fol_org_id IS NULL ) ';
-    $statement = $gDb->queryPrepared($sql, array($pdfID, ORG_ID));
+    $statement = $gDb->queryPrepared($sql, array($pdfID, $gCurrentOrgId));
     $row = $statement->fetchObject();
          
 	// Gibt es das Formular noch in der DB, wenn nicht: Fehlermeldung
@@ -723,11 +723,11 @@ foreach ($userArray as $userId)
                                    AND mem_end     < ? -- DATE_NOW
                                    AND rol_valid   = 1
                                    AND cat_name_intern <> \'EVENTS\'
-                                   AND (  cat_org_id  = ? -- $gCurrentOrganization->getValue(\'org_id\')
+                                   AND (  cat_org_id  = ? -- $gCurrentOrgId
                                     OR cat_org_id IS NULL )
                               ORDER BY cat_org_id, cat_sequence, rol_name';
 				    
-				        $formerRolesStatement = $gDb->queryPrepared($sql, array($userId, DATE_NOW, $gCurrentOrganization->getValue('org_id')));
+				        $formerRolesStatement = $gDb->queryPrepared($sql, array($userId, DATE_NOW, $gCurrentOrgId));
 		
 				        while ($row = $formerRolesStatement->fetch())
 				        {

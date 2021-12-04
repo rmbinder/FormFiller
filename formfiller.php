@@ -73,7 +73,7 @@ $sql = 'SELECT lst_id, lst_name, lst_global
            AND lst_name IS NOT NULL
       ORDER BY lst_global ASC, lst_name ASC';
 
-$statement = $gDb->queryPrepared($sql, array(ORG_ID, $gCurrentUser->getValue('usr_id')));
+$statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, $gCurrentUser->getValue('usr_id')));
 $configurations = array();
 
 if ($statement->rowCount() > 0)
@@ -97,7 +97,7 @@ $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
             OR cat.cat_org_id IS NULL )
            AND cat.cat_name_intern <> ? ';
 
-$statement = $gDb->queryPrepared($sql, array(ORG_ID, 'EVENTS'));
+$statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, 'EVENTS'));
 
 while ($row = $statement->fetch())
 {
@@ -122,7 +122,7 @@ $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
             OR cat.cat_org_id IS NULL )
            AND cat.cat_name_intern = ? ';
 
-$statement = $gDb->queryPrepared($sql, array(ORG_ID, 'EVENTS'));
+$statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, 'EVENTS'));
 
 while ($row = $statement->fetch())
 {
@@ -169,7 +169,7 @@ $sqlData['query']= 'SELECT DISTINCT
                 ON first_name.usd_usr_id = usr_id
                AND first_name.usd_usf_id = ? -- $gProfileFields->getProperty(\'FIRST_NAME\', \'usf_id\')
              WHERE usr_valid  = 1
-               AND cat_org_id = ? -- ORG_ID
+               AND cat_org_id = ? -- $gCurrentOrgId
                AND mem_begin <= ? -- DATE_NOW
                AND mem_end    > ? -- DATE_NOW
           ORDER BY CONCAT(last_name.usd_value, \' \', first_name.usd_value), usr_id';
@@ -177,7 +177,7 @@ $sqlData['query']= 'SELECT DISTINCT
 $sqlData['params']= array(
 		$gProfileFields->getProperty('LAST_NAME', 'usf_id'),
 		$gProfileFields->getProperty('FIRST_NAME', 'usf_id'),
-		ORG_ID,
+		$gCurrentOrgId,
 		DATE_NOW,
 		DATE_NOW  );
 
@@ -193,7 +193,7 @@ $sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
           FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
          WHERE fol.fol_id = fil.fil_fol_id
            AND fil.fil_name LIKE \'%.PDF\'
-           AND ( fol.fol_org_id = '.ORG_ID.'
+           AND ( fol.fol_org_id = '.$gCurrentOrgId.'
             OR fol.fol_org_id IS NULL )
       ORDER BY fol.fol_name ASC, fil.fil_name ASC ';
 $form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC2'));	

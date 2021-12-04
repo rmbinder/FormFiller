@@ -74,7 +74,7 @@ class ConfigTablePFF
      */
 	public function init()
 	{
-		global $gL10n, $gDb, $gProfileFields;
+		global $gL10n, $gDb, $gProfileFields, $gCurrentOrgId;
 	
 		$config_ist = array();
 		
@@ -166,7 +166,7 @@ class ConfigTablePFF
 				$sql = 'DELETE FROM '.$this->table_name.'
         				      WHERE plp_name = ? 
         				        AND plp_org_id = ? ';
-				$gDb->queryPrepared($sql, array($plp_name, ORG_ID));
+				$gDb->queryPrepared($sql, array($plp_name, $gCurrentOrgId));
                 
 				unset($this->config[$section][$key]);
         	}
@@ -187,7 +187,7 @@ class ConfigTablePFF
      */
 	public function save()
 	{
-    	global $gDb;
+    	global $gDb, $gCurrentOrgId;
     
     	foreach ($this->config as $section => $sectiondata)
     	{
@@ -215,7 +215,7 @@ class ConfigTablePFF
             			  WHERE plp_name = ? 
             			    AND ( plp_org_id = ?
                  		     OR plp_org_id IS NULL ) ';
-            	$statement = $gDb->queryPrepared($sql, array($plp_name, ORG_ID));
+            	$statement = $gDb->queryPrepared($sql, array($plp_name, $gCurrentOrgId));
             	$row = $statement->fetchObject();
 
             	// Gibt es den Datensatz bereits?
@@ -231,8 +231,8 @@ class ConfigTablePFF
             	else
             	{
  					$sql = 'INSERT INTO '.$this->table_name.' (plp_org_id, plp_name, plp_value) 
-  							VALUES (? , ? , ?)  -- ORG_ID, self::$shortcut.\'__\'.$section.\'__\'.$sectiondatakey, $sectiondatavalue '; 
- 					$gDb->queryPrepared($sql, array(ORG_ID, self::$shortcut.'__'.$section.'__'.$sectiondatakey, $sectiondatavalue));
+  							VALUES (? , ? , ?)  -- $gCurrentOrgId, self::$shortcut.\'__\'.$section.\'__\'.$sectiondatakey, $sectiondatavalue '; 
+ 					$gDb->queryPrepared($sql, array($gCurrentOrgId, self::$shortcut.'__'.$section.'__'.$sectiondatakey, $sectiondatavalue));
             	}   
         	} 
     	}
@@ -244,14 +244,14 @@ class ConfigTablePFF
      */
 	public function read()
 	{
-    	global $gDb;
+    	global $gDb, $gCurrentOrgId;
      
 	    $sql = 'SELECT plp_id, plp_name, plp_value
              	  FROM '.$this->table_name.'
              	 WHERE plp_name LIKE ?
              	   AND ( plp_org_id = ?
                  	OR plp_org_id IS NULL ) ';
-		$statement = $gDb->queryPrepared($sql, array(self::$shortcut.'__%', ORG_ID)); 
+		$statement = $gDb->queryPrepared($sql, array(self::$shortcut.'__%', $gCurrentOrgId)); 
 	
         while ($row = $statement->fetch())
 		{
@@ -287,7 +287,7 @@ class ConfigTablePFF
      */
 	public function checkforupdate()
 	{
-	 	global $gL10n, $gDb;
+	 	global $gL10n, $gDb, $gCurrentOrgId;
 	 	$ret = false;
  	
 	 	// pruefen, ob es die Tabelle überhaupt gibt
@@ -303,7 +303,7 @@ class ConfigTablePFF
             		 WHERE plp_name = ? 
             		   AND ( plp_org_id = ?
             	    	OR plp_org_id IS NULL ) ';
-    		$statement = $gDb->queryPrepared($sql, array($plp_name, ORG_ID));
+    		$statement = $gDb->queryPrepared($sql, array($plp_name, $gCurrentOrgId));
     		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: version)
@@ -319,7 +319,7 @@ class ConfigTablePFF
             		 WHERE plp_name = ?
             		   AND ( plp_org_id = ?
                  		OR plp_org_id IS NULL ) ';
-            $statement = $gDb->queryPrepared($sql, array($plp_name, ORG_ID));
+            $statement = $gDb->queryPrepared($sql, array($plp_name, $gCurrentOrgId));
     		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: stand)
@@ -342,7 +342,7 @@ class ConfigTablePFF
      */
 	public function delete($deinst_org_select)
 	{
-    	global $gDb, $gL10n;
+    	global $gDb, $gL10n, $gCurrentOrgId;
  	
     	$result = '';
 		$result_data = false;
@@ -353,7 +353,7 @@ class ConfigTablePFF
 			$sql = 'DELETE FROM '.$this->table_name.'
         			      WHERE plp_name LIKE ?
         			        AND plp_org_id = ? ';
-			$result_data = $gDb->queryPrepared($sql, array(self::$shortcut.'__%', ORG_ID));		
+			$result_data = $gDb->queryPrepared($sql, array(self::$shortcut.'__%', $gCurrentOrgId));		
 		}
 		elseif ($deinst_org_select == 1)              //1 = Daten in allen Org loeschen 
 		{
