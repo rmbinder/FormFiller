@@ -73,9 +73,9 @@ $relation = new TableUserRelation($gDb);
 $relationArray = array();
 $completePath = '';
 
-if (isset($_POST['user_id']))
+if (isset($_POST['user_id']) && sizeof(array_filter($_POST['user_id'])) > 0)
 {
-	$userArray = $_POST['user_id'];
+    $userArray = array_filter($_POST['user_id']);
 }
 elseif (($postListId > 0) && ($postRoleId > 0))
 {
