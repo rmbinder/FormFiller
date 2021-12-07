@@ -86,8 +86,12 @@ elseif (($postListId > 0) && ($postRoleId > 0))
 
 	// create list configuration object and create a sql statement out of it
 	$list = new ListConfiguration($gDb, $postListId);
-	$sql = $list->getSQL($role_ids, $postShowFormerMembers);
-		
+	$sql = $list->getSQL(
+	    array('showRolesMembers'  => $role_ids,
+	          'showFormerMembers' => $postShowFormerMembers
+	    )
+	);
+	
 	// SQL-Statement der Liste ausfuehren und pruefen ob Daten vorhanden sind
 	$statement = $gDb->queryPrepared($sql);
 	
