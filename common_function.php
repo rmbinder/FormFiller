@@ -25,7 +25,7 @@ if(!defined('PLUGIN_FOLDER'))
  */
 function isUserAuthorized($scriptName)
 {
-	global $gDb, $gCurrentUser, $gMessage, $gL10n, $gLogger;
+	global $gMessage;
 	
 	$userIsAuthorized = false;
 	$menId = 0;
@@ -34,13 +34,13 @@ function isUserAuthorized($scriptName)
               FROM '.TBL_MENU.'
              WHERE men_url = ? -- $scriptName ';
 	
-	$menuStatement = $gDb->queryPrepared($sql, array($scriptName));
+	$menuStatement = $GLOBALS['gDb']->queryPrepared($sql, array($scriptName));
 	
 	if ( $menuStatement->rowCount() === 0 || $menuStatement->rowCount() > 1)
 	{
-		$gLogger->notice('FormFiller: Error with menu entry: Found rows: '. $menuStatement->rowCount() );
-		$gLogger->notice('FormFiller: Error with menu entry: ScriptName: '. $scriptName);
-		$gMessage->show($gL10n->get('PLG_FORMFILLER_MENU_URL_ERROR', array($scriptName)), $gL10n->get('SYS_ERROR'));
+		$GLOBALS['gLogger']->notice('FormFiller: Error with menu entry: Found rows: '. $menuStatement->rowCount() );
+		$GLOBALS['gLogger']->notice('FormFiller: Error with menu entry: ScriptName: '. $scriptName);
+		$gMessage->show($GLOBALS['gL10n']->get('PLG_FORMFILLER_MENU_URL_ERROR', array($scriptName)), $GLOBALS['gL10n']->get('SYS_ERROR'));
 	}
 	else
 	{
@@ -57,17 +57,17 @@ function isUserAuthorized($scriptName)
              WHERE men_id = ? -- $menId
           ORDER BY men_men_id_parent DESC, men_order';
 	
-	$menuStatement = $gDb->queryPrepared($sql, array($menId));
+	$menuStatement = $GLOBALS['gDb']->queryPrepared($sql, array($menId));
 	while ($row = $menuStatement->fetch())
 	{
 		if ((int) $row['men_com_id'] === 0 || Component::isVisible($row['com_name_intern']))
 		{
 			// Read current roles rights of the menu
-			$displayMenu = new RolesRights($gDb, 'menu_view', $row['men_id']);
+			$displayMenu = new RolesRights($GLOBALS['gDb'], 'menu_view', $row['men_id']);
 			$rolesDisplayRight = $displayMenu->getRolesIds();
 			
 			// check for right to show the menu
-			if (count($rolesDisplayRight) === 0 || $displayMenu->hasRight($gCurrentUser->getRoleMemberships()))
+			if (count($rolesDisplayRight) === 0 || $displayMenu->hasRight($GLOBALS['gCurrentUser']->getRoleMemberships()))
 			{
 				$userIsAuthorized = true;
 			}
@@ -103,11 +103,11 @@ function strstr_multiple($haystack, $needle )
  */
 function createDesc($name)
 {
-    global $pPreferences, $gL10n;
+    global $pPreferences;
    
     while (in_array($name, $pPreferences->config['Formular']['desc']))
     {
-        $name .= ' - '.$gL10n->get('SYS_CARBON_COPY');
+        $name .= ' - '.$GLOBALS['gL10n']->get('SYS_CARBON_COPY');
     }
     
     return $name;

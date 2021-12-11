@@ -73,7 +73,7 @@ $sql = 'SELECT lst_id, lst_name, lst_global
            AND lst_name IS NOT NULL
       ORDER BY lst_global ASC, lst_name ASC';
 
-$statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, $gCurrentUser->getValue('usr_id')));
+$statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, $gCurrentUserId));
 $configurations = array();
 
 if ($statement->rowCount() > 0)

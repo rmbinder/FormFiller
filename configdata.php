@@ -10,12 +10,12 @@
  ***********************************************************************************************
  */
 
-global $gL10n, $gProfileFields;
+global $gProfileFields;
 
 //Standardwerte einer Neuinstallation oder beim Anfuegen einer zusaetzlichen Konfiguration		
-$config_default['Formular'] = array('desc' 			=> array($gL10n->get('PLG_FORMFILLER_PATTERN'),
-															 $gL10n->get('PLG_FORMFILLER_ENVELOPE'),
-															 $gL10n->get('PLG_FORMFILLER_ADDRESSLABELS') ),
+$config_default['Formular'] = array('desc' 			=> array($GLOBALS['gL10n']->get('PLG_FORMFILLER_PATTERN'),
+															 $GLOBALS['gL10n']->get('PLG_FORMFILLER_ENVELOPE'),
+															 $GLOBALS['gL10n']->get('PLG_FORMFILLER_ADDRESSLABELS') ),
  									'font' 			=> array('Courier','Arial','Arial'), 
  									'style'			=> array('','B',''),
  									'size'			=> array(10,12,12),
