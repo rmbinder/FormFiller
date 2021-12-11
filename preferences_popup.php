@@ -23,28 +23,6 @@ echo '
     <h4 class="modal-title">'.$headline.'</h4>
 </div>
 <div class="modal-body">
-	<strong>'.$gL10n->get('PLG_FORMFILLER_DESCRIPTION').'</strong><br>
-    '.$gL10n->get('PLG_FORMFILLER_DESCRIPTION_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_FONT').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_FONT_DESC').'<br><br>		
-    <strong>'.$gL10n->get('PLG_FORMFILLER_FONTSTYLE').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_FONTSTYLE_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_FONTSIZE').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_FONTSIZE_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_FONTCOLOR').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_FONTCOLOR_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT_DESC').'<br><br>			
-    <strong>'.$gL10n->get('PLG_FORMFILLER_PDF_FILE').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_LABELS').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_LABELS_DESC').'<br><br>
-	<strong>'.$gL10n->get('PLG_FORMFILLER_RELATION').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_RELATION_DESC').'<br><br>
 	<strong>'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION_DESC').'<br><br> 
 	<strong>'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES').'</strong><br>
