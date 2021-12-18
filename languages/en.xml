@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="PLG_FORMFILLER_ACCESS_PREFERENCES">Access permission for preferences</string>
+    <string name="PLG_FORMFILLER_ACCESS_PREFERENCES_DESC">Here, in addition to the role "Administrator", you can authorize additional roles for access to the "Preferences" module.</string>
     <string name="PLG_FORMFILLER_ADD_ANOTHER_CONFIG">Add further configuration</string>
     <string name="PLG_FORMFILLER_ADD_ANOTHER_FIELD">Add further field</string>
     <string name="PLG_FORMFILLER_ADDITIONAL_FIELDS">Additional fields</string>

@@ -52,7 +52,7 @@ $gNavigation->addStartUrl(CURRENT_URL, $headline);
 $page = new HtmlPage('plg-formfiller-mainpage', $headline);
 $page->setTitle($title);
 
-if ($gCurrentUser->isAdministrator())
+if (isUserAuthorizedForPreferences())
 {  
 	// show link to pluginpreferences
 	$page->addPageFunctionsMenuItem('admMenuItemPreferencesLists', $gL10n->get('PLG_FORMFILLER_SETTINGS'),

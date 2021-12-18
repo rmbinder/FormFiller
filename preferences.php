@@ -31,8 +31,11 @@ if (file_exists(__DIR__ . '/../awards/awards_common.php'))
     }
 }
 
+$pPreferences = new ConfigTablePFF();
+$pPreferences->read();
+
 // only authorized user are allowed to start this module
-if (!$gCurrentUser->isAdministrator())
+if (!isUserAuthorizedForPreferences())
 {
 	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
 }
@@ -40,9 +43,6 @@ if (!$gCurrentUser->isAdministrator())
 // Initialize and check the parameters
 $getAddDelete  = admFuncVariableIsValid($_GET, 'add_delete', 'numeric', array('defaultValue' => 0));
 $showOption    = admFuncVariableIsValid($_GET, 'show_option', 'string');
-
-$pPreferences = new ConfigTablePFF();
-$pPreferences->read();
 
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
@@ -554,6 +554,21 @@ $formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_ASSORT'), $html, arra
 $formOptions->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => ' col-sm-offset-3'));
 
 $page->addHtml(getPreferencePanel('common', 'options', $gL10n->get('PLG_FORMFILLER_OPTIONS'), 'fas fa-cog', $formOptions->show()));
+
+// PANEL: ACCESS_PREFERENCES
+                    
+$formAccessPreferences = new HtmlForm('access_preferences_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('form' => 'access_preferences')), $page, array('class' => 'form-preferences'));
+
+$sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
+          FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
+         WHERE cat.cat_id = rol.rol_cat_id
+           AND ( cat.cat_org_id = '.$gCurrentOrgId.'
+            OR cat.cat_org_id IS NULL )
+      ORDER BY cat_sequence, rol.rol_name ASC';
+$formAccessPreferences->addSelectBoxFromSql('access_preferences', '', $gDb, $sql, array('defaultValue' => $pPreferences->config['access']['preferences'], 'helpTextIdInline' => 'PLG_FORMFILLER_ACCESS_PREFERENCES_DESC', 'multiselect' => true, 'property' => HtmlForm::FIELD_REQUIRED));
+$formAccessPreferences->addSubmitButton('btn_save_configurations', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => ' offset-sm-3'));
+
+$page->addHtml(getPreferencePanel('common', 'access_preferences', $gL10n->get('PLG_FORMFILLER_ACCESS_PREFERENCES'), 'fas fa-key', $formAccessPreferences->show()));
                         
 // PANEL: PLUGIN INFORMATIONS
                         
