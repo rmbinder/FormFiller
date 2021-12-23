@@ -70,7 +70,6 @@
     <string name="PLG_FORMFILLER_LABELS">Etiketten</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">Um Etiketten zu drucken sind folgende Angaben im Feld Etiketten erforderlich: Spaltenanzahl,Spaltenabstand,Zeilenanzahl,Zeilenabstand.\n\nBeispiel:\n 5,50,10,40\nbedeutet Anordnung der Etiketten zu 5 Spalten im Abstand von 50mm und 10 Zeilen im Abstand von 40mm</string>
     <string name="PLG_FORMFILLER_LINE">Linie</string>
-    <string name="PLG_FORMFILLER_LINK_TO_DEINSTALLATION">Zur Deinstallation wechseln</string>
     <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Zu Export/Import wechseln</string>
     <string name="PLG_FORMFILLER_LOCAL">lokal</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF-Anzeige</string>

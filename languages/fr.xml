@@ -70,7 +70,6 @@
     <string name="PLG_FORMFILLER_LABELS">Étiquettes</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">Pour imprimer des étiquettes, les informations suivantes sont requises dans le champ Etiquettes : nombre de colonnes, espacement des colonnes, nombre de lignes, espacement des lignes.\n\nExemple:\n 5,50,10,40\nsignifie que les étiquettes sont disposées sur 5 colonnes à une distance de 50mm et 10 lignes à une distance de 40mm</string>
     <string name="PLG_FORMFILLER_LINE">Ligne</string>
-    <string name="PLG_FORMFILLER_LINK_TO_DEINSTALLATION">Changer à la désinstallation</string>
     <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Changer à l\'export/import</string>
     <string name="PLG_FORMFILLER_LOCAL">local</string>    
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. affichage PDF</string>

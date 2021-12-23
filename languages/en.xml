@@ -70,7 +70,6 @@
     <string name="PLG_FORMFILLER_LABELS">Labels</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">To print labels following information in the label field are required: Number of columns, column spacing, line number, line spacing (e.g. 5,50,10,40 means array of labels to 5 columns at a distance of 50mm and 10 lines at a distance of 40mm)</string>
     <string name="PLG_FORMFILLER_LINE">Line</string> 
-    <string name="PLG_FORMFILLER_LINK_TO_DEINSTALLATION">Skip to uninstall</string>
     <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Skip zu export / import</string>
     <string name="PLG_FORMFILLER_LOCAL">local</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF view</string>
