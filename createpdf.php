@@ -187,9 +187,9 @@ if ($pdfID != 0)
     }     
 	
 	// get recordset of current file from databse
-	$file = new TableFile($gDb);
-	
-	$file->getFileForDownload($pdfID);
+    $file = new TableFile($gDb, $pdfID);
+	$fileUuid  = $file->getValue('fil_uuid');
+	$file->getFileForDownload($fileUuid);
     
 	//kompletten Pfad der Datei holen
 	$completePath = $file->getFullFilePath();
