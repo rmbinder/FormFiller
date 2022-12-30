@@ -155,6 +155,7 @@ else
 }	
 
 $pdf = new Fpdi($orientation, $unit, $size);
+include(__DIR__ . '/add_fonts.php');
 
 $pdfID = 0;
 if ($pPreferences->config['Formular']['pdfid'][$formID] > 0)          // ist in der Konfiguration eine PDF-Datei definiert?
@@ -439,7 +440,7 @@ foreach ($userArray as $userId)
 				}	
 
 				// wurde ein abweichender Schrifttyp definiert? -> pruefen und ggf. setzen
-				if (array_key_exists('F', $fontData) && in_array($fontData['F'], array('Courier', 'Arial', 'Times', 'Symbol', 'ZapfDingbats')))
+				if (array_key_exists('F', $fontData) && in_array($fontData['F'], validFonts()))
 				{
 					$sortArray[$pointer]['attributes']['font'] = $fontData['F'];
 				}			
@@ -879,6 +880,13 @@ foreach ($userArray as $userId)
         		{
         			// das Leerzeichen zwischen Texten bzw Bildern in der Groesse der Standardattribute ausgeben,
 					// ansonsten koennten unterschiedlich breite Leerzeichen im Etikett vorhanden sein
+        		    // vorher prüfen, ob ein NICHT-Core Font gesetzt ist. Wenn ja, dürfen die Schriftstile B und I nicht verwendet werden
+        		    // ---> fpdf erzeugt Fehler, wenn ein nicht definierter Font verwendet wird, z.B. "Edo B" (Fettschrift)
+        		    if (!in_arrayi($attributesDefault['font'], coreFonts()))
+        		    {
+        		        $attributesDefault['style'] = str_replace('B', '', $attributesDefault['style']);
+        		        $attributesDefault['style'] = str_replace('I', '', $attributesDefault['style']);
+        		    }
 					$pdf->SetFont($attributesDefault['font'], $attributesDefault['style'], $attributesDefault['size']);
 					
         			if ($sortData['trace'] || $sortData['rect'])         // bei Linien und Rechtecken die absoluten Koordinaten verwenden, keinen Etikettendruck anwenden 
@@ -943,6 +951,14 @@ foreach ($userArray as $userId)
 			{
 				$color = explode(',', $sortData['attributes']['color']);
 				$pdf->SetTextColor($color[0],$color[1],$color[2]);
+				
+				// vor SetFont prüfen, ob ein NICHT-Core Font verwendet wird. Wenn ja, dürfen die Schriftstile B und I nicht verwendet werden
+				// ---> fpdf erzeugt Fehler, wenn ein nicht definierter Font verwendet wird, z.B. "Edo B" (Fettschrift)
+				if (!in_arrayi($sortData['attributes']['font'], coreFonts()))
+				{
+				    $sortData['attributes']['style'] = str_replace('B', '', $sortData['attributes']['style']);
+				    $sortData['attributes']['style'] = str_replace('I', '', $sortData['attributes']['style']);
+				}
 				$pdf->SetFont($sortData['attributes']['font'], $sortData['attributes']['style'], $sortData['attributes']['size']);	
 				$pdf->Write(0,utf8_decode($sortData['text']));	
 			}

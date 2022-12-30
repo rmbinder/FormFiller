@@ -141,3 +141,85 @@ function createDesc($name)
     
     return $name;
 }
+
+/**
+ * Funktion erstellt ein Array mit den Kernschriftarten (Core Fonts)
+ * @param   none
+ * @return  array $fonts
+ */
+function coreFonts()
+{
+    //core fonts
+    $fonts = array(
+        'Courier'=>'Courier',
+        'Arial'=>'Arial',
+        'Times'=>'Times',
+        'Symbol'=>'Symbol',
+        'ZapfDingbats'=>'ZapfDingbats');
+       
+    return $fonts;
+}
+
+
+/**
+ * Funktion erstellt die Schriftarten-Auswahlliste (core fonts + add fonts)
+ * @param   none
+ * @return  array $fonts
+ */
+function validFonts()
+{
+    //core fonts
+    $fonts = coreFonts();
+    
+    //additional fonts
+    $fonts['AlteDIN1451Mittelschrift'] = 'AlteDIN1451Mittelschrift';
+    $fonts['AlteDIN1451Mittelschrift-Geprägt'] = 'AlteDIN1451Mittelschrift-Geprägt';
+    $fonts['Angelina'] = 'Angelina';                     
+    $fonts['AsphaltFixed-Italic'] = 'AsphaltFixed-Italic';
+    $fonts['Calligraph'] = 'Calligraph';
+    $fonts['ClarendonBT-Roman'] = 'ClarendonBT-Roman';
+    $fonts['Edo'] = 'Edo';
+    $fonts['Exmouth'] = 'Exmouth';
+    $fonts['FreebooterScript'] = 'FreebooterScript';
+    $fonts['FuturaBT-Medium'] = 'FuturaBT-Medium';    
+    $fonts['LeipzigFraktur'] = 'LeipzigFraktur';
+    $fonts['LeipzigFraktur-Bold'] = 'LeipzigFraktur-Bold';   
+    $fonts['PlainBlack'] = 'PlainBlack';
+    $fonts['PlainGermanica'] = 'PlainGermanica';
+    $fonts['Scriptina'] = 'Scriptina';
+    $fonts['ShadowedBlack'] = 'ShadowedBlack';
+    $fonts['ShadowedGermanica'] = 'ShadowedGermanica';
+    $fonts['Barcode'] = 'Barcode';
+    
+    return $fonts;
+}
+
+/**
+ * in_array function variant that performs case-insensitive comparison when needle is a string.
+ *
+ * @param mixed $needle
+ * @param array $haystack
+ * @param bool $strict
+ *
+ * @return bool
+ */
+function in_arrayi($needle, array $haystack, bool $strict = false): bool
+{
+    if (is_string($needle)) 
+    {
+        $needle = strtolower($needle);
+        
+        foreach ($haystack as $value)
+        {
+            if (is_string($value)) 
+            {
+                if (strtolower($value) === $needle) 
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    return in_array($needle, $haystack, $strict);
+}
