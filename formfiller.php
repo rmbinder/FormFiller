@@ -55,7 +55,7 @@ $page->setTitle($title);
 if (isUserAuthorizedForPreferences())
 {  
 	// show link to pluginpreferences
-	$page->addPageFunctionsMenuItem('admMenuItemPreferencesLists', $gL10n->get('PLG_FORMFILLER_SETTINGS'),
+	$page->addPageFunctionsMenuItem('admMenuItemPreferencesLists', $gL10n->get('SYS_SETTINGS'),
 	    SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php'),  'fa-cog');
 }
  

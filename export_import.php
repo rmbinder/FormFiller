@@ -31,6 +31,7 @@ if (!isUserAuthorizedForPreferences())
 
 // Initialize and check the parameters
 $getMode = admFuncVariableIsValid($_GET, 'mode', 'numeric', array('defaultValue' => 1));
+$postCfgFile = admFuncVariableIsValid($_POST, 'cfgfile', 'string');
 
 switch ($getMode)
 {
@@ -60,6 +61,23 @@ switch ($getMode)
     	$form->openGroupBox('import', $headline = $gL10n->get('PLG_FORMFILLER_IMPORT'));
     	$form->addDescription($gL10n->get('PLG_FORMFILLER_IMPORT_DESC'));
 		$form->addFileUpload('importfile', $gL10n->get('SYS_FILE').':', array( 'allowedMimeTypes' => array('application/octet-stream,text/plain')));
+		
+		$sample_dir = 'en';
+		if ($gSettingsManager->getString('system_language') === 'de' || $gSettingsManager->getString('system_language') === 'de-DE')
+		{
+		    $sample_dir = 'de';
+		}		
+		$cfgFiles = FileSystemUtils::getDirectoryContent(__DIR__.'/samples/'.$sample_dir, false, true, array(FileSystemUtils::CONTENT_TYPE_FILE));
+		
+		//$cfgFiles aufbereiten für addSelectBox
+		$selectBoxEntries = array();
+		foreach ($cfgFiles as $cfgFile => $dummy)
+		{
+		    $file = substr($cfgFile,strrpos($cfgFile,DIRECTORY_SEPARATOR)+1);
+		    $selectBoxEntries[$cfgFile] = $file;
+		}
+		$form->addSelectBox('cfgfile', $gL10n->get('PLG_FORMFILLER_SAMPLE_FILE').':', $selectBoxEntries, array( 'showContextDependentFirstEntry' => true));
+		
 		$form->addSubmitButton('btn_import', $gL10n->get('PLG_FORMFILLER_IMPORT'), array('icon' => 'fa-file-import', 'class' => ' col-sm-offset-3'));
     	$form->closeGroupBox(); 
     
@@ -130,23 +148,30 @@ switch ($getMode)
    	
 	case 3:
 
-		if (!isset($_FILES['userfile']['name']))
-		{
-		    $gNavigation->clear();
-    		$gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_ERROR_OTHER'), $gL10n->get('SYS_ERROR'));	
-		}
-		elseif (strlen($_FILES['userfile']['name'][0]) === 0)
-		{
-		    $gNavigation->clear();
-    		$gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_FILE'))));
-		}
-		elseif (strtolower(substr($_FILES['userfile']['name'][0],-4)) <> '.cfg')
-		{
-		    $gNavigation->clear();
-			$gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_ERROR_FILE'), $gL10n->get('SYS_ERROR'));	
-		}
-		
-		$parsedArray = parse_ini_file ( $_FILES['userfile']['tmp_name'][0], TRUE );
+	    if ($postCfgFile !== '')
+	    {
+	        $parsedArray = parse_ini_file ($postCfgFile, TRUE );
+	    }
+	    else
+	    {
+            if (!isset($_FILES['userfile']['name']))
+            {
+                $gNavigation->clear();
+                $gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_ERROR_OTHER'), $gL10n->get('SYS_ERROR'));	
+            }
+            elseif (strlen($_FILES['userfile']['name'][0]) === 0)
+            {
+                $gNavigation->clear();
+  		        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_FILE'))));
+            }
+            elseif (strtolower(substr($_FILES['userfile']['name'][0],-4)) <> '.cfg')
+            {
+                $gNavigation->clear();
+                $gMessage->show($gL10n->get('PLG_FORMFILLER_IMPORT_ERROR_FILE'), $gL10n->get('SYS_ERROR'));	
+            }
+
+            $parsedArray = parse_ini_file ( $_FILES['userfile']['tmp_name'][0], TRUE );
+	    }
 	
 		//pruefen, ob die eingelesene Datei eine Formularkonfiguration enthaelt
 		if (	!(isset($parsedArray['desc']) && $parsedArray['desc'] <> '')
