@@ -28,6 +28,7 @@
  */
 
 use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\PdfParser\PdfParserException;
 
 require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/common_function.php');
@@ -303,7 +304,15 @@ $pageNumber = 1;                                                // notwendig bei
 
 if ($completePath != '')                                        // wenn nicht leer, dann wurde eine PDF-Datei zum Befüllen übergeben
 {
-    $pageNumber = $pdf->setSourceFile($completePath);			// Seitenanzahl der importieren PDF-Datei
+    try
+    {
+        $pageNumber = $pdf->setSourceFile($completePath);			// Seitenanzahl der importieren PDF-Datei
+    }
+    catch (PdfParserException $exception)
+    {
+        $gMessage->show($exception->getMessage());
+        // => EXIT
+    }
 }
 	
 foreach ($userArray as $userId)
