@@ -772,6 +772,13 @@ foreach ($userArray as $userId)
 				        }
 				        break; 
 				        
+				    case 'i':              // user_id
+				        $text = $user->getValue('usr_id');
+				        break;
+				        
+				    case 'u':              // user_uuid
+				        $text = $user->getValue('usr_uuid');
+				        break;
 				}
 			
 				// wurde optionaler Text angegeben?   (von lagro)
