@@ -70,6 +70,7 @@ $zeile = 0;
 $attributes = array();
 $attributesDefault = array();
 $user = new User($gDb, $gProfileFields);
+$membership = new TableMembers($gDb);
 $relation = new TableUserRelation($gDb);
 $relationArray = array();
 $completePath = '';
@@ -718,8 +719,23 @@ foreach ($userArray as $userId)
 				        foreach ($roleMemberships as $roleId)
 				        {
 				            $role->readDataById($roleId);
-
 				            $sortArray[$pointer]['text'] = $role->getValue('rol_name');
+
+				            $membership->readDataByColumns(array('mem_rol_id' => $roleId, 'mem_usr_id' => $userId));
+				            
+				            if (array_key_exists('MS', $fontData ) && strpos($fontData['MS'], 'B') !== false && strpos($fontData['MS'], 'E') !== false)
+                            {
+                                $sortArray[$pointer]['text'] .= ' ('. $gL10n->get('SYS_FROM_TO', array($membership->getValue('mem_begin', $gSettingsManager->getString('system_date')), $membership->getValue('mem_end', $gSettingsManager->getString('system_date')))).')';
+				            }
+				            elseif (array_key_exists('MS', $fontData ) && $fontData['MS'] === 'B')
+				            {
+                                $sortArray[$pointer]['text'] .= ' ('. $gL10n->get('SYS_FROM', array($membership->getValue('mem_begin', $gSettingsManager->getString('system_date')))).')';
+				            }
+				            elseif (array_key_exists('MS', $fontData ) && $fontData['MS'] === 'E')	                
+				            {
+				                $sortArray[$pointer]['text'] .= ' ('.$gL10n->get('SYS_ROLE_MEMBERSHIP_TO').$membership->getValue('mem_end', $gSettingsManager->getString('system_date')).')';
+				            }
+				            				            
 				            $sortArray[] = $sortArray[$pointer];
 				            $pointer = count($sortArray)-1;	
 				            $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
@@ -746,6 +762,22 @@ foreach ($userArray as $userId)
 				        while ($row = $formerRolesStatement->fetch())
 				        {
 				            $sortArray[$pointer]['text'] = $row['rol_name'];
+				            
+				            $membership->readDataByColumns(array('mem_rol_id' => $row['rol_id'], 'mem_usr_id' => $userId));
+				            
+				            if (array_key_exists('MS', $fontData ) && strpos($fontData['MS'], 'B') !== false && strpos($fontData['MS'], 'E') !== false)
+				            {
+				                $sortArray[$pointer]['text'] .= ' ('. $gL10n->get('SYS_FROM_TO', array($membership->getValue('mem_begin', $gSettingsManager->getString('system_date')), $membership->getValue('mem_end', $gSettingsManager->getString('system_date')))).')';
+				            }
+				            elseif (array_key_exists('MS', $fontData ) && $fontData['MS'] === 'B')
+				            {
+				                $sortArray[$pointer]['text'] .= ' ('. $gL10n->get('SYS_FROM', array($membership->getValue('mem_begin', $gSettingsManager->getString('system_date')))).')';
+				            }
+				            elseif (array_key_exists('MS', $fontData ) && $fontData['MS'] === 'E')
+				            {
+				                $sortArray[$pointer]['text'] .= ' ('.$gL10n->get('SYS_ROLE_MEMBERSHIP_TO').$membership->getValue('mem_end', $gSettingsManager->getString('system_date')).')';
+				            }
+				            
 				            $sortArray[] = $sortArray[$pointer];
 				            $pointer = count($sortArray)-1;
 				            $sortArray[$pointer]['xykoord'][1] += $sortArray[$pointer-1]['orderwidth'];
