@@ -119,6 +119,12 @@ switch ($getMode)
         		$exportArray['usf_name_intern'][] = $gProfileFields->getPropertyById($fieldid, 'usf_name_intern');
         		$exportArray['usf_name'][] = $gProfileFields->getPropertyById($fieldid, 'usf_name');
 			}
+			elseif (substr($data, 0, 1) == 'b')
+			{
+			    $fieldid = (int) substr($data, 1);
+			    $exportArray['usf_name_intern'][] = $gProfileFields->getPropertyById($fieldid, 'usf_name_intern');
+			    $exportArray['usf_name'][] = $gProfileFields->getPropertyById($fieldid, 'usf_name');
+			}
 			else 
 			{
         		$exportArray['usf_name_intern'][] = '';
@@ -219,9 +225,31 @@ switch ($getMode)
 			//$fieldtype extrahieren
         	$fieldtype = substr($data, 0, 1);
         
-        	if ($fieldtype == 'p')
+        	if ($fieldtype == 'p')                             //p wie (p)rofile-field
         	{
-        		$importArray['fields'][$key] = 'p'.$gProfileFields->getProperty($parsedArray['usf_name_intern'][$key], 'usf_id');
+        	    //u.U. wurde die einzulesende Konfiguration unter einer anderen Admidio-Installation erstellt,
+        	    //deshalb prüfen, ob es ein Profilfeld mit diesem 'usf_name_intern' gibt
+        	    if ($gProfileFields->getProperty($parsedArray['usf_name_intern'][$key], 'usf_id') > 0)
+        	    {
+        	        $importArray['fields'][$key] = 'p'.$gProfileFields->getProperty($parsedArray['usf_name_intern'][$key], 'usf_id');
+        	    }
+        	    else
+        	    {
+        	        continue;
+        	    }	
+        	}
+        	elseif ($fieldtype == 'b')                         //b wie (b)eziehung (r für relation ist bereits vergeben)
+        	{
+        	    //u.U. wurde die einzulesende Konfiguration unter einer anderen Admidio-Installation erstellt,
+        	    //deshalb prüfen, ob es ein Profilfeld mit diesem 'usf_name_intern' gibt
+        	    if ($gProfileFields->getProperty($parsedArray['usf_name_intern'][$key], 'usf_id') > 0)
+        	    {
+        	        $importArray['fields'][$key] = 'b'.$gProfileFields->getProperty($parsedArray['usf_name_intern'][$key], 'usf_id');
+        	    }
+        	    else
+        	    {
+        	        continue;
+        	    }
         	}
         	else 
         	{
