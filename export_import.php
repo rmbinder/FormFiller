@@ -67,7 +67,7 @@ switch ($getMode)
 		{
 		    $sample_dir = 'de';
 		}		
-		$cfgFiles = FileSystemUtils::getDirectoryContent(__DIR__.'/samples/'.$sample_dir, false, true, array(FileSystemUtils::CONTENT_TYPE_FILE));
+		$cfgFiles = FileSystemUtils::getDirectoryContent(__DIR__.'/examples/'.$sample_dir, false, true, array(FileSystemUtils::CONTENT_TYPE_FILE));
 		
 		//$cfgFiles aufbereiten für addSelectBox
 		$selectBoxEntries = array();
