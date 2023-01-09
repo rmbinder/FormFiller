@@ -376,6 +376,13 @@ foreach ($userArray as $userId)
 			{
 				$xyKoord = array();
 			
+				//die beiden (mit ! maskierten) Sonderzeichen ; und =, die auch für Parameter verwendet werden, temporär ersetzen
+				$formdata = str_replace('!;!','!#!', $formdata);
+				$formdata = str_replace('!=!','!*!', $formdata);  
+				
+				//evtl. vorhandene html-Codes wieder decodieren 
+				$formdata = html_entity_decode($formdata, ENT_QUOTES);
+				
 				//$formdata splitten in Koordinaten und Rest
 				$arrSplit = explode(';', $formdata);
 
@@ -392,10 +399,21 @@ foreach ($userArray as $userId)
 				$fontData = array();		
 				foreach ($arrSplit as $splitData)
 				{
-					$attr = explode('=', $splitData);
-					$fontData[$attr[0]] = $attr[1];
+				    //prüfen, ob das Attribut im richtigen Format vorliegt (Text=Text)
+				    if (strpos($splitData, '=', 1) !== false)
+				    {
+				        $attr = explode('=', $splitData);
+				        $fontData[$attr[0]] = $attr[1];
+				    }
 				}
-								
+				
+				//die temporäre Ersetzung der Sonderzeichen wiederherstellen
+				foreach ($fontData as $fontKey => $dummy)
+				{
+				    $fontData[$fontKey] = str_replace('!#!',';', $fontData[$fontKey]);
+				    $fontData[$fontKey] = str_replace('!*!','=', $fontData[$fontKey]);
+				}
+				
 				// Parameter "P" auswerten (importierte PDF-Dokumente mit mehreren Seiten) 
 				if ($pageCounterUser == 1)                // die erste Seite
 				{

@@ -76,7 +76,10 @@ switch ($getMode)
         					{
         						$allColumnsEmpty = false;
             					$fields[] = $_POST['column'.$conf.'_'.$number];
-            					$positions[] = $_POST['position'.$conf.'_'.$number];
+            					
+            					//einfache und doppelte Anführungszeichen in den entsprechenden HTML-Code umwandeln 
+            					//(Begr.: ansonsten Fehler im Modul preferences, im JavaScript-Code und bei Export)
+            					$positions[] = htmlentities($_POST['position'.$conf.'_'.$number], ENT_QUOTES);  
         					}
     					}
     			
