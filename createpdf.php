@@ -432,14 +432,16 @@ foreach ($userArray as $userId)
 				}
 				
 				$sortArray[] = array(
-						'xykoord'    => $xyKoord,
-						'attributes' => $attributesDefault,
-						'image'      => array('path'=>'', 'zufall'=>0),
-						'text'       => $text,
-				        'orderindex' => '',
-				        'orderwidth' => 5 ,
-						'trace'      => false ,
-						'rect'       => false     );
+						'xykoord'         => $xyKoord,
+						'attributes'      => $attributesDefault,
+						'image'           => array('path'=>'', 'zufall'=>0),
+						'text'            => $text,
+				        'orderindex'      => '',
+				        'orderwidth'      => 5,
+				        'wordwraplength'  => 0,
+				        'wordwrapwidth'   => 0,
+						'trace'           => false,
+						'rect'            => false );
 				$pointer = count($sortArray)-1;	
 			
 				// wurde eine abweichende Schriftfarbe definiert? ->  pruefen und ggf. überschreiben
@@ -541,7 +543,19 @@ foreach ($userArray as $userId)
 				{
 				    $sortArray[$pointer]['orderwidth'] = $fontData['OW'];
 				}
-							
+				
+				// wurden Parameter für einen Zeilenumbruch definiert?   (wordwrap lenght = WL)
+				if (array_key_exists('WL', $fontData ) && is_numeric($fontData['WL']))
+				{
+				    $sortArray[$pointer]['wordwraplength'] = $fontData['WL'];
+				}
+				
+				// wurden Parameter für einen Zeilenumbruch definiert?   (wordwrap width = WW)
+				if (array_key_exists('WW', $fontData ) && is_numeric($fontData['WL']))
+				{
+				    $sortArray[$pointer]['wordwrapwidth'] = $fontData['WW'];
+				}
+				
 				switch ($fieldtype)
 				{
 					case 'l':
@@ -840,7 +854,8 @@ foreach ($userArray as $userId)
          		{
             		$text = $fontData['{'].$text;
          		}
-				$sortArray[$pointer]['text'] = $text;                  
+         		
+         		$sortArray[$pointer]['text'] = $text;                  
 			}	
 		}  // zum naechsten Profilfeld 
 	
@@ -985,6 +1000,7 @@ foreach ($userArray as $userId)
         	
         		$koordX2 = $koordX2+($spalte*$etiketten[1]);
         		$koordY2 = $koordY2+($zeile*$etiketten[3]);	
+        		
         	}
        	 	else 														//Formulardruck
         	{
@@ -1026,7 +1042,27 @@ foreach ($userArray as $userId)
 				    $sortData['attributes']['style'] = str_replace('I', '', $sortData['attributes']['style']);
 				}
 				$pdf->SetFont($sortData['attributes']['font'], $sortData['attributes']['style'], $sortData['attributes']['size']);	
-				$pdf->Write(0,utf8_decode($sortData['text']));	
+					
+				// prüfen, ob Parameter für einen Zeilenumbruch definiert sind 
+				if (($sortData['wordwraplength'] > 0) && ($sortData['wordwrapwidth'] > 0) && (strlen($sortData['text']) > $sortData['wordwraplength']))	 
+				{								    
+				    $koordXPrev = $pdf->GetX();
+				    $koordYPrev = $pdf->GetY();
+				    $i = 0;
+				    $sortDataTextArr = strToFormattedArray($sortData['text'], $sortData['wordwraplength']);
+				    
+				    foreach ($sortDataTextArr as $data)
+				    {
+				        $pdf->SetXY($koordXPrev, $koordYPrev + $i);
+				        $pdf->Write(0,utf8_decode($data));
+				        $i += $sortData['wordwrapwidth'];
+				    }
+				    $pdf->SetXY($koordXPrev, $koordYPrev);
+				}
+				else 
+				{
+				    $pdf->Write(0,utf8_decode($sortData['text']));
+				}	
 			}
 				
 			// ggf. eine temporaer erzeugte Bilddatei wieder loeschen

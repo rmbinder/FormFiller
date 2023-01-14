@@ -223,3 +223,44 @@ function in_arrayi($needle, array $haystack, bool $strict = false): bool
     }
     return in_array($needle, $haystack, $strict);
 }
+
+/**
+ * Funktion splittet Text (Satz oder Adresse) in mehrere Teile gleicher/maximaler Länge auf
+ *
+ * @param string    $string
+ * @param int       $maxLength (maximale Anzahl der Zeichen)
+ *
+ * @return array
+ */
+function strToFormattedArray($string, $maxLength)
+{
+    $retArr = array(''); 
+    $strArr = explode(' ', $string);
+    
+    if (count($strArr) === 1)                   //$string wird komplett zurückgegeben, da keine ' ' enthalten sind
+    {
+        $retArr = $strArr; 
+    }
+    else 
+    {
+        foreach ($strArr as $str )
+        {
+            $last_key = count($retArr) - 1;
+        
+            if ((strlen($retArr[$last_key]) + 1 + strlen($str)) < $maxLength)
+            {
+                $retArr[$last_key] .= $str.' ';
+            }
+            else
+            {
+                $retArr[$last_key] = rtrim($retArr[$last_key]);
+                $retArr[] = $str.' ';
+            }        
+        }
+        $retArr[$last_key] = rtrim($retArr[$last_key]);
+        
+        //wenn das erste Wort bereits länger als $maxLength war, dann ist das erste Arrayelement leer (-> löschen).
+        $retArr = array_filter($retArr);
+    }
+    return $retArr;
+}
