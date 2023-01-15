@@ -623,36 +623,39 @@ foreach ($userArray as $userId)
 							case 'DROPDOWN':
 
 							    $text = ' ';
-								$pos  = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
-
-								if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
-								{
-									$textarray = explode(',', $fontData['T']);
-									if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
-									{
-										$text = $textarray[$pos];
-									}
-								}
-								else    // lese Wert aus Datenbank
-								{
-								    // show selected text of optionfield or combobox
-								    $arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
-								    if (isset($arrListValues[$pos+1])) 
-								    {
-								        $text = $arrListValues[$pos+1];
-								    }
-								}
-
-								if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
-								{
-									if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
-									{
-										//beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
-										//deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
-										$sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
-										$sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
-									}
-								}
+							    if (is_numeric($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database')))
+							    {
+							        $pos  = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
+							        
+							        if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
+							        {
+							            $textarray = explode(',', $fontData['T']);
+							            if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
+							            {
+							                $text = $textarray[$pos];
+							            }
+							        }
+							        else    // lese Wert aus Datenbank
+							        {
+							            // show selected text of optionfield or combobox
+							            $arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
+							            if (isset($arrListValues[$pos+1]))
+							            {
+							                $text = $arrListValues[$pos+1];
+							            }
+							        }
+							        
+							        if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
+							        {
+							            if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
+							            {
+							                //beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+							                //deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+							                $sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
+							                $sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
+							            }
+							        }
+							    }
 								break;
 							
 							case 'CHECKBOX':
@@ -678,36 +681,39 @@ foreach ($userArray as $userId)
 							    case 'DROPDOWN':
 				
 							        $text = ' ';
-                                    $pos = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
-				
-								    if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
-								    {
-									   $textarray = explode(',', $fontData['T']);
-									   if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
-									   {
-										  $text = $textarray[$pos];
-									   }
-								    }
-								    else    // lese Wert aus Datenbank
-								    {
-								        // show selected text of optionfield or combobox
-								        $arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
-								        if (isset($arrListValues[$pos+1]))
-								        {
-								            $text = $arrListValues[$pos+1];
-								        }
-								    }
-				
-								    if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
-								    {
-									   if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
-									   {
-										  //beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
-										  //deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
-										  $sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
-										  $sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
-									   }
-								    }
+							        if (is_numeric($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database')))
+							        {
+							            $pos = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'), 'database') - 1;
+							            
+							            if (array_key_exists('T', $fontData))    // Nehme n-ten Text aus Konfiguration
+							            {
+							                $textarray = explode(',', $fontData['T']);
+							                if (isset($textarray[$pos]))               // Wenn Text für diese Stelle definiert
+							                {
+							                    $text = $textarray[$pos];
+							                }
+							            }
+							            else    // lese Wert aus Datenbank
+							            {
+							                // show selected text of optionfield or combobox
+							                $arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
+							                if (isset($arrListValues[$pos+1]))
+							                {
+							                    $text = $arrListValues[$pos+1];
+							                }
+							            }
+							            
+							            if ($pos > 0) // Wenn nicht erstes Auswahlelement und weitere Positionen definiert
+							            {
+							                if (isset($xyKoord[$pos * 2]) && isset($xyKoord[$pos * 2 + 1]))
+							                {
+							                    //beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+							                    //deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+							                    $sortArray[$pointer]['xykoord'][0] = $xyKoord[$pos * 2];
+							                    $sortArray[$pointer]['xykoord'][1] = $xyKoord[$pos * 2 + 1];
+							                }
+							            }
+							        }
 								    break;
 							
 							    case 'CHECKBOX':
