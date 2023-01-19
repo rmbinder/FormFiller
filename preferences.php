@@ -44,7 +44,7 @@ if (!isUserAuthorizedForPreferences())
 $getAddDelete  = admFuncVariableIsValid($_GET, 'add_delete', 'numeric', array('defaultValue' => 0));
 $showOption    = admFuncVariableIsValid($_GET, 'show_option', 'string');
 
-$headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
+$headline = $gL10n->get('SYS_SETTINGS');
 
 if ($getAddDelete === -1)
 {
@@ -80,10 +80,10 @@ if ($getAddDelete)
 {
     $showOption = 'configurations';
 }
-
-$gNavigation->clear();
-$gNavigation->addUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/formfiller.php');
-$gNavigation->addUrl(CURRENT_URL);
+else
+{
+    $gNavigation->addUrl(CURRENT_URL, $headline);
+} 
 
 // create html page object
 $page = new HtmlPage('plg-formfiller-preferences', $headline);

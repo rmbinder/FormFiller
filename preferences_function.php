@@ -125,13 +125,11 @@ switch ($getMode)
 	case 2:
 	
 		$headline = $gL10n->get('PLG_FORMFILLER_DEINSTALLATION');
-	 
+
+		$gNavigation->addUrl(CURRENT_URL, $headline);
+		
 		// create html page object
    	 	$page = new HtmlPage('plg-formfiller-deinstallation', $headline);
-    
-    	$gNavigation->addUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
-    	$gNavigation->addUrl(CURRENT_URL);
-    
     	$page->addHtml('<p class="lead">'.$gL10n->get('PLG_FORMFILLER_DEINSTALLATION_FORM_DESC').'</p>');
 
     	// show form

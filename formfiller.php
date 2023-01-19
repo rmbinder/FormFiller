@@ -47,7 +47,7 @@ else
 $title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 $headline = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
-$gNavigation->addStartUrl(CURRENT_URL, $headline);
+$gNavigation->addStartUrl(CURRENT_URL, $headline, 'fa-pen-fancy');
     
 $page = new HtmlPage('plg-formfiller-mainpage', $headline);
 $page->setTitle($title);
