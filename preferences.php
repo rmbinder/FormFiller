@@ -417,9 +417,7 @@ $page->addJavascript('
 ';
         
 $page->addJavascript($javascriptCode);        
-$javascriptCode = '$(document).ready(function() {  
-
-';
+$javascriptCode = '$(document).ready(function() { ';
 	for ($conf = 0; $conf < $num_configs; $conf++)
 	{
 		$javascriptCode .= '  
@@ -484,6 +482,7 @@ $html = '<a class="admidio-icon-link openPopup" href="javascript:void(0);"
     '<i class="fas fa-info" data-toggle="tooltip" title="' . $gL10n->get('SYS_HELP') . '"></i> '.$gL10n->get('SYS_HELP').'</a>';
 $formConfigurations->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
 $formConfigurations->addLine();
+
 $formConfigurations->addDescription('<div style="width:100%; height:550px; overflow:auto; border:20px;">');
 for ($conf = 0; $conf < $num_configs; $conf++)
 {                           			
@@ -537,8 +536,11 @@ for ($conf = 0; $conf < $num_configs; $conf++)
         
     if ($num_configs != 1)
     {
-        $formConfigurations->addButton('btn_delete_config', $gL10n->get('PLG_FORMFILLER_DELETE_CONFIG'), array('icon' => 'fa-trash-alt',
-            'link' => SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => $conf+1)))
+        $formConfigurations->addButton('btn_delete_config', 
+            $gL10n->get('PLG_FORMFILLER_DELETE_CONFIG'), 
+            array(
+                'icon' => 'fa-trash-alt',
+                'link' => SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => $conf+1)))
         );
     }
         
@@ -548,16 +550,12 @@ $formConfigurations->addHtml('</div>');
 $formConfigurations->addLine();
 
 $formConfigurations->openGroupBox('add_config_group');
-$html = '<a class="btn btn-secondary" id="add_config" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => -1)).'">
-            <i class="fas fa-clone"></i> '.$gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG').'
-         </a>';
-$htmlDesc = '<div class="alert alert-warning alert-small" role="alert">
-                 <i class="fas fa-exclamation-triangle"></i>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'
-            </div>';
 $formConfigurations->addButton(
     'add_another_config',
     $gL10n->get('PLG_FORMFILLER_ADD_ANOTHER_CONFIG'),
-    array('icon' => 'fa-clone', 'class' => 'btn btn-secondary',
+    array(
+        'icon' => 'fa-clone', 
+        'class' => 'btn btn-secondary',
         'link' => SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => -1)))
     );
 $formConfigurations->addHtml('<div class="alert alert-warning alert-small" role="alert">
