@@ -757,7 +757,7 @@ foreach ($userArray as $userId)
 				        foreach ($roleMemberships as $roleId)
 				        {
 				            $role->readDataById($roleId);
-				            $sortArray[$pointer]['text'] = $role->getValue('rol_name');
+				            $sortArray[$pointer]['text'] = html_entity_decode($role->getValue('rol_name'), ENT_QUOTES | ENT_HTML5);
 
 				            $membership->readDataByColumns(array('mem_rol_id' => $roleId, 'mem_usr_id' => $userId));
 				            
