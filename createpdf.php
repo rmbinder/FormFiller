@@ -56,7 +56,6 @@ if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavig
 // Initialize and check the parameters
 $formID      		    = admFuncVariableIsValid($_POST, 'form_id', 'numeric', array('defaultValue' => 0));
 $postListId      		= admFuncVariableIsValid($_POST, 'lst_id', 'numeric', array('defaultValue' => 0));
-$postRoleId      		= admFuncVariableIsValid($_POST, 'rol_id', 'numeric', array('defaultValue' => 0));
 $postPdfID      		= admFuncVariableIsValid($_POST, 'pdf_id', 'numeric', array('defaultValue' => 0));
 $postShowFormerMembers 	= admFuncVariableIsValid($_POST, 'show_former_members', 'bool', array('defaultValue' => false));
 
@@ -79,12 +78,10 @@ if (isset($_POST['user_id']) && sizeof(array_filter($_POST['user_id'])) > 0)
 {
     $userArray = array_filter($_POST['user_id']);
 }
-elseif (($postListId > 0) && ($postRoleId > 0))
+elseif (($postListId > 0) && sizeof(array_filter($_POST['rol_id'])) > 0)
 {
-	//$list->getSQL($role_ids, $postShowFormerMembers) erwartet als Parameter für 
-	//$role_ids ein Array, deshalb $postRoleId in ein Array umwandeln
-	$role_ids[] = $postRoleId;
-	$sql        = '';   // enthaelt das Sql-Statement fuer die Liste
+    $role_ids = array_filter($_POST['rol_id']);
+	$sql      = '';   // enthaelt das Sql-Statement fuer die Liste
 
 	// create list configuration object and create a sql statement out of it
 	$list = new ListConfiguration($gDb, $postListId);
