@@ -666,7 +666,7 @@ foreach ($userArray as $userId)
 								break;
 							
 							default:
-								$text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+								$text = html_entity_decode($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')), ENT_QUOTES | ENT_HTML5);
 						}
 						break;
 				
@@ -724,7 +724,7 @@ foreach ($userArray as $userId)
 								    break;
 							
                                 default:
-							         $text = $user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'));
+							         $text = html_entity_decode($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern')), ENT_QUOTES | ENT_HTML5);
                             }
                             $user->readDataById($userId);
 					    }
