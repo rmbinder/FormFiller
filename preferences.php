@@ -321,7 +321,7 @@ $page->addJavascript('
         user_fields['. ($i+8). '] = new Object();
         user_fields['. ($i+8). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
         user_fields['. ($i+8). ']["id"]   = "fdummy";      //f wie former memberships
-        user_fields['. ($i+8). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";  ';
+        user_fields['. ($i+8). ']["data"] = "'.$gL10n->get('SYS_FORMER_ROLE_MEMBERSHIP').'";  ';
         
         if ($awardsIsActiv)
         {
@@ -400,7 +400,7 @@ $page->addJavascript('
         user_fields['. ($i+8). '] = new Object();
         user_fields['. ($i+8). ']["cat_name"] = "'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'";
         user_fields['. ($i+8). ']["id"]   = "fdummy";      //f wie former memberships
-        user_fields['. ($i+8). ']["data"] = "'.$gL10n->get('PRO_FORMER_ROLE_MEMBERSHIP').'";  ';
+        user_fields['. ($i+8). ']["data"] = "'.$gL10n->get('SYS_FORMER_ROLE_MEMBERSHIP').'";  ';
         
         if ($awardsIsActiv)
         {
