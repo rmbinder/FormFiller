@@ -87,16 +87,18 @@ elseif (($postListId > 0) && sizeof(array_filter($_POST['rol_id'])) > 0)
 	$list = new ListConfiguration($gDb, $postListId);
 	$sql = $list->getSQL(
 	    array('showRolesMembers'  => $role_ids,
+	          'showUserUUID'      => true,
 	          'showFormerMembers' => $postShowFormerMembers
 	    )
 	);
 	
-	// SQL-Statement der Liste ausfuehren und pruefen ob Daten vorhanden sind
+	// SQL-Statement der Liste ausfuehren 
 	$statement = $gDb->queryPrepared($sql);
 	
 	while ($row = $statement->fetch())
 	{
-		$userArray[] = $row['usr_id'] ;
+        $user->readDataByUuid($row['usr_uuid']);
+        $userArray[] = $user->getValue('usr_id');
 	}
 }
 elseif (isset($_GET['kmf-RECEIVER']))
