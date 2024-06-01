@@ -29,6 +29,8 @@ echo '
 	'.$gL10n->get('PLG_FORMFILLER_PDF_FILE_MULTIPLE_PAGES_DESC').'<br><br>
 	<strong>'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS_DESC').'
+	<strong>'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS_DESC').'<br><br>
+    <strong>'.$gL10n->get('PLG_FORMFILLER_WORDWRAP').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_WORDWRAP_DESC').'
 </div>';

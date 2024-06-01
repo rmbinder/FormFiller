@@ -431,16 +431,18 @@ foreach ($userArray as $userId)
 				}
 				
 				$sortArray[] = array(
-						'xykoord'         => $xyKoord,
-						'attributes'      => $attributesDefault,
-						'image'           => array('path'=>'', 'zufall'=>0),
-						'text'            => $text,
-				        'orderindex'      => '',
-				        'orderwidth'      => 5,
-				        'wordwraplength'  => 0,
-				        'wordwrapwidth'   => 0,
-						'trace'           => false,
-						'rect'            => false );
+						'xykoord'             => $xyKoord,
+						'attributes'          => $attributesDefault,
+						'image'               => array('path'=>'', 'zufall'=>0),
+						'text'                => $text,
+				        'orderindex'          => '',
+				        'orderwidth'          => 5,
+				        'wordwraplength'      => 0,
+				        'characterwraplength' => 0,
+				        'wordwrapwidth'       => 5,
+    				    'wordwrapmax'         => 1,
+						'trace'               => false,
+						'rect'                => false );
 				$pointer = count($sortArray)-1;	
 			
 				// wurde eine abweichende Schriftfarbe definiert? ->  pruefen und ggf. überschreiben
@@ -543,16 +545,28 @@ foreach ($userArray as $userId)
 				    $sortArray[$pointer]['orderwidth'] = $fontData['OW'];
 				}
 				
-				// wurden Parameter für einen Zeilenumbruch definiert?   (wordwrap lenght = WL)
-				if (array_key_exists('WL', $fontData ) && is_numeric($fontData['WL']))
+				// wurde Parameter WL für einen Zeilenumbruch definiert?   (WL = wordwrap lenght = Wortlänge)
+				if (array_key_exists('WL', $fontData ) && is_numeric($fontData['WL']) && !array_key_exists('CL', $fontData ))
 				{
 				    $sortArray[$pointer]['wordwraplength'] = $fontData['WL'];
 				}
 				
-				// wurden Parameter für einen Zeilenumbruch definiert?   (wordwrap width = WW)
-				if (array_key_exists('WW', $fontData ) && is_numeric($fontData['WL']))
+				// wurde Parameter CL für einen Zeilenumbruch definiert?   (CL = characterwrap length = Zeichenlänge)
+				if (array_key_exists('CL', $fontData ) && is_numeric($fontData['CL']) && !array_key_exists('WL', $fontData ))
+				{
+				    $sortArray[$pointer]['characterwraplength'] = $fontData['CL'];
+				}
+				
+				// wurde Parameter WW für einen Zeilenumbruch definiert?   (WW = wordwrap width = Zeilenabstand)
+				if (array_key_exists('WW', $fontData ) && is_numeric($fontData['WW']))
 				{
 				    $sortArray[$pointer]['wordwrapwidth'] = $fontData['WW'];
+				}
+				
+				// wurde Parameter WM für einen Zeilenumbruch definiert?   (WM = wordwrap max = max. Anzahl der Zeilen)
+				if (array_key_exists('WM', $fontData ) && is_numeric($fontData['WM']))
+				{
+				    $sortArray[$pointer]['wordwrapmax'] = $fontData['WM'];
 				}
 				
 				switch ($fieldtype)
@@ -1048,13 +1062,43 @@ foreach ($userArray as $userId)
 				}
 				$pdf->SetFont($sortData['attributes']['font'], $sortData['attributes']['style'], $sortData['attributes']['size']);	
 					
-				// prüfen, ob Parameter für einen Zeilenumbruch definiert sind 
+				// prüfen, ob die Parameter WL und WW für einen Zeilenumbruch definiert sind 
 				if (($sortData['wordwraplength'] > 0) && ($sortData['wordwrapwidth'] > 0) && (strlen($sortData['text']) > $sortData['wordwraplength']))	 
 				{								    
 				    $koordXPrev = $pdf->GetX();
 				    $koordYPrev = $pdf->GetY();
 				    $i = 0;
-				    $sortDataTextArr = strToFormattedArray($sortData['text'], $sortData['wordwraplength']);
+				   
+				    $sortDataTextArr = explode("\n", wordwrap($sortData['text'], $sortData['wordwraplength']));
+				   
+				    // wurde ein Parameter für die max. Anzahl der Zeilen übergeben?
+				    if ($sortData['wordwrapmax'] > 0)
+				    {
+				        array_splice($sortDataTextArr, $sortData['wordwrapmax']);
+				    }
+				    
+				    foreach ($sortDataTextArr as $data)
+				    {
+				        $pdf->SetXY($koordXPrev, $koordYPrev + $i);
+				        $pdf->Write(0,utf8_decode($data));
+				        $i += $sortData['wordwrapwidth'];
+				    }
+				    $pdf->SetXY($koordXPrev, $koordYPrev);
+				}
+				// prüfen, ob die Parameter CL und WW für einen Zeilenumbruch definiert sind
+				elseif (($sortData['characterwraplength'] > 0) && ($sortData['wordwrapwidth'] > 0) && (strlen($sortData['text']) > $sortData['characterwraplength']))
+				{
+				    $koordXPrev = $pdf->GetX();
+				    $koordYPrev = $pdf->GetY();
+				    $i = 0;
+				    
+				    $sortDataTextArr = str_split($sortData['text'], $sortData['characterwraplength']);
+				    
+				    // wurde ein Parameter für die max. Anzahl der Zeilen übergeben?
+				    if ($sortData['wordwrapmax'] > 0)
+				    {
+				        array_splice($sortDataTextArr, $sortData['wordwrapmax']);
+				    }
 				    
 				    foreach ($sortDataTextArr as $data)
 				    {

@@ -112,4 +112,6 @@
     <string name="PLG_FORMFILLER_SOURCE">Source</string>
     <string name="PLG_FORMFILLER_USER">Utilisateur</string>
     <string name="PLG_FORMFILLER_VALUE">Texte</string>
+    <string name="PLG_FORMFILLER_WORDWRAP">Nouvelle ligne</string>
+    <string name="PLG_FORMFILLER_WORDWRAP_DESC">Il y a un saut de ligne surtout pour les textes longs. Avec les paramètres WL, CL, WW et WM, il est possible de diviser un texte en segments individuels et de les afficher les uns après les autres.\nWL = Longueur du mot\nCL = Longueur des caractères\nWW = Interligne (Défaut: 5)\nWM = nombre maximum de lignes (Défaut : 1).\n\Exemple 1:10,100;CL=25;WW=10;WM=3\nUn saut de ligne se produit après 25 caractères. L'espacement des lignes est de 10 mm et un maximum de 3 lignes sont émises.\n\Exemple 2:10,100;WL=25;WW=10;WM=3\nUn saut de ligne se produit après un maximum de 25 caractères, mais les mots individuels ne sont pas séparés. L'espacement des lignes est de 10 mm et un maximum de 3 lignes sont émises.</string> 
 </resources>
