@@ -589,7 +589,7 @@ foreach ($userArray as $userId)
 						}
 						elseif ((int) $gSettingsManager->get('profile_photo_storage') === 0)               //Foto aus der Datenbank
 						{		
-							if (strlen($user->getValue('usr_photo')) != NULL)
+							if (strlen((string) $user->getValue('usr_photo')) != NULL)
     						{
         						$image = new Image();
         						$image->setImageFromData($user->getValue('usr_photo'));
@@ -845,7 +845,7 @@ foreach ($userArray as $userId)
 				                foreach ($awards as $row)
 				                {
 				                    $sortArray[$pointer]['text'] = $row['awa_cat_name'].' - '.$row['awa_name'];
-				                    $sortArray[$pointer]['text'] .= (strlen($row['awa_info'])>0) ? ' ('.$row['awa_info'].')' : '';
+				                    $sortArray[$pointer]['text'] .= (strlen((string) $row['awa_info'])>0) ? ' ('.$row['awa_info'].')' : '';
                                     $sortArray[$pointer]['text'] .= ' ('.$gL10n->get('AWA_SINCE').' '.date('d.m.Y',strtotime($row['awa_date'])).')' ;
 				                    $sortArray[] = $sortArray[$pointer];
 				                    $pointer = count($sortArray)-1;
