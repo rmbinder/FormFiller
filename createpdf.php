@@ -996,14 +996,14 @@ foreach ($userArray as $userId)
         			}
         			elseif ($sortData['image']['path'] <> '')				// bei Bildern ein Leerzeichen vorher und die Bildweite mit einbauen
         			{
-						$pdf->Write(0,utf8_decode('  '));
+						$pdf->Write(0,'  ');
 						$koordX = $pdf->GetX();
 						$koordY = $pdf->GetY();
 						$pdf->SetX($koordX+$width);		
 					}
 					else 												// bei Texten innerhalb derselben Zeile nur ein Leerzeichen dazwischen
 					{
-						$pdf->Write(0,utf8_decode(' '));
+						$pdf->Write(0,' ');
         			}
         		}
         		else                                                 	// eine neue Zeile des Etikettes wurde angefangen
@@ -1080,7 +1080,7 @@ foreach ($userArray as $userId)
 				    foreach ($sortDataTextArr as $data)
 				    {
 				        $pdf->SetXY($koordXPrev, $koordYPrev + $i);
-				        $pdf->Write(0,utf8_decode($data));
+				        $pdf->Write(0, iconv('UTF-8', 'windows-1252', $data));
 				        $i += $sortData['wordwrapwidth'];
 				    }
 				    $pdf->SetXY($koordXPrev, $koordYPrev);
@@ -1103,14 +1103,14 @@ foreach ($userArray as $userId)
 				    foreach ($sortDataTextArr as $data)
 				    {
 				        $pdf->SetXY($koordXPrev, $koordYPrev + $i);
-				        $pdf->Write(0,utf8_decode($data));
+				        $pdf->Write(0, iconv('UTF-8', 'windows-1252', $data));
 				        $i += $sortData['wordwrapwidth'];
 				    }
 				    $pdf->SetXY($koordXPrev, $koordYPrev);
 				}
 				else 
 				{
-				    $pdf->Write(0,utf8_decode($sortData['text']));
+				    $pdf->Write(0, iconv('UTF-8', 'windows-1252', $sortData['text']));
 				}	
 			}
 				
