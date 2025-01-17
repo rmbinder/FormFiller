@@ -505,7 +505,7 @@ for ($conf = 0; $conf < $num_configs; $conf++)
     $formConfigurations->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf], 'helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC'));				                                            
     $formConfigurations->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf], array('helpTextIdLabel' => 'PLG_FORMFILLER_LABELS_DESC'));
 						
-    if ($gSettingsManager->getInt('members_enable_user_relations') == 1)
+    if ($gSettingsManager->getInt('contacts_user_relations_enabled') == 1)
     {
         // select box showing all relation types
         $sql = 'SELECT urt_id, urt_name
