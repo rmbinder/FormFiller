@@ -78,14 +78,13 @@ class ConfigTablePFF
 	
 		$config_ist = array();
 		
-		// pruefen, ob es die Tabelle bereits gibt
-		$sql = 'SHOW TABLES LIKE \''.$this->table_name.'\' ';
-		$statement = $GLOBALS['gDb']->queryPrepared($sql);
-    
-    	// Tabelle anlegen, wenn es sie noch nicht gibt
-     	if (!$statement->rowCount())
-    	{
-    		// Tabelle ist nicht vorhanden --> anlegen
+		// check whether the configuration table is present
+		$sql = 'SELECT * FROM '.$this->table_name;
+		$pdoStatement = $GLOBALS['gDb']->queryPrepared($sql, array(), false);
+		
+		//if not, then create the table
+		if ($pdoStatement->rowCount() === 0)
+		{
         	$sql = 'CREATE TABLE '.$this->table_name.' (
             	plp_id 		integer     unsigned not null AUTO_INCREMENT,
             	plp_org_id 	integer   	unsigned not null,
@@ -285,12 +284,13 @@ class ConfigTablePFF
 	{
 	 	$ret = false;
  	
-	 	// pruefen, ob es die Tabelle überhaupt gibt
-		$sql = 'SHOW TABLES LIKE \''.$this->table_name.'\' ';
-		$tableExistStatement = $GLOBALS['gDb']->queryPrepared($sql);
-    
-        if ($tableExistStatement->rowCount())
-    	{
+	 	// check whether the configuration table is present
+	 	$sql = 'SELECT * FROM '.$this->table_name;
+	 	$pdoStatement = $GLOBALS['gDb']->queryPrepared($sql, array(), false);
+	 	
+	 	// if it is available, check whether the version is up to date
+	 	if ($pdoStatement->rowCount() !== 0)
+	 	{
 			$plp_name = self::$shortcut.'__Plugininformationen__version';
           
     		$sql = 'SELECT plp_value 
