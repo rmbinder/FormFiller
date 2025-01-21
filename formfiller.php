@@ -148,7 +148,8 @@ foreach ($rolesEvents as $key => $row)
 array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortThird, SORT_NUMERIC, $sortFourth, SORT_NUMERIC, $rolesEvents);
 $roles = array_merge($rolesNonEvents, $rolesEvents);
 
-$form->addSelectBox('rol_id', $gL10n->get('SYS_ROLE'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC', 'multiselect' => true));	
+$form->addSelectBox('rol_id', $gL10n->get('SYS_ROLES'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC', 'multiselect' => true));	
+$form->addSelectBox('rol_id_exclusion', $gL10n->get('PLG_FORMFILLER_ROLE_EXCLUSION'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_EXCLUSION_DESC', 'multiselect' => true));	
 
 $form->addCheckbox('show_former_members', $gL10n->get('PLG_FORMFILLER_FORMER_MEMBERS_ONLY'));
 $form->addLine();

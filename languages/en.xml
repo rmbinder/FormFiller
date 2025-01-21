@@ -12,9 +12,10 @@
     <string name="PLG_FORMFILLER_ASSORT_SUCCESS">Sorting done</string>
     <string name="PLG_FORMFILLER_BLACK">black</string>
     <string name="PLG_FORMFILLER_BLUE">blue</string>
-    <string name="PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC">Here is a form configuration is chosen on the basis of the PDF file is generated.\n\nUse the menu item -Settings- any number of configurations form can be generated.</string>
+    <string name="PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC">Here is a form configuration is chosen on the basis of the PDF file is generated.\n\nUse the menu item \"Settings\" any number of configurations form can be generated.</string>
     <string name="PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC">Here the list is selected, the configuration should be used.\n\nOnly evaluated the conditions are hereby specified for a field. Fields without condition for this request are not important.</string>
-    <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC">Here the role is selected, the Members shall be used</string>
+    <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC">Here you select the roles whose member lists will be used.</string>
+    <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_EXCLUSION_DESC">Here you can select the roles whose member lists are not used.\n\nFormFiller uses all member lists of the roles selected under \"Roles\" except the members of the \"Exclusion Roles\".</string>    
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Instead of list configuration and role, individual users can be selected here.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Configuration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Configurations</string>    
@@ -105,6 +106,7 @@
     <string name="PLG_FORMFILLER_RED">red</string>
     <string name="PLG_FORMFILLER_RELATION">Relationship</string>  
     <string name="PLG_FORMFILLER_RELATION_DESC">In order to be able to print the spouse in labels, the relationship "spouse" can be chosen. After saving and updating the page, there are additional options for this relationship in the field selection.</string>  
+    <string name="PLG_FORMFILLER_ROLE_EXCLUSION">Exclusion roles</string> 
     <string name="PLG_FORMFILLER_ROLE_MEMBERSHIPS">Role memberships</string>
     <string name="PLG_FORMFILLER_SAMPLE_FILE">Sample file</string>    
     <string name="PLG_FORMFILLER_SELECT_ROLE_OR_USER">Select either List configuration and Role as source or Users.</string>

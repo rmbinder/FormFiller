@@ -63,7 +63,9 @@ $pPreferences = new ConfigTablePFF();
 $pPreferences->read();
 
 $userArray = array();
+$userArray_exclusion = array();
 unset($role_ids);
+unset($role_ids_exclusion);
 $spalte = 0;
 $zeile = 0;	
 $attributes = array();
@@ -81,8 +83,29 @@ if (isset($_POST['user_id']) && sizeof(array_filter($_POST['user_id'])) > 0)
 elseif (($postListId > 0) && sizeof(array_filter($_POST['rol_id'])) > 0)
 {
     $role_ids = array_filter($_POST['rol_id']);
-	$sql      = '';   // enthaelt das Sql-Statement fuer die Liste
-
+    $role_ids_exclusion = array_filter($_POST['rol_id_exclusion']);    
+	$sql = '';   // enthaelt das Sql-Statement fuer die Liste
+	
+	if (sizeof($role_ids_exclusion) > 0)
+	{
+	    // create exclusion list configuration object and create a sql statement out of it
+	    $list = new ListConfiguration($gDb, $postListId);
+	    $sql = $list->getSQL(
+	        array('showRolesMembers'  => $role_ids_exclusion,
+	              'showUserUUID'      => true,
+	              'showFormerMembers' => $postShowFormerMembers
+	        )
+	    );
+	    
+	    $statement = $gDb->queryPrepared($sql);
+	    
+	    while ($row = $statement->fetch())
+	    {
+	        $user->readDataByUuid($row['usr_uuid']);        
+	        $userArray_exclusion[] = $user->getValue('usr_id');
+	    }
+	}
+	
 	// create list configuration object and create a sql statement out of it
 	$list = new ListConfiguration($gDb, $postListId);
 	$sql = $list->getSQL(
@@ -92,13 +115,15 @@ elseif (($postListId > 0) && sizeof(array_filter($_POST['rol_id'])) > 0)
 	    )
 	);
 	
-	// SQL-Statement der Liste ausfuehren 
 	$statement = $gDb->queryPrepared($sql);
 	
 	while ($row = $statement->fetch())
 	{
         $user->readDataByUuid($row['usr_uuid']);
-        $userArray[] = $user->getValue('usr_id');
+        if (!in_array($user->getValue('usr_id'), $userArray_exclusion))
+        {
+            $userArray[] = $user->getValue('usr_id');
+        }
 	}
 }
 elseif (isset($_GET['kmf-RECEIVER']))

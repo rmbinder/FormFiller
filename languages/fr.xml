@@ -12,9 +12,10 @@
     <string name="PLG_FORMFILLER_ASSORT_SUCCESS">Tri effectué</string>
     <string name="PLG_FORMFILLER_BLACK">noir</string>
     <string name="PLG_FORMFILLER_BLUE">bleu</string>
-    <string name="PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC">Ici nous avons sélectionné une configuration de formulaire, sur la base de laquelle le fichier PDF est créé.\n\nPar l\'élément de menu -Configurations- un nombre quelconque de configurations peut être créé.</string>
+    <string name="PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC">Ici nous avons sélectionné une configuration de formulaire, sur la base de laquelle le fichier PDF est créé.\n\nPar l\'élément de menu \"Configurations\" un nombre quelconque de configurations peut être créé.</string>
     <string name="PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC">La liste dont la configuration doit être utilisée est sélectionnée ici.\n\nSeules les conditions spécifiées pour une zone sont évaluées. Les zones sans conditions ne sont pas pertinentes pour cette requête.</string>
     <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC">Le rôle dont la liste des membres doit être utilisée est sélectionné ici.</string>
+    <string name="PLG_FORMFILLER_CHOOSE_ROLESELECTION_EXCLUSION_DESC">Ici, vous pouvez sélectionner les rôles dont les listes de membres ne sont pas utilisées.\n\nFormFiller utilise toutes les listes de membres des rôles sélectionnés sous \"Rôles\", à l'exception des membres des \"Rôles d'exclusion\".</string>    
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Au lieu de la configuration de liste et du rôle, les utilisateurs individuels peuvent être sélectionnés ici.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Configuration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Configurations</string>    
@@ -105,6 +106,7 @@
     <string name="PLG_FORMFILLER_RED">rouge</string>
     <string name="PLG_FORMFILLER_RELATION">Relation</string>  
     <string name="PLG_FORMFILLER_RELATION_DESC">Pour imprimer les conjoints lors de l\'impression d\'étiquettes, vous pouvez sélectionner ici la relation "Conjoint". Après avoir sauvegardé et mis la page à jour, il existe des options supplémentaires pour cette relation dans la sélection de champs. </string>     
+    <string name="PLG_FORMFILLER_ROLE_EXCLUSION">Rôles d'exclusion</string> 
     <string name="PLG_FORMFILLER_ROLE_MEMBERSHIPS">Adhésion aux rôles</string>
     <string name="PLG_FORMFILLER_SAMPLE_FILE">Exemple de fichier</string>    
     <string name="PLG_FORMFILLER_SELECT_ROLE_OR_USER">Sélectionnez soit la configuration de listes et rôle comme source, soit des utilisateurs.</string>
