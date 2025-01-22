@@ -578,7 +578,7 @@ $html = '<a class="btn btn-secondary" id="export_import" href="'. SecurityUtils:
 $formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_EXPORT_IMPORT_DESC'));
 $html = '<a class="btn btn-secondary" id="assort" " href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/assort.php').'">
     <i class="fas fa-sort"></i> '.$gL10n->get('PLG_FORMFILLER_ASSORT').'</a>';
-$formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_ASSORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_ASSORT_DESC', 'helpTextIdLabel' => 'PLG_FORMFILLER_ASSORT_NOTE'));
+$formOptions->addCustomContent($gL10n->get('PLG_FORMFILLER_ASSORT'), $html, array('helpTextIdInline' => 'PLG_FORMFILLER_ASSORT_DESC', 'alertWarning' => $gL10n->get('PLG_FORMFILLER_ASSORT_NOTE')));
 $formOptions->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => 'offset-sm-3'));
 
 $page->addHtml(getPreferencePanel('common', 'options', $gL10n->get('PLG_FORMFILLER_OPTIONS'), 'fas fa-cog', $formOptions->show()));
