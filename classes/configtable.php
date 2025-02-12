@@ -83,7 +83,7 @@ class ConfigTablePFF
 		$pdoStatement = $GLOBALS['gDb']->queryPrepared($sql, array(), false);
 		
 		//if not, then create the table
-		if ($pdoStatement->rowCount() === 0)
+		if ($pdoStatement === false)
 		{
         	$sql = 'CREATE TABLE '.$this->table_name.' (
             	plp_id 		integer     unsigned not null AUTO_INCREMENT,
@@ -289,7 +289,7 @@ class ConfigTablePFF
 	 	$pdoStatement = $GLOBALS['gDb']->queryPrepared($sql, array(), false);
 	 	
 	 	// if it is available, check whether the version is up to date
-	 	if ($pdoStatement->rowCount() !== 0)
+	 	if ($pdoStatement !== false)
 	 	{
 			$plp_name = self::$shortcut.'__Plugininformationen__version';
           
