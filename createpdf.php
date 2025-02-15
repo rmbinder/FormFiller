@@ -827,7 +827,7 @@ foreach ($userArray as $userId)
                                     ON cat_id = rol_cat_id
                                  WHERE mem_usr_id  = ? -- $userId
                                    AND mem_end     < ? -- DATE_NOW
-                                   AND rol_valid   = 1
+                                   AND rol_valid   = true
                                    AND cat_name_intern <> \'EVENTS\'
                                    AND (  cat_org_id  = ? -- $gCurrentOrgId
                                     OR cat_org_id IS NULL )
