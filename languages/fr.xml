@@ -80,6 +80,8 @@
     <string name="PLG_FORMFILLER_OPTIONS">Options</string>
     <string name="PLG_FORMFILLER_OPTIONAL">optionel</string>    
     <string name="PLG_FORMFILLER_ORG_CHOICE">Choix de l\'organisation</string>
+    <string name="PLG_FORMFILLER_ORIENTATION">Alignement</string>
+    <string name="PLG_FORMFILLER_ORIENTATION_DESC">Par défaut, tout le texte est aligné à gauche. Avec le paramètre 'O', le texte peut être affiché aligné à droite ou centré.\n\nExemple :\n 5,50;O=C --> Le texte est centré à la position 5,50\n\nExemple :\n 5,50;O=R --> Le texte est affiché aligné à droite à la position 5,50\n\nRemarque : Le paramètre 'O' n'a aucune fonction lors de l'utilisation de paramètres pour un saut de ligne.</string>           
     <string name="PLG_FORMFILLER_PATTERN">Modèle de formulaire</string>
     <string name="PLG_FORMFILLER_PDF_FILE">Fichier PDF</string>
     <string name="PLG_FORMFILLER_PDF_FILE_DESC">Le fichier PDF dans lequel les données sont écrites est sélectionné ici.\n\nSi aucun fichier n\'est sélectionné, un nouveau document PDF vide est créé sur la base des valeurs d\'alignement, de taille et d\'unité et rempli avec les données.</string>

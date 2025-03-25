@@ -32,5 +32,7 @@ echo '
 	<strong>'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS').'</strong><br>
 	'.$gL10n->get('PLG_FORMFILLER_DYNAMIC_FIELDS_DESC').'<br><br>
     <strong>'.$gL10n->get('PLG_FORMFILLER_WORDWRAP').'</strong><br>
-	'.$gL10n->get('PLG_FORMFILLER_WORDWRAP_DESC').'
+	'.$gL10n->get('PLG_FORMFILLER_WORDWRAP_DESC').'<br><br>
+    <strong>'.$gL10n->get('PLG_FORMFILLER_ORIENTATION').'</strong><br>
+	'.$gL10n->get('PLG_FORMFILLER_ORIENTATION_DESC').'
 </div>';

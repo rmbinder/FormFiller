@@ -460,6 +460,7 @@ foreach ($userArray as $userId)
 						'attributes'          => $attributesDefault,
 						'image'               => array('path'=>'', 'zufall'=>0),
 						'text'                => $text,
+				        'orientation'         => 'L',                       //default-orientation is L = left, possible orientations are 'L', 'C' and 'R'
 				        'orderindex'          => '',
 				        'orderwidth'          => 5,
 				        'wordwraplength'      => 0,
@@ -592,6 +593,12 @@ foreach ($userArray as $userId)
 				if (array_key_exists('WM', $fontData ) && is_numeric($fontData['WM']))
 				{
 				    $sortArray[$pointer]['wordwrapmax'] = $fontData['WM'];
+				}
+				
+				// wurde Parameter O für eine Orientation definiert?   (O = orientation, A für Align ist bereits belegt, Default ist 'L')
+				if (array_key_exists('O', $fontData ) && strstr_multiple('LCR', $fontData['O']))
+				{
+				    $sortArray[$pointer]['orientation'] = $fontData['O'];
 				}
 				
 				switch ($fieldtype)
@@ -1135,6 +1142,14 @@ foreach ($userArray as $userId)
 				}
 				else 
 				{
+				    if ($sortData['orientation'] === 'C' )
+				    {
+				        $pdf->SetX($pdf->GetX() - ($pdf->GetStringWidth($sortData['text'])/2));
+				    }
+				    elseif ($sortData['orientation'] === 'R' )
+				    {
+				        $pdf->SetX($pdf->GetX() - $pdf->GetStringWidth($sortData['text']));
+				    }
 				    $pdf->Write(0, iconv('UTF-8', 'windows-1252', $sortData['text']));
 				}	
 			}

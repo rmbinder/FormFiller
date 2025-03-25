@@ -80,6 +80,8 @@
     <string name="PLG_FORMFILLER_OPTIONS">Options</string>
     <string name="PLG_FORMFILLER_OPTIONAL">optional</string>
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organizational choice</string>
+    <string name="PLG_FORMFILLER_ORIENTATION">Alignment</string>
+    <string name="PLG_FORMFILLER_ORIENTATION_DESC">By default, all texts are left-aligned. The parameter 'O' can be used to output text right-aligned or centered.\n\nExample:\n 5,50;O=C --> Text is centered at position 5,50\n\nExample:\n 5,50;O=R --> Text is right-aligned at position 5,50\n\nNote: The parameter 'O' has no function when using parameters for a line break.</string>            
     <string name="PLG_FORMFILLER_PATTERN">Pattern form</string>
     <string name="PLG_FORMFILLER_PDF_FILE">PDF File</string>
     <string name="PLG_FORMFILLER_PDF_FILE_DESC">Here the PDF file is selected, in which the data is written.\n\nIf no file is selected, a new, blank PDF document is created based on the values of orientation, size and unit and filled with data.</string>

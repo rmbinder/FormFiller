@@ -80,6 +80,8 @@
     <string name="PLG_FORMFILLER_OPTIONS">Optionen</string>
     <string name="PLG_FORMFILLER_OPTIONAL">optional</string>    
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organisationswahl</string>
+    <string name="PLG_FORMFILLER_ORIENTATION">Ausrichtung</string>
+    <string name="PLG_FORMFILLER_ORIENTATION_DESC">Standardmäßig werden alle Texte linksbündig ausgerichtet. Mit dem Parameter 'O' kann Text rechtsbündig oder zentriert ausgegeben werden.\n\nBeispiel:\n 5,50;O=C --> Text wird an Position 5,50 zentriert\n\nBeispiel:\n 5,50;O=R --> Text wird an Position 5,50 rechtsbündig ausgegeben\n\nHinweis: Der Parameter 'O' ist bei Verwendung von Parametern für einen Zeilenumbruch ohne Funktion.</string>          
     <string name="PLG_FORMFILLER_PATTERN">Musterformular</string>
     <string name="PLG_FORMFILLER_PDF_FILE">PDF-Datei</string>
     <string name="PLG_FORMFILLER_PDF_FILE_DESC">Hier wird die PDF-Datei gewählt, in die die Daten geschrieben werden.\n\nWird keine Datei ausgewählt, so wird ein neues,leeres PDF-Dokument anhand der Werte von Ausrichtung, Größe und Einheit erzeugt und mit den Daten befüllt.</string>
