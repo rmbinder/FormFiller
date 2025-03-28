@@ -27,6 +27,12 @@
  ***********************************************************************************************
  */
 
+use Admidio\Users\Entity\User;
+use Admidio\Users\Entity\UserRelation;
+use Admidio\Documents\Entity\File;
+use Admidio\Roles\Entity\Role;
+use Admidio\Roles\Entity\Membership;
+use Admidio\Roles\Entity\ListConfiguration;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfParser\PdfParserException;
 
@@ -71,8 +77,8 @@ $zeile = 0;
 $attributes = array();
 $attributesDefault = array();
 $user = new User($gDb, $gProfileFields);
-$membership = new TableMembers($gDb);
-$relation = new TableUserRelation($gDb);
+$membership = new Membership($gDb);
+$relation = new UserRelation($gDb);
 $relationArray = array();
 $completePath = '';
 
@@ -80,18 +86,18 @@ if (isset($_POST['user_id']) && sizeof(array_filter($_POST['user_id'])) > 0)
 {
     $userArray = array_filter($_POST['user_id']);
 }
-elseif (($postListId > 0) && sizeof(array_filter($_POST['rol_id'])) > 0)
+elseif (($postListId > 0) && sizeof(array_filter($_POST['rol_uuid'])) > 0)
 {
-    $role_ids = array_filter($_POST['rol_id']);
-    $role_ids_exclusion = array_filter($_POST['rol_id_exclusion']);    
+    $role_uuids = array_filter($_POST['rol_uuid']);
+    $role_uuids_exclusion = array_filter($_POST['rol_uuid_exclusion']);    
 	$sql = '';   // enthaelt das Sql-Statement fuer die Liste
 	
-	if (sizeof($role_ids_exclusion) > 0)
+	if (sizeof($role_uuids_exclusion) > 0)
 	{
 	    // create exclusion list configuration object and create a sql statement out of it
 	    $list = new ListConfiguration($gDb, $postListId);
 	    $sql = $list->getSQL(
-	        array('showRolesMembers'  => $role_ids_exclusion,
+	        array('showRolesMembers'  => $role_uuids_exclusion,
 	              'showUserUUID'      => true,
 	              'showFormerMembers' => $postShowFormerMembers
 	        )
@@ -108,13 +114,14 @@ elseif (($postListId > 0) && sizeof(array_filter($_POST['rol_id'])) > 0)
 	
 	// create list configuration object and create a sql statement out of it
 	$list = new ListConfiguration($gDb, $postListId);
+	
 	$sql = $list->getSQL(
-	    array('showRolesMembers'  => $role_ids,
+	    array('showRolesMembers'  => $role_uuids,               
 	          'showUserUUID'      => true,
 	          'showFormerMembers' => $postShowFormerMembers
 	    )
 	);
-	
+
 	$statement = $gDb->queryPrepared($sql);
 	
 	while ($row = $statement->fetch())
@@ -214,7 +221,7 @@ if ($pdfID != 0)
     }     
 	
 	// get recordset of current file from databse
-    $file = new TableFile($gDb, $pdfID);
+    $file = new File($gDb, $pdfID);
 	$fileUuid  = $file->getValue('fil_uuid');
 	$file->getFileForDownload($fileUuid);
     
@@ -796,7 +803,7 @@ foreach ($userArray as $userId)
 						break; 
 						
 				    case 'm':              // memberships
-				        $role = new TableRoles($gDb);
+				        $role = new Role($gDb);
 				        $roleMemberships = $user->getRoleMemberships();
 				        
 				        foreach ($roleMemberships as $roleId)

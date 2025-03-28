@@ -16,6 +16,9 @@
  ***********************************************************************************************
  */
 
+use Admidio\Infrastructure\Utils\SecurityUtils;
+use Admidio\Users\Entity\UserRelationType;
+
 require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/../../adm_program/system/login_valid.php');
 require_once(__DIR__ . '/common_function.php');
@@ -147,7 +150,7 @@ $page->addJavascript('
     {      
     	if (!empty($pPreferences->config['Formular']['relation'][$conf]))
     	{
-    		$relationtype = new TableUserRelationType($gDb, $pPreferences->config['Formular']['relation'][$conf]);
+    	    $relationtype = new UserRelationType($gDb, $pPreferences->config['Formular']['relation'][$conf]);
     		$javascriptCode .= '
  			var arr_user_fields'.$conf.' = createProfileFieldsRelationArray("'.$relationtype->getValue('urt_name').'"); 
     		';
@@ -608,7 +611,7 @@ $page->addHtml(getPreferencePanel('common', 'access_preferences', $gL10n->get('P
                         
 // PANEL: PLUGIN INFORMATIONS
                         
-$formPluginInformations = new HtmlForm('plugin_informations_preferences_form', null, $page);                        
+$formPluginInformations = new HtmlForm('plugin_informations_preferences_form', '', $page);                        
 $formPluginInformations->addStaticControl('plg_name', $gL10n->get('PLG_FORMFILLER_PLUGIN_NAME'), $gL10n->get('PLG_FORMFILLER_FORMFILLER'));
 $formPluginInformations->addStaticControl('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
 $formPluginInformations->addStaticControl('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);

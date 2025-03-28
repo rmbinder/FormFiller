@@ -19,6 +19,9 @@
  ***********************************************************************************************
  */
 
+use Admidio\Infrastructure\Language;
+use Admidio\Infrastructure\Utils\SecurityUtils;
+
 require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
@@ -90,7 +93,7 @@ $rolesNonEvents = array();
 $rolesEvents = array();
 
 // alle Rollen außer Events
-$sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
+$sql = 'SELECT rol.rol_uuid, rol.rol_name, cat.cat_name
           FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
          WHERE cat.cat_id = rol.rol_cat_id
            AND (  cat.cat_org_id = ?
@@ -102,7 +105,7 @@ $statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, 'EVENTS'));
 while ($row = $statement->fetch())
 {
     $row['cat_name'] = Language::translateIfTranslationStrId($row['cat_name']);
-    $rolesNonEvents[] = array($row['rol_id'], $row['rol_name'], $row['cat_name'] );
+    $rolesNonEvents[] = array($row['rol_uuid'], $row['rol_name'], $row['cat_name'] );
 }
 
 $sortFirst  = array();
@@ -115,7 +118,7 @@ foreach ($rolesNonEvents as $key => $row)
 array_multisort($sortFirst, SORT_ASC, $sortSecond, SORT_ASC, $rolesNonEvents);
 
 // alle Events
-$sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
+$sql = 'SELECT rol.rol_uuid, rol.rol_name, cat.cat_name
           FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
          WHERE cat.cat_id = rol.rol_cat_id
            AND (  cat.cat_org_id = ?
@@ -127,7 +130,7 @@ $statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, 'EVENTS'));
 while ($row = $statement->fetch())
 {
     $row['cat_name'] = Language::translateIfTranslationStrId($row['cat_name']);
-    $rolesEvents[] = array($row['rol_id'], $row['rol_name'], $row['cat_name'] );
+    $rolesEvents[] = array($row['rol_uuid'], $row['rol_name'], $row['cat_name'] );
 }
 
 $sortFirst  = array();
@@ -148,8 +151,8 @@ foreach ($rolesEvents as $key => $row)
 array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortThird, SORT_NUMERIC, $sortFourth, SORT_NUMERIC, $rolesEvents);
 $roles = array_merge($rolesNonEvents, $rolesEvents);
 
-$form->addSelectBox('rol_id', $gL10n->get('SYS_ROLES'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC', 'multiselect' => true));	
-$form->addSelectBox('rol_id_exclusion', $gL10n->get('PLG_FORMFILLER_ROLE_EXCLUSION'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_EXCLUSION_DESC', 'multiselect' => true));	
+$form->addSelectBox('rol_uuid', $gL10n->get('SYS_ROLES'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC', 'multiselect' => true));	
+$form->addSelectBox('rol_uuid_exclusion', $gL10n->get('PLG_FORMFILLER_ROLE_EXCLUSION'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_EXCLUSION_DESC', 'multiselect' => true));	
 
 $form->addCheckbox('show_former_members', $gL10n->get('PLG_FORMFILLER_FORMER_MEMBERS_ONLY'));
 $form->addLine();
