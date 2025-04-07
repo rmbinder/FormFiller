@@ -86,7 +86,7 @@ if ($statement->rowCount() > 0)
     	$configurations[] = array($row['lst_id'],$row['lst_name'],($row['lst_global'] == 0 ? $gL10n->get('SYS_YOUR_LISTS') : $gL10n->get('SYS_GENERAL_LISTS') ));
     }        
 }    
-$form->addSelectBox('lst_id', $gL10n->get('SYS_CONFIGURATION_LIST'), $configurations, array( 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC'));
+$form->addSelectBox('lst_id', $gL10n->get('SYS_CONFIGURATION_LIST'), $configurations, array( 'showContextDependentFirstEntry' => true, 'helpTextId' => 'PLG_FORMFILLER_CHOOSE_LISTSELECTION_DESC'));
 
 $roles = array();
 $rolesNonEvents = array();
@@ -151,8 +151,8 @@ foreach ($rolesEvents as $key => $row)
 array_multisort($sortFirst, SORT_NUMERIC, $sortSecond, SORT_NUMERIC, $sortThird, SORT_NUMERIC, $sortFourth, SORT_NUMERIC, $rolesEvents);
 $roles = array_merge($rolesNonEvents, $rolesEvents);
 
-$form->addSelectBox('rol_uuid', $gL10n->get('SYS_ROLES'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC', 'multiselect' => true));	
-$form->addSelectBox('rol_uuid_exclusion', $gL10n->get('PLG_FORMFILLER_ROLE_EXCLUSION'), $roles, array( 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_EXCLUSION_DESC', 'multiselect' => true));	
+$form->addSelectBox('rol_uuid', $gL10n->get('SYS_ROLES'), $roles, array( 'helpTextId' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_DESC', 'multiselect' => true));	
+$form->addSelectBox('rol_uuid_exclusion', $gL10n->get('PLG_FORMFILLER_ROLE_EXCLUSION'), $roles, array( 'helpTextId' => 'PLG_FORMFILLER_CHOOSE_ROLESELECTION_EXCLUSION_DESC', 'multiselect' => true));	
 
 $form->addCheckbox('show_former_members', $gL10n->get('PLG_FORMFILLER_FORMER_MEMBERS_ONLY'));
 $form->addLine();
@@ -185,11 +185,11 @@ $sqlData['params']= array(
 		DATE_NOW,
 		DATE_NOW  );
 
-$form->addSelectBoxFromSql('user_id', $gL10n->get('PLG_FORMFILLER_USER'), $gDb, $sqlData, array('helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC', 'multiselect' => true));				                                                 
+$form->addSelectBoxFromSql('user_id', $gL10n->get('PLG_FORMFILLER_USER'), $gDb, $sqlData, array('helpTextId' => 'PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC', 'multiselect' => true));				                                                 
 $form->closeGroupBox();			//select_role_or_user
 
 $form->openGroupBox('select_config', $gL10n->get('PLG_FORMFILLER_FORM_CONFIGURATION'));
-$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array('property' => HtmlForm::FIELD_REQUIRED , 'showContextDependentFirstEntry' => false, 'helpTextIdLabel' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
+$form->addSelectBox('form_id', $gL10n->get('PLG_FORMFILLER_CONFIGURATION'), $pPreferences->config['Formular']['desc'], array('property' => HtmlForm::FIELD_REQUIRED , 'showContextDependentFirstEntry' => false, 'helpTextId' => 'PLG_FORMFILLER_CHOOSE_CONFIGURATION_DESC'));
 $form->closeGroupBox();
 
 $form->openGroupBox('select_pdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_OPTIONAL').')');
@@ -200,8 +200,8 @@ $sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
            AND ( fol.fol_org_id = '.$gCurrentOrgId.'
             OR fol.fol_org_id IS NULL )
       ORDER BY fol.fol_name ASC, fil.fil_name ASC ';
-$form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC2'));	
-$form->addFileUpload('importpdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_LOCAL').')', array( 'allowedMimeTypes' => array('application/pdf'), 'helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC3'));
+$form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('helpTextId' => 'PLG_FORMFILLER_PDF_FILE_DESC2'));	
+$form->addFileUpload('importpdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_LOCAL').')', array( 'allowedMimeTypes' => array('application/pdf'), 'helpTextId' => 'PLG_FORMFILLER_PDF_FILE_DESC3'));
 $form->closeGroupBox();
 
 $form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => 'fa-file-pdf', 'class' => ' col-sm-offset-3'));

@@ -482,7 +482,7 @@ $formConfigurations = new HtmlForm('configurations_form', SecurityUtils::encodeU
                         
 $html = '<a class="admidio-icon-link openPopup" href="javascript:void(0);"
     data-bs-href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php').'">'.
-    '<i class="fas fa-info" data-bs-toggle="tooltip" title="' . $gL10n->get('SYS_HELP') . '"></i> '.$gL10n->get('SYS_HELP').'</a>';
+    '<i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="' . $gL10n->get('SYS_HELP') . '"></i> '.$gL10n->get('SYS_HELP').'</a>';
 $formConfigurations->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
 $formConfigurations->addLine();
 
@@ -490,14 +490,14 @@ $formConfigurations->addDescription('<div style="width:100%; height:550px; overf
 for ($conf = 0; $conf < $num_configs; $conf++)
 {                           			
     $formConfigurations->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PLG_FORMFILLER_CONFIGURATION'));
-    $formConfigurations->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf], array('property' => HtmlForm::FIELD_REQUIRED, 'helpTextIdLabel' => 'PLG_FORMFILLER_DESCRIPTION_DESC'));
-    $formConfigurations->addSelectBox('font'.$conf, $gL10n->get('PLG_FORMFILLER_FONT'), validFonts(), array('defaultValue' => $pPreferences->config['Formular']['font'][$conf], 'showContextDependentFirstEntry' => false, 'helpTextIdLabel' => 'PLG_FORMFILLER_FONT_DESC'));
-    $formConfigurations->addSelectBox('style'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSTYLE'), array(''=>'Normal','B'=>'Fett','I'=>'Kursiv','U'=>'Unterstrichen','BI'=>'Fett-Kursiv','BU'=>'Fett-Unterstrichen','IU'=>'Kursiv-Unterstrichen'), array('defaultValue' => $pPreferences->config['Formular']['style'][$conf],  'showContextDependentFirstEntry' => false, 'helpTextIdLabel' => 'PLG_FORMFILLER_FONTSTYLE_DESC'));
-    $formConfigurations->addInput('size'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], array('step' => 2,'type' => 'number', 'minNumber' => 6, 'maxNumber' => 40, 'helpTextIdLabel' => 'PLG_FORMFILLER_FONTSIZE_DESC'));
-    $formConfigurations->addSelectBox('color'.$conf, $gL10n->get('PLG_FORMFILLER_FONTCOLOR'), array('0,0,0'=>$gL10n->get('PLG_FORMFILLER_BLACK'),'255,0,0'=>$gL10n->get('PLG_FORMFILLER_RED'),'0,255,0'=>$gL10n->get('PLG_FORMFILLER_GREEN'),'0,0,255'=>$gL10n->get('PLG_FORMFILLER_BLUE')), array('defaultValue' => $pPreferences->config['Formular']['color'][$conf],  'showContextDependentFirstEntry' => false, 'helpTextIdLabel' => 'PLG_FORMFILLER_FONTCOLOR_DESC'));
-    $formConfigurations->addSelectBox('pdfform_orientation'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION'), array('P'=>'Hochformat','L'=>'Querformat' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_orientation'][$conf], 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_PDFFORM_ORIENTATION_DESC'));
-    $formConfigurations->addSelectBox('pdfform_size'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE'), $selectBoxSizesEntries, array('defaultValue' => $pPreferences->config['Formular']['pdfform_size'][$conf], 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_PDFFORM_SIZE_DESC'));
-    $formConfigurations->addSelectBox('pdfform_unit'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT'), array('pt'=>'Punkt','mm'=>'Millimeter','cm'=>'Zentimeter','in'=>'Inch' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_unit'][$conf], 'showContextDependentFirstEntry' => true, 'helpTextIdLabel' => 'PLG_FORMFILLER_PDFFORM_UNIT_DESC'));							
+    $formConfigurations->addInput('desc'.$conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf], array('property' => HtmlForm::FIELD_REQUIRED, 'helpTextId' => 'PLG_FORMFILLER_DESCRIPTION_DESC'));
+    $formConfigurations->addSelectBox('font'.$conf, $gL10n->get('PLG_FORMFILLER_FONT'), validFonts(), array('defaultValue' => $pPreferences->config['Formular']['font'][$conf], 'showContextDependentFirstEntry' => false, 'helpTextId' => 'PLG_FORMFILLER_FONT_DESC'));
+    $formConfigurations->addSelectBox('style'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSTYLE'), array(''=>'Normal','B'=>'Fett','I'=>'Kursiv','U'=>'Unterstrichen','BI'=>'Fett-Kursiv','BU'=>'Fett-Unterstrichen','IU'=>'Kursiv-Unterstrichen'), array('defaultValue' => $pPreferences->config['Formular']['style'][$conf],  'showContextDependentFirstEntry' => false, 'helpTextId' => 'PLG_FORMFILLER_FONTSTYLE_DESC'));
+    $formConfigurations->addInput('size'.$conf, $gL10n->get('PLG_FORMFILLER_FONTSIZE'), $pPreferences->config['Formular']['size'][$conf], array('step' => 2,'type' => 'number', 'minNumber' => 6, 'maxNumber' => 40, 'helpTextId' => 'PLG_FORMFILLER_FONTSIZE_DESC'));
+    $formConfigurations->addSelectBox('color'.$conf, $gL10n->get('PLG_FORMFILLER_FONTCOLOR'), array('0,0,0'=>$gL10n->get('PLG_FORMFILLER_BLACK'),'255,0,0'=>$gL10n->get('PLG_FORMFILLER_RED'),'0,255,0'=>$gL10n->get('PLG_FORMFILLER_GREEN'),'0,0,255'=>$gL10n->get('PLG_FORMFILLER_BLUE')), array('defaultValue' => $pPreferences->config['Formular']['color'][$conf],  'showContextDependentFirstEntry' => false, 'helpTextId' => 'PLG_FORMFILLER_FONTCOLOR_DESC'));
+    $formConfigurations->addSelectBox('pdfform_orientation'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION'), array('P'=>'Hochformat','L'=>'Querformat' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_orientation'][$conf], 'showContextDependentFirstEntry' => true, 'helpTextId' => 'PLG_FORMFILLER_PDFFORM_ORIENTATION_DESC'));
+    $formConfigurations->addSelectBox('pdfform_size'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_SIZE'), $selectBoxSizesEntries, array('defaultValue' => $pPreferences->config['Formular']['pdfform_size'][$conf], 'showContextDependentFirstEntry' => true, 'helpTextId' => 'PLG_FORMFILLER_PDFFORM_SIZE_DESC'));
+    $formConfigurations->addSelectBox('pdfform_unit'.$conf, $gL10n->get('PLG_FORMFILLER_PDFFORM_UNIT'), array('pt'=>'Punkt','mm'=>'Millimeter','cm'=>'Zentimeter','in'=>'Inch' ), array('defaultValue' => $pPreferences->config['Formular']['pdfform_unit'][$conf], 'showContextDependentFirstEntry' => true, 'helpTextId' => 'PLG_FORMFILLER_PDFFORM_UNIT_DESC'));							
 							
     $sql = 'SELECT fil.fil_id, fil.fil_name, fol.fol_name
               FROM '.TBL_FOLDERS.' as fol, '.TBL_FILES.' as fil
@@ -505,8 +505,8 @@ for ($conf = 0; $conf < $num_configs; $conf++)
               AND fil.fil_name LIKE \'%.PDF\' 
               AND ( fol.fol_org_id = '.$gCurrentOrgId.'
                OR fol.fol_org_id IS NULL )';
-    $formConfigurations->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf], 'helpTextIdLabel' => 'PLG_FORMFILLER_PDF_FILE_DESC'));				                                            
-    $formConfigurations->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf], array('helpTextIdLabel' => 'PLG_FORMFILLER_LABELS_DESC'));
+    $formConfigurations->addSelectBoxFromSql('pdfid'.$conf, $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Formular']['pdfid'][$conf], 'helpTextId' => 'PLG_FORMFILLER_PDF_FILE_DESC'));				                                            
+    $formConfigurations->addInput('labels'.$conf, $gL10n->get('PLG_FORMFILLER_LABELS'), $pPreferences->config['Formular']['labels'][$conf], array('helpTextId' => 'PLG_FORMFILLER_LABELS_DESC'));
 						
     if ($gSettingsManager->getInt('contacts_user_relations_enabled') == 1)
     {
@@ -515,7 +515,7 @@ for ($conf = 0; $conf < $num_configs; $conf++)
              	  FROM '.TBL_USER_RELATION_TYPES.'
         	  ORDER BY urt_name';
         $formConfigurations->addSelectBoxFromSql('relationtype_id'.$conf, $gL10n->get('PLG_FORMFILLER_RELATION'), $gDb, $sql,
-            array('defaultValue' => $pPreferences->config['Formular']['relation'][$conf],'showContextDependentFirstEntry' => true, 'multiselect' => false, 'helpTextIdLabel' => 'PLG_FORMFILLER_RELATION_DESC'));
+            array('defaultValue' => $pPreferences->config['Formular']['relation'][$conf],'showContextDependentFirstEntry' => true, 'multiselect' => false, 'helpTextId' => 'PLG_FORMFILLER_RELATION_DESC'));
     }
      
     $formConfigurations->addDescription('<strong>'.$gL10n->get('PLG_FORMFILLER_FIELD_SELECTION').'</strong>');
