@@ -16,6 +16,9 @@
  ***********************************************************************************************
  */
 
+use Admidio\Infrastructure\Utils\FileSystemUtils;
+use Admidio\Infrastructure\Utils\SecurityUtils;
+
 require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
