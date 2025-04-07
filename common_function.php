@@ -9,6 +9,7 @@
  ***********************************************************************************************
  */
  
+use Admidio\Components\Entity\Component;
 use Admidio\Roles\Entity\RolesRights;
 
 require_once(__DIR__ . '/../../adm_program/system/common.php');

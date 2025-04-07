@@ -481,7 +481,7 @@ $page->addHtml('
 $formConfigurations = new HtmlForm('configurations_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('form' => 'configurations')), $page, array('class' => 'form-preferences'));
                         
 $html = '<a class="admidio-icon-link openPopup" href="javascript:void(0);"
-    data-bs-href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php').'">'.
+    data-href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php').'">'.
     '<i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="' . $gL10n->get('SYS_HELP') . '"></i> '.$gL10n->get('SYS_HELP').'</a>';
 $formConfigurations->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
 $formConfigurations->addLine();

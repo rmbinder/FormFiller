@@ -30,6 +30,8 @@
 use Admidio\Users\Entity\User;
 use Admidio\Users\Entity\UserRelation;
 use Admidio\Documents\Entity\File;
+use Admidio\Documents\Entity\Folder;
+use Admidio\Infrastructure\Image;
 use Admidio\Roles\Entity\Role;
 use Admidio\Roles\Entity\Membership;
 use Admidio\Roles\Entity\ListConfiguration;
@@ -613,7 +615,7 @@ foreach ($userArray as $userId)
 					case 'l':
 						if (array_key_exists('L', $fontData ) )                         //Foto aus einer alternativen Bilddatei)
 						{
-							$downloadFolder = new TableFolder($gDb);
+							$downloadFolder = new Folder($gDb);
 							if (file_exists(ADMIDIO_PATH . FOLDER_DATA . '/'.$downloadFolder->getRootFolderName().'/'.$fontData['L']))
 							{
 								$sortArray[$pointer]['image']['path'] = ADMIDIO_PATH . FOLDER_DATA .'/'.$downloadFolder->getRootFolderName().'/'.$fontData['L'];
