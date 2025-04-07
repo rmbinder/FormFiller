@@ -451,11 +451,11 @@ function getPreferencePanel($group, $id, $title, $icon, $body)
     $html = '
         <div class="card" id="panel_' . $id . '">
             <div class="card-header">
-                <a type="button" data-toggle="collapse" data-target="#collapse_' . $id . '">
+                <a type="button" data-bs-toggle="collapse" data-bs-target="#collapse_' . $id . '">
                     <i class="' . $icon . ' fa-fw"></i>' . $title . '
                 </a>
             </div>
-            <div id="collapse_' . $id . '" class="collapse" aria-labelledby="headingOne" data-parent="#accordion_preferences">
+            <div id="collapse_' . $id . '" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion_preferences">
                 <div class="card-body">
                     ' . $body . '
                 </div>
@@ -468,7 +468,7 @@ function getPreferencePanel($group, $id, $title, $icon, $body)
 $page->addHtml('
 <ul id="preferences_tabs" class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-        <a id="tabs_nav_common" class="nav-link" href="#tabs-common" data-toggle="tab" role="tab">'.$gL10n->get('SYS_SETTINGS').'</a>
+        <a id="tabs_nav_common" class="nav-link" href="#tabs-common" data-bs-toggle="tab" role="tab">'.$gL10n->get('SYS_SETTINGS').'</a>
     </li>
 </ul>
     
@@ -481,8 +481,8 @@ $page->addHtml('
 $formConfigurations = new HtmlForm('configurations_form', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('form' => 'configurations')), $page, array('class' => 'form-preferences'));
                         
 $html = '<a class="admidio-icon-link openPopup" href="javascript:void(0);"
-    data-href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php').'">'.
-    '<i class="fas fa-info" data-toggle="tooltip" title="' . $gL10n->get('SYS_HELP') . '"></i> '.$gL10n->get('SYS_HELP').'</a>';
+    data-bs-href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_popup.php').'">'.
+    '<i class="fas fa-info" data-bs-toggle="tooltip" title="' . $gL10n->get('SYS_HELP') . '"></i> '.$gL10n->get('SYS_HELP').'</a>';
 $formConfigurations->addDescription($gL10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER').' '.$html);
 $formConfigurations->addLine();
 
