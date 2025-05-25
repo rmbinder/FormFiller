@@ -24,7 +24,9 @@
  *
  *****************************************************************************/
 	
-class ConfigTablePFF
+namespace src\PFFConfig;
+
+class ConfigTable
 {
 	public	  $config		= array();     ///< Array mit allen Konfigurationsdaten
 	
@@ -44,8 +46,8 @@ class ConfigTablePFF
 	{
 		global  $g_tbl_praefix;
 		
-		require_once(__DIR__ . '/../version.php');
-		include(__DIR__ . '/../configdata.php');
+		require_once(__DIR__ . '/../../version.php');
+		include(__DIR__ . '/../../configdata.php');
 		
 		$this->table_name = $g_tbl_praefix.'_plugin_preferences';
 
@@ -371,4 +373,26 @@ class ConfigTablePFF
 		
 		return $result;
 	}
+	
+	/**
+	 * Funktion prüft, ob es eine Konfiguration mit dem übergebenen Namen bereits gibt
+	 * wenn ja: wird "- Kopie" angehängt und rekursiv überprüft
+	 * @param   string  $name
+	 * @return  string
+	 */
+	public function createDesc($name)
+	{
+	 //   require_once(__DIR__ . '/../PFFConfig/ConfigTable.php');
+	 //   $pPreferences = new ConfigTable();
+	 //   $pPreferences->read();
+	    
+	    while (in_array($name, $this->config['Formular']['desc']))
+	    {
+	        $name .= ' - '.$GLOBALS['gL10n']->get('SYS_CARBON_COPY');
+	    }
+	    
+	    return $name;
+	}
+	
+	
 }

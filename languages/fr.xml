@@ -30,7 +30,8 @@
     <string name="PLG_FORMFILLER_DEINST_TABLE_DELETE_SUCCESS">- La table "adm_plugin_preferences" créée par le plugin a été supprimée.\n</string>
     <string name="PLG_FORMFILLER_DEINSTALLATION">Désinstallation</string>
     <string name="PLG_FORMFILLER_DEINSTALLATION_DESC">En désinstallant le plugin, les entrées créées par le plugin peuvent être supprimées de la base de données.</string>
-    <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Sélectionne l\'étendue de l\'installation.\n\n***Attention: Cette routine ne supprime que les entrées de la base de données Admidio. Les fichiers de programme et le lien dans le menu ne sont pas effacés ! ***</string>
+    <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC">Sélectionne l\'étendue de l\'installation.</string>
+    <string name="PLG_FORMFILLER_DEINSTALLATION_FORM_DESC_ALERT">***Attention: Cette routine ne supprime que les entrées de la base de données Admidio. Les fichiers de programme et le lien dans le menu ne sont pas effacés ! ***</string>
     <string name="PLG_FORMFILLER_DELETE_CONFIG">Supprimer cette configuration</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Description</string>
     <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Le nom de la configuration est entré ici.</string>

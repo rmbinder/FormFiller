@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * Gemeinsame Funktionen fuer das Admidio-Plugin FormFiller
  *
- * @copyright 2004-2025 The Admidio Team
+ * @copyright The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  ***********************************************************************************************
@@ -12,11 +12,12 @@
 use Admidio\Components\Entity\Component;
 use Admidio\Roles\Entity\RolesRights;
 
-require_once(__DIR__ . '/../../adm_program/system/common.php');
+require_once(__DIR__ . '/../../../system/common.php');
 
 if(!defined('PLUGIN_FOLDER'))
 {
-	define('PLUGIN_FOLDER', '/'.substr(__DIR__,strrpos(__DIR__,DIRECTORY_SEPARATOR)+1));
+	define('PLUGIN_FOLDER', '/'.substr(dirname(__DIR__),strrpos(dirname(__DIR__),DIRECTORY_SEPARATOR)+1));
+	//define('PLUGIN_FOLDER', DIRECTORY_SEPARATOR.substr(dirname(__DIR__),strrpos(dirname(__DIR__),DIRECTORY_SEPARATOR)+1));
 }
 
 /**
@@ -127,23 +128,6 @@ function strstr_multiple($haystack, $needle )
 	return true;
 }
 
-/**
- * Funktion prüft, ob es eine Konfiguration mit dem übergebenen Namen bereits gibt
- * wenn ja: wird "- Kopie" angehängt und rekursiv überprüft
- * @param   string  $name
- * @return  string
- */
-function createDesc($name)
-{
-    global $pPreferences;
-   
-    while (in_array($name, $pPreferences->config['Formular']['desc']))
-    {
-        $name .= ' - '.$GLOBALS['gL10n']->get('SYS_CARBON_COPY');
-    }
-    
-    return $name;
-}
 
 /**
  * Funktion erstellt ein Array mit den Kernschriftarten (Core Fonts)
