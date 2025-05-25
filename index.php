@@ -19,17 +19,7 @@
  ***********************************************************************************************
  */
 
-
-
-//define('PLUGIN_FOLDER', '/'.substr(__DIR__,strrpos(__DIR__,DIRECTORY_SEPARATOR)+1));
-//if(!defined('PLUGIN_FOLDER'))
-//{
- //   define('PLUGIN_FOLDER', '/'.substr(__DIR__,strrpos(__DIR__,DIRECTORY_SEPARATOR)+1));
-//}
-
-use src\PFFConfig\ConfigTable;
-
-spl_autoload_register();
+use Formfiller\Config\ConfigTable;
 
 //Fehlermeldungen anzeigen
 error_reporting(E_ALL);
@@ -37,7 +27,6 @@ error_reporting(E_ALL);
 try {
     require_once(__DIR__ . '/../../system/common.php');
     require_once(__DIR__ . '/system/common_function.php');
-    //require_once(__DIR__ . '/src/classes/configtable.php');
 
     //$scriptName ist der Name wie er im Menue eingetragen werden muss, also ohne evtl. vorgelagerte Ordner wie z.B. /playground/adm_plugins/formfiller...
     //Prüfung werden die Einstellungen von 'Modulrechte' und 'Sichtbar für'              * verwendet, die im Modul Menü für dieses Plugin gesetzt wurden.          * @param   string  $scriptName   Der Scriptname des Plugins
@@ -59,7 +48,6 @@ try {
         
          admRedirect(ADMIDIO_URL . FOLDER_PLUGINS. PLUGIN_FOLDER . '/system/formfiller.php');
     }
-    
     
                                       
 } catch (Exception $e) {

@@ -14,12 +14,11 @@
  ***********************************************************************************************
  */
 use Admidio\Infrastructure\Exception;
-use src\PFFConfig\ConfigTable;
+use Formfiller\Config\ConfigTable;
 
 try {
     require_once(__DIR__ . '/../../../system/common.php');
     require_once(__DIR__ . '/common_function.php');
-    require_once(__DIR__ . '/../src/PFFConfig/ConfigTable.php');
     
    // only authorized user are allowed to start this module
     if (!isUserAuthorizedForPreferences())

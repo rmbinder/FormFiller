@@ -1,10 +1,9 @@
 <?php
 
-namespace Service;
+namespace Formfiller\Service;
 
 use Admidio\Infrastructure\Exception;
-use src\PFFConfig\ConfigTable;
-
+use Formfiller\Config\ConfigTable;
 
 /**
  * @brief Class with methods to display the module pages.
@@ -19,7 +18,6 @@ use src\PFFConfig\ConfigTable;
 class FormfillerPreferencesService
 {
 
-
     /**
      * Save all form data of the panel to the database.
      * @param string $panel Name of the panel for which the data should be saved.
@@ -32,7 +30,7 @@ class FormfillerPreferencesService
         global $gL10n, $gSettingsManager, $gCurrentSession, $gDb, $gCurrentOrgId, $gProfileFields;
         
         require_once(__DIR__ . '/../../system/common_function.php');
-        require_once(__DIR__ . '/../PFFConfig/ConfigTable.php');
+     //   require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
         

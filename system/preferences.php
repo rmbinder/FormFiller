@@ -17,24 +17,18 @@
  */
 
 use Admidio\Infrastructure\Exception;
-use Presenter\FormfillerPreferencesPresenter;
-use Service\FormfillerPreferencesService;
-
-spl_autoload_register();
+use Formfiller\Presenter\FormfillerPreferencesPresenter;
+use Formfiller\Service\FormfillerPreferencesService;
 
 try {
     require_once(__DIR__ . '/../../../system/common.php');
-  //  require_once(__DIR__ . '/../../../system/login_valid.php');
-    require_once(__DIR__ . '/../src/Presenter/FormfillerPreferencesPresenter.php');
-    require_once(__DIR__ . '/../src/Service/FormfillerPreferencesService.php');
-  
+    require_once(__DIR__ . '/common_function.php');
 
     // Initialize and check the parameters
     $getMode = admFuncVariableIsValid($_GET, 'mode', 'string',
         array(
             'defaultValue' => 'html',
             'validValues' => array('html', 'html_form', 'save', 'htaccess')
-  //          'validValues' => array('html', 'html_form', 'save', 'htaccess', 'test_email', 'backup')
         ));
     $getPanel = admFuncVariableIsValid($_GET, 'panel', 'string');
 

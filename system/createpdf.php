@@ -35,15 +35,14 @@ use Admidio\Roles\Entity\Membership;
 use Admidio\Roles\Entity\Role;
 use Admidio\Users\Entity\User;
 use Admidio\Users\Entity\UserRelation;
+use Formfiller\Config\ConfigTable;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfParser\PdfParserException;
-use src\PFFConfig\ConfigTable;
 
 try 
 {
     require_once(__DIR__ . '/../../../system/common.php');
     require_once(__DIR__ . '/common_function.php');
-    require_once(__DIR__ . '/../src/PFFConfig/ConfigTable.php');
     require_once(__DIR__ . '/../libs/fpdf/fpdf.php');
     require_once(__DIR__ . '/../libs/fpdi/src/autoload.php');
 

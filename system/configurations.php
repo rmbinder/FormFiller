@@ -21,13 +21,12 @@ use Admidio\Infrastructure\Utils\SecurityUtils;
 use Admidio\UI\Presenter\FormPresenter;
 use Admidio\UI\Presenter\PagePresenter;
 use Admidio\Users\Entity\UserRelationType;
-use src\PFFConfig\ConfigTable;
+use Formfiller\Config\ConfigTable;
 
 try {
     require_once(__DIR__ . '/../../../system/common.php');
     require_once(__DIR__ . '/../../../system/login_valid.php');
     require_once(__DIR__ . '/common_function.php');
-    require_once(__DIR__ . '/../src/PFFConfig/ConfigTable.php');
 
     // only authorized user are allowed to start this module
     if (!$gCurrentUser->isAdministrator()) 

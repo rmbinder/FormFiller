@@ -11,29 +11,22 @@
  ***********************************************************************************************
  */
 use Admidio\Infrastructure\Exception;
-use Admidio\Infrastructure\Utils\SecurityUtils;
 use Admidio\Infrastructure\Language;
+use Admidio\Infrastructure\Utils\SecurityUtils;
 use Admidio\UI\Presenter\FormPresenter;
 use Admidio\UI\Presenter\PagePresenter;
-use src\PFFConfig\ConfigTable;
+use Formfiller\Config\ConfigTable;
  
 try {
         require_once(__DIR__ . '/../../../system/common.php');
         require_once(__DIR__ . '/../system/common_function.php');
-        require_once(__DIR__ . '/../src/PFFconfig/ConfigTable.php');
 
        // Konfiguration einlesen          
-    $pPreferences = new ConfigTable();
- ///   if ($pPreferences->checkforupdate())
- //   {
-//	    $pPreferences->init();
- //   }
-//    else
- //   {
+        $pPreferences = new ConfigTable();
 	    $pPreferences->read();
- //   }
-     $title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
-    $headline =$gL10n->get('PLG_FORMFILLER_FORMFILLER');
+	    
+        $title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
+        $headline =$gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
         $gNavigation->addStartUrl(CURRENT_URL, $headline, 'bi-list-stars');
 
@@ -43,15 +36,15 @@ try {
         $page->setTitle($title);
         $page->setHeadline($headline);
         
-           if (isUserAuthorizedForPreferences())
-    {
-        // show link to pluginpreferences
-        $page->addPageFunctionsMenuItem(
-            'admMenuItemPreferencesLists',
-            $gL10n->get('SYS_SETTINGS'),
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/system/preferences.php'),
-            'bi-plus-circle-fill');
-    }
+        if (isUserAuthorizedForPreferences())
+        {
+            // show link to pluginpreferences
+            $page->addPageFunctionsMenuItem(
+                'admMenuItemPreferencesLists',
+                $gL10n->get('SYS_SETTINGS'),
+                SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/system/preferences.php'),
+                'bi-plus-circle-fill');
+        }
 
         // create filter menu with elements for role
         $form = new FormPresenter(

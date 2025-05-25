@@ -1,12 +1,12 @@
 <?php
-namespace Presenter;
+namespace Formfiller\Presenter;
 
 use Admidio\Changelog\Service\ChangelogService;
 use Admidio\Infrastructure\Exception;
 use Admidio\Infrastructure\Utils\SecurityUtils;
 use Admidio\UI\Presenter\FormPresenter;
 use Admidio\UI\Presenter\PagePresenter;
-use src\PFFConfig\ConfigTable;
+use Formfiller\Config\ConfigTable;
 
 /**
  * @brief Class with methods to display the module pages and helpful functions.
@@ -183,7 +183,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         global $gL10n, $gSettingsManager, $gCurrentSession;
         
-        require_once(__DIR__ . '/../PFFConfig/ConfigTable.php');
+        require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
         
@@ -266,7 +266,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         global $gL10n, $gSettingsManager, $gCurrentSession, $gCurrentOrgId, $gDb;
         
-        require_once(__DIR__ . '/../PFFConfig/ConfigTable.php');
+        require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
         
@@ -316,7 +316,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         global $gL10n;
         
-        require_once(__DIR__ . '/../PFFConfig/ConfigTable.php');
+        require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
    
