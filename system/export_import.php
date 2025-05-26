@@ -62,7 +62,6 @@ try
 			
 			// create html page object
 			$page = PagePresenter::withHtmlIDAndHeadline('plg-formfiller-export_import-html');
-		  //  $page->setContentFullWidth();
 			$page->setTitle($title);
 			$page->setHeadline($headline);
 			

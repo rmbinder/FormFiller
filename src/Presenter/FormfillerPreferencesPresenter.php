@@ -68,7 +68,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     private function initialize(): void
     {
         global $gL10n;
-
+      
         $this->accordionCommonPanels = array(
             'configurations' => array(
                 'id' => 'configurations',
@@ -106,7 +106,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
                 'icon' => 'bi-shield-fill'
             )
         );
-       
     }
 
     
@@ -364,7 +363,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
                     ',
                     true
                 );
-
         }
 
         $this->addJavascript(
@@ -396,10 +394,9 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $this->addJavascriptFile(ADMIDIO_URL . FOLDER_LIBS . '/select2/js/select2.js');
         $this->addJavascriptFile(ADMIDIO_URL . FOLDER_LIBS . '/select2/js/i18n/' . $gL10n->getLanguageLibs() . '.js');
 
-
         $this->assignSmartyVariable('accordionCommonPanels', $this->accordionCommonPanels);
-        $this->addTemplateFile('preferences/plugin.formfiller.preferences.menu.tpl');
-        //$this->addTemplateFile('preferences/preferences.tpl');
+        $this->addTemplateFolder(ADMIDIO_PATH. FOLDER_PLUGINS . PLUGIN_FOLDER. '/templates');
+        $this->addTemplateFile('preferences.accordion.menu.tpl');
 
         parent::show();
     }

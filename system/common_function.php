@@ -24,6 +24,7 @@ spl_autoload_register('myAutoloader');
 /**
  * Mein Autoloader
  * Script aus dem Netz
+ * https://www.marcosimbuerger.ch/tech-blog/php-autoloader.html
  * @param   string  $className   Die übergebene Klasse
  * @return  string  Der überprüfte Klassenname
  */
@@ -53,8 +54,6 @@ function myAutoloader($className) {
         require $file;
     }
 }
-
-
 
 /**
  * Funktion prueft, ob der Nutzer berechtigt ist das Plugin aufzurufen.

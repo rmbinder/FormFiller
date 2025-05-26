@@ -41,7 +41,7 @@ try {
         case 'html':
             // create html page object
             $page = new FormfillerPreferencesPresenter($getPanel);
-
+            
             $gNavigation->addUrl(CURRENT_URL, $page->getHeadline());
 
             $page->show();
@@ -54,8 +54,6 @@ try {
            // echo json_encode(array('status' => 'success', 'message' => $gL10n->get('SYS_SAVE_DATA')));
             echo json_encode(array('status' => 'success', 'message' => $result));
             
-            
- 
             break;
             
         // Returns the html of the requested form

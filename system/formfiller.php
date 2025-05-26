@@ -32,10 +32,9 @@ try {
 
         // create html page object
         $page = PagePresenter::withHtmlIDAndHeadline('plg-formfiller-main-html');
-       // $page->setContentFullWidth();
         $page->setTitle($title);
         $page->setHeadline($headline);
-        
+    
         if (isUserAuthorizedForPreferences())
         {
             // show link to pluginpreferences
@@ -48,13 +47,12 @@ try {
 
         // create filter menu with elements for role
         $form = new FormPresenter(
-                'formfiller_form',
-        '../templates/plugin.formfiller.tpl',
-                 SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS .'/formfiller/system/createpdf.php'),
-                $page,
+            'formfiller_form',
+            '../templates/formfiller.form.tpl',
+            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS .'/formfiller/system/createpdf.php'),
+            $page,
             array( 'type' => 'default' , 'method' => 'post',  'setFocus' => false,  'enableFileUpload' => true)
         );
-
 
           $sql = 'SELECT lst_id, lst_name, lst_global
 		  FROM '. TBL_LISTS .'
@@ -183,14 +181,11 @@ try {
       ORDER BY fol.fol_name ASC, fil.fil_name ASC ';
     $form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql);
     $form->addFileUpload('importpdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_LOCAL').')', array( 'allowedMimeTypes' => array('application/pdf')));
-    
-    
-            
-   $form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => 'bi-box-arrow-in-right'));
 
-        $form->addToHtmlPage(false);
+    $form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => 'bi-box-arrow-in-right'));
+    $form->addToHtmlPage(false);
 
-        $page->show();
+    $page->show();
  
 } catch (Exception $e) {
     $gMessage->show($e->getMessage());
