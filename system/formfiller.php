@@ -28,7 +28,7 @@ try {
         $title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
         $headline =$gL10n->get('PLG_FORMFILLER_FORMFILLER');
 
-        $gNavigation->addStartUrl(CURRENT_URL, $headline, 'bi-list-stars');
+        $gNavigation->addStartUrl(CURRENT_URL, $headline, 'bi-pen');
 
         // create html page object
         $page = PagePresenter::withHtmlIDAndHeadline('plg-formfiller-main-html');
@@ -42,7 +42,7 @@ try {
                 'admMenuItemPreferencesLists',
                 $gL10n->get('SYS_SETTINGS'),
                 SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/system/preferences.php'),
-                'bi-plus-circle-fill');
+                'bi-gear-fill');
         }
 
         // create filter menu with elements for role
@@ -182,7 +182,7 @@ try {
     $form->addSelectBoxFromSql('pdf_id', $gL10n->get('PLG_FORMFILLER_PDF_FILE'), $gDb, $sql);
     $form->addFileUpload('importpdffile', $gL10n->get('PLG_FORMFILLER_PDF_FILE').' ('.$gL10n->get('PLG_FORMFILLER_LOCAL').')', array( 'allowedMimeTypes' => array('application/pdf')));
 
-    $form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => 'bi-box-arrow-in-right'));
+    $form->addSubmitButton('btn_save_configurations', $gL10n->get('PLG_FORMFILLER_PDF_FILE_GENERATE'), array('icon' => 'bi-file-pdf'));
     $form->addToHtmlPage(false);
 
     $page->show();

@@ -73,37 +73,37 @@ class FormfillerPreferencesPresenter extends PagePresenter
             'configurations' => array(
                 'id' => 'configurations',
                 'title' => $gL10n->get('PLG_FORMFILLER_CONFIGURATIONS'),
-                'icon' => 'bi-shield-fill'
+                'icon' => 'bi-sliders2'
             ),
             'options' => array(
                 'id' => 'options',
                 'title' => $gL10n->get('PLG_FORMFILLER_OPTIONS'),
-                'icon' => 'bi-shield-fill'
+                'icon' => 'bi-gear'
             ),
-            'options' => array(
+            'export_import' => array(
                 'id' => 'export_import',
                 'title' => $gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'),
-                'icon' => 'bi-shield-fill'
+                'icon' => 'bi-code'
             ),
             'assort' => array(
                 'id' => 'assort',
                 'title' => $gL10n->get('PLG_FORMFILLER_ASSORT'),
-                'icon' => 'bi-shield-fill'
+                'icon' => 'bi-sort-alpha-down'
             ),
             'deinstallation' => array(
                 'id' => 'deinstallation',
                 'title' => $gL10n->get('PLG_FORMFILLER_DEINSTALLATION'),
-                'icon' => 'bi-shield-fill'
+                'icon' => 'bi-trash'
             ),
             'access' => array(
                 'id' => 'access',
                 'title' => $gL10n->get('PLG_FORMFILLER_ACCESS_PREFERENCES'),
-                'icon' => 'bi-shield-fill'
+                'icon' => 'bi-key'
             ),
             'informations' => array(
                 'id' => 'informations',
                 'title' => $gL10n->get('PLG_FORMFILLER_PLUGIN_INFORMATION'),
-                'icon' => 'bi-shield-fill'
+                'icon' => 'bi-info-circle'
             )
         );
     }
@@ -160,7 +160,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $formAssort->addSubmitButton(
             'adm_button_save_assort',
             $gL10n->get('PLG_FORMFILLER_ASSORT'),
-            array('icon' => 'bi-check-lg', 'class' => 'offset-sm-3')
+            array('icon' => 'bi-sort-alpha-down', 'class' => 'offset-sm-3')
             );
         
         $smarty = $this->getSmartyTemplate();
@@ -246,7 +246,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $formDeinstallation->addSubmitButton(
             'adm_button_save_deinstallation',
             $gL10n->get('PLG_FORMFILLER_DEINSTALLATION'),
-            array('icon' => 'bi-check-lg', 'class' => 'offset-sm-3')
+            array('icon' => 'bi-trash', 'class' => 'offset-sm-3')
             );
         
         $smarty = $this->getSmartyTemplate();

@@ -7,7 +7,7 @@
     <div class="col-sm-9">
         <div>
             <a class="btn btn-primary" id="open_configurations" href="{$open_configs}">
-                <i class="bi bi-download"></i>{$l10n->get('PLG_FORMFILLER_CONFIGURATIONS_EDIT')}</a>
+                <i class="bi bi-sliders2"></i>{$l10n->get('PLG_FORMFILLER_CONFIGURATIONS_EDIT')}</a>
            
         </div>
     </div>

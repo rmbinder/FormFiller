@@ -30,7 +30,7 @@
     <div class="col-sm-9">
         <div>
             <a class="btn btn-secondary" id="open_documentation" href="{$open_doc}">
-                <i class="bi bi-download"></i>{$l10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN')}</a>
+                <i class="bi bi-file-pdf"></i>{$l10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN')}</a>
             <div class="form-text">{$l10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC')}</div>
         </div>
     </div>

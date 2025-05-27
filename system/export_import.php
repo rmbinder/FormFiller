@@ -58,7 +58,7 @@ try
 			$title = $gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT');
 			$headline =$gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT');
 			
-			$gNavigation->addUrl(CURRENT_URL, $headline, 'bi-list-stars');
+			$gNavigation->addUrl(CURRENT_URL, $headline);
 			
 			// create html page object
 			$page = PagePresenter::withHtmlIDAndHeadline('plg-formfiller-export_import-html');
@@ -80,7 +80,7 @@ try
 			$formExportImport->addSubmitButton(
 				'adm_button_export',
 				$gL10n->get('PLG_FORMFILLER_EXPORT'),
-				array('icon' => 'bi-check-lg', 'class' => 'offset-sm-3')
+				array('icon' => 'bi-file-arrow-down', 'class' => 'offset-sm-3')
 				);
 			  
 			$formExportImport->addFileUpload('importfile', $gL10n->get('SYS_FILE').':', array('helpTextId' => 'PLG_FORMFILLER_IMPORT_DESC', 'allowedMimeTypes' => array('application/octet-stream,text/plain')));
@@ -104,7 +104,7 @@ try
 			$formExportImport->addSubmitButton(
 				'adm_button_import',
 				$gL10n->get('PLG_FORMFILLER_IMPORT'),
-				array('icon' => 'bi-check-lg', 'class' => 'offset-sm-3')
+				array('icon' => 'bi-file-arrow-up', 'class' => 'offset-sm-3')
 				);
 
 			$formExportImport->addToHtmlPage(false);
