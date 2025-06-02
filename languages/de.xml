@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="PLG_FORMFILLER_ACCESS_PREFERENCES">Zugriffsberechtigung für Einstellungen</string>
-    <string name="PLG_FORMFILLER_ACCESS_PREFERENCES_DESC">Hier kann man, zusätzlich zur Rolle "Administrator", weitere Rollen für den Zugriff auf das Modul "Einstellungen" berechtigen.</string>
+    <string name="PLG_FORMFILLER_ACCESS_PREFERENCES_DESC">Hier können, zusätzlich zur Rolle "Administrator", weitere Rollen für den Zugriff auf das Modul "Einstellungen" berechtigt werden.</string>
     <string name="PLG_FORMFILLER_ADD_ANOTHER_CONFIG">Weitere Konfiguration hinzufügen</string>
     <string name="PLG_FORMFILLER_ADD_ANOTHER_FIELD">Weiteres Feld hinzufügen</string>
     <string name="PLG_FORMFILLER_ADDITIONAL_FIELDS">Zusatzfelder</string>
@@ -19,8 +19,8 @@
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Anstelle von Listenkonfiguration und Rollen können hier einzelne Benutzer ausgewählt werden.</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Konfiguration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string>  
-            <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT">Konfigurationen editieren</string>
-            <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT_DESC">Hiermit können Konfigurationen erstellt und editiert werden.</string>    
+    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT">Konfigurationen editieren</string>
+    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT_DESC">Hier können Konfigurationen erstellt und editiert werden.</string>    
     <string name="PLG_FORMFILLER_DATE">Datum</string>
     <string name="PLG_FORMFILLER_DEINST_ACTORGONLY">Nur Daten der aktuellen Organisation löschen.</string>
     <string name="PLG_FORMFILLER_DEINST_ALLORG">Daten in allen Organisationen löschen.</string>
@@ -39,7 +39,7 @@
     <string name="PLG_FORMFILLER_DESCRIPTION_DESC">Hier wird die Bezeichnung der Konfiguration eingegeben.</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION">Dokumentation</string>
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN">Dokumentation öffnen</string>
-    <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Hiermit kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>
+    <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Hier kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS">Dynamische Felder</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS_DESC">Die X- und Y-Koordinaten bei dynamischen Feldern bestimmen die erste Zeile des Drucks. Alle weiteren Zeilen werden dynamisch angefügt. Mit dem Parameter OW=x (z.B. OW=10) kann der Abstand in Millimeter angegeben werden. Standardeinstellung ist 5 mm.\n\n Um mehrere dynamische Felder untereinander zu drucken, kann über den Parameter OI=x eine Reihenfolge definiert werden. HINWEIS: Der Paramter OI=x sollte nicht bei Bildern oder Rechtecken verwendet werden.\n\nÜber den Parameter MS=x kann Rollenbeginn (MS=B), Rollenende (MS=E) oder beides (MS=BE) einer Rollenmitgliedschaft angezeigt werden.</string>
     <string name="PLG_FORMFILLER_ENVELOPE">Umschlag DL</string>
@@ -47,7 +47,7 @@
     <string name="PLG_FORMFILLER_EXPORT">Export</string>
     <string name="PLG_FORMFILLER_EXPORT_DESC">Wähle die zu exportierende Formularkonfiguration aus. Export erstellt dabei eine Datei mit der Endung .cfg und dem Namen der Konfiguration.</string>
     <string name="PLG_FORMFILLER_EXPORT_IMPORT">Export/Import</string>
-    <string name="PLG_FORMFILLER_EXPORT_IMPORT_DESC">Hiermit können Konfigurationen zur Datensicherung oder zur Weitergabe sowohl exportiert als auch importiert werden. Zusätzlich besteht die Möglichkeit, Beispiel-Dateien zu importieren.</string>
+    <string name="PLG_FORMFILLER_EXPORT_IMPORT_DESC">Hier können Konfigurationen zur Datensicherung oder zur Weitergabe sowohl exportiert als auch importiert werden. Zusätzlich besteht die Möglichkeit, Beispiel-Dateien zu importieren.</string>
     <string name="PLG_FORMFILLER_FIELD">Feld</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION">Feldwahl</string>
     <string name="PLG_FORMFILLER_FIELD_SELECTION_DESC">Hier werden die Profil- und Zusatzfelder ausgewählt, die in das PDF-Dokument gedruckt werden sollen. An "Position" werden die X- und Y-Koordinaten angegeben.\n\nZusätzlich kann für jedes Feld eine, gegenüber den Standardeinstellungen abweichende Konfiguration erstellt werden.\n\nSyntax:\nSchriftart: F=Text (z.B. F=Arial)\nSchriftstil: A=B oder I oder U (z.B. A=B)\nSchriftgröße: S=Wert in pt (z.B. S=20)\nSchriftfarbe:C=RGB-Wert (z.B. C=0,0,255)\nOptions-/Dropdownfelder: T=Text für 1. Wert,Text für 2. Wert, usw. (z.B. T=Herrn,Frau; gibt man keinen Text über T= an, wird der Text des Options- bzw. Dropdownfeldes genommen)\nVortext: {=Text vor einem Feld (z.B. {=Hallo )\nNachtext: }=Text nach einem Feld (z.B. }=,)\n\nSyntax der Zusatzfelder:\nDatum: D=Formatparameter der Funktion date() (z.B. D=d.m.y), Standardeinstellung ist d.m.Y\nText: V=beliebiger Text (z.B. V=Hinweis)\nProfilfoto: L=Dateiname (z.B. L=logo.jpg), ohne Angabe eines Parameters wird ein evtl. vorhandenes Profilfoto angezeigt.\nLinie: LW=Linienbreite in mm (z.B. LW=0.3); DC=Zeichenfarbe (z.B. DC=255,0,0)\nRechteck: LW=Linienbreite in mm (z.B. LW=2); DC=Zeichenfarbe (z.B. DC=255,0,0); FC=Füllfarbe (z.B. FC=255,0,0); RS=Stil (z.B. RS=D(mit Rahmen) oder RS=F(ausgefüllt) oder RS=DF (ausgefüllt mit Rahmen))\n\n Beispiel:\nBezeichnung: Beitrittserklärung\nNachname: 10,20 (-> bedeutet Nachname auf Position 10,20) \nVorname: 10,40;S=7;F=Arial (-> bedeutet Vorname auf Position 10,40 mit Schriftart Arial in 7pt) \nAdresse: 40,20;C=255,102,255;A=B (-> bedeutet Adresse auf Position 40,20 mit Schriftfarbe rosa in Fettschrift)\nGeschlecht: 40,20,60,20;T=Herrn,Frau (-> bedeutet, abhängig vom Geschlecht, den Text Herrn an Position 40,20 oder den Text Frau an Position 60,20\nLinie: 20,40,60,80;LW=0.5;DC=255,0,0 (-> bedeutet Linie von Position 20,40 nach Position 60,80 mit Linienbreite 0.5 mm und Zeichenfarbe 255,0,0)\nRechteck: 60,70,20,40;LW=2;RS=FD;DC=255,0,0;FC=0,255,255 (-> bedeutet Rechteck an Position 60,70 mit Breite 20 und Höhe 40, ausgefüllter Rahmen mit Rahmenbreite 2 mm, Rahmenfarbe 255,0,0 und Füllfarbe 0,255,255)</string>
@@ -110,7 +110,7 @@
     <string name="PLG_FORMFILLER_RECTANGLE">Rechteck</string>
     <string name="PLG_FORMFILLER_RED">rot</string>
     <string name="PLG_FORMFILLER_RELATION">Beziehung</string>  
-            <string name="PLG_FORMFILLER_RELATION_DESC">Um bei Etikettendruck Ehepartner zu drucken kann hier die Beziehung Ehepartner/-in gewählt werden. Nach dem Speichern und der Aktualisierung der Seite gibt es in der Feldwahl zusätzliche Wahlmöglichkeiten für diese Beziehung.</string>     
+    <string name="PLG_FORMFILLER_RELATION_DESC">Um bei Etikettendruck Ehepartner zu drucken kann hier die Beziehung 'Ehepartner/-in' gewählt werden. Nach dem Speichern und der Aktualisierung der Seite gibt es in der Feldwahl zusätzliche Wahlmöglichkeiten für diese Beziehung.</string>     
     <string name="PLG_FORMFILLER_ROLE_EXCLUSION">Ausschluss-Rollen</string> 
     <string name="PLG_FORMFILLER_ROLE_MEMBERSHIPS">Rollenmitgliedschaften</string> 
     <string name="PLG_FORMFILLER_SAMPLE_FILE">Beispieldatei</string>    
