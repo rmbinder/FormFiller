@@ -51,9 +51,7 @@ try {
             $preferences = new FormfillerPreferencesService();
             $result = $preferences->save($getPanel, $_POST);
            
-           // echo json_encode(array('status' => 'success', 'message' => $gL10n->get('SYS_SAVE_DATA')));
             echo json_encode(array('status' => 'success', 'message' => $result));
-            
             break;
             
         // Returns the html of the requested form
@@ -62,7 +60,6 @@ try {
             $methodName = 'create' . str_replace('_', '', ucwords($getPanel, '_')) . 'Form';
             echo $preferencesUI->{$methodName}();
             break;
-
     }
 } catch (Throwable $exception) {
     if (in_array($getMode, array('save', 'new_org_create'))) {

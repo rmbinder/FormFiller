@@ -9,16 +9,18 @@ use Admidio\UI\Presenter\PagePresenter;
 use Formfiller\Config\ConfigTable;
 
 /**
- * @brief Class with methods to display the module pages and helpful functions.
+ * @brief Class with methods to display the preference page and helpful functions.
  *
- * This class adds some functions that are used in the registration module to keep the
+ * This class adds some functions that are used in the formfiller-preferences module to keep the
  * code easy to read and short
+ * 
+ * FormfillerPreferencesPresenter is a modified (Admidio)PreferencesPresenter
  *
  * **Code example**
  * ```
- * // generate html output with available registrations
- * $page = new ModuleRegistration('admidio-registration', $headline);
- * $page->createRegistrationList();
+ * // generate html output
+ * $page = new FormfillerPreferencesPresenter('Options', $headline);
+ * $page->createOptionsForm();
  * $page->show();
  * ```
  * @copyright The Admidio Team
@@ -33,12 +35,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
      *            array('id' => 'xzy', 'title' => 'xyz', 'icon' => 'xyz')
      */
     protected array $accordionCommonPanels = array();
-    /**
-     * @var array Array with all possible accordion entries for the modules preferences.
-     *            Each accordion entry consists of an array that has the following structure:
-     *            array('id' => 'xzy', 'title' => 'xyz', 'icon' => 'xyz')
-     */
-   // protected array $accordionModulePanels = array();
+    
     /**
      * @var string Name of the preference panel that should be shown after page loading.
      *             If this parameter is empty then show the common preferences.
@@ -108,10 +105,9 @@ class FormfillerPreferencesPresenter extends PagePresenter
         );
     }
 
-    
     /**
-     * Generates the html of the form from the common preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the common preferences.
+     * Generates the html of the form from the configurations preferences and will return the complete html.
+     * @return string Returns the complete html of the form from the configurations preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
@@ -123,8 +119,8 @@ class FormfillerPreferencesPresenter extends PagePresenter
     }
     
     /**
-     * Generates the html of the form from the common preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the common preferences.
+     * Generates the html of the form from the exportimport preferences and will return the complete html.
+     * @return string Returns the complete html of the form from the exportimport preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
@@ -136,8 +132,8 @@ class FormfillerPreferencesPresenter extends PagePresenter
     }
     
     /**
-     * Generates the html of the form from the common preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the common preferences.
+     * Generates the html of the form from the assort preferences and will return the complete html.
+     * @return string Returns the complete html of the form from the assort preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
@@ -169,12 +165,9 @@ class FormfillerPreferencesPresenter extends PagePresenter
         return $smarty->fetch('../templates/preferences.assort.tpl');
     }
     
- 
-    
-    
     /**
-     * Generates the html of the form from the common preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the common preferences.
+     * Generates the html of the form from the options preferences and will return the complete html.
+     * @return string Returns the complete html of the form from the options preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
@@ -182,7 +175,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         global $gL10n, $gSettingsManager, $gCurrentSession;
         
-        require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
         
@@ -223,8 +215,8 @@ class FormfillerPreferencesPresenter extends PagePresenter
     }
     
     /**
-     * Generates the html of the form from the common preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the common preferences.
+     * Generates the html of the form from the deinstallation preferences and will return the complete html.
+     * @return string Returns the complete html of the form from the deinstallation preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
@@ -256,8 +248,8 @@ class FormfillerPreferencesPresenter extends PagePresenter
     }
 
     /**
-     * Generates the html of the form from the common preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the common preferences.
+     * Generates the html of the form from the access preferences and will return the complete html.
+     * @return string Returns the complete html of the form from the access preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
@@ -265,7 +257,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         global $gL10n, $gSettingsManager, $gCurrentSession, $gCurrentOrgId, $gDb;
         
-        require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
         
@@ -293,7 +284,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
             $sql, 
             array('defaultValue' => $pPreferences->config['access']['preferences'], 'helpTextId' => 'PLG_FORMFILLER_ACCESS_PREFERENCES_DESC', 'multiselect' => true));
         
-
         $formAccess->addSubmitButton(
             'adm_button_save_access',
             $gL10n->get('SYS_SAVE'),
@@ -306,8 +296,8 @@ class FormfillerPreferencesPresenter extends PagePresenter
     }
     
     /**
-     * Generates the html of the form from the common preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the common preferences.
+     * Generates the html of the form from the informations preferences and will return the complete html.
+     * @return string Returns the complete html of the form from the informations preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
@@ -315,7 +305,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         global $gL10n;
         
-        require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
    
@@ -328,7 +317,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
         return $smarty->fetch('../templates/preferences.informations.tpl');
     }
 
- 
     /**
      * Set a panel name that should be opened at page load.
      * @param string $panelName Name of the panel that should be opened at page load.
@@ -340,9 +328,9 @@ class FormfillerPreferencesPresenter extends PagePresenter
     }
 
     /**
-     * Read all available registrations from the database and create the html content of this
+     * Read all available panels from the database and create the html content of this
      * page with the Smarty template engine and write the html output to the internal
-     * parameter **$pageContent**. If no registration is found than show a message to the user.
+     * parameter **$pageContent**. If no panel is found than show a message to the user.
      */
     public function show(): void
     {

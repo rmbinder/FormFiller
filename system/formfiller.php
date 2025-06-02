@@ -1,12 +1,12 @@
 <?php
 /**
  ***********************************************************************************************
- * write-pdf-with-presenter
+ * Creates the main view for the admidio plugin Formfiller
  *
- * 
- * Testscript um eine PDF-Datei zu erzeugen. Der Link dazu wird �ber presenter generiert.
+ * @copyright The Admidio Team
+ * @see https://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
- * Autor: rmb
  *
  ***********************************************************************************************
  */

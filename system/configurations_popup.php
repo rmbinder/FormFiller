@@ -1,12 +1,12 @@
 <?php
 /**
- * Zeigt im Menue Einstellungen ein Popup-Fenster mit Hinweisen an
+ * Displays a pop-up window with hints in the configurations menu
  *
- * @copyright 2004-2025 The Admidio Team
+ * @copyright The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
- * Parameters:	keine
+ * Parameters:	none
  *
  ***********************************************************************************************
  */

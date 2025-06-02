@@ -1,7 +1,7 @@
 <?php
 /**
  ***********************************************************************************************
- * Anfügen zusätzlicher Schriftarten
+ * Adding additional fonts
  *
  * @copyright The Admidio Team
  * @see https://www.admidio.org/

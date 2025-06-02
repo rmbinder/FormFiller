@@ -1,7 +1,7 @@
 <?php
 /**
  ***********************************************************************************************
- * Gemeinsame Funktionen fuer das Admidio-Plugin FormFiller
+ * Common functions for the admidio plugin FormFiller
  *
  * @copyright The Admidio Team
  * @see https://www.admidio.org/

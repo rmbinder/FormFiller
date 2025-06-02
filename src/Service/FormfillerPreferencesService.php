@@ -1,5 +1,4 @@
 <?php
-
 namespace Formfiller\Service;
 
 use Admidio\Infrastructure\Exception;
@@ -10,6 +9,8 @@ use Formfiller\Config\ConfigTable;
  *
  * This class adds some functions that are used in the preferences module to keep the
  * code easy to read and short
+ * 
+ * FormfillerPreferencesService is a modified (Admidio)PreferencesService
  *
  * @copyright The Admidio Team
  * @see https://www.admidio.org/
@@ -30,7 +31,6 @@ class FormfillerPreferencesService
         global $gL10n, $gSettingsManager, $gCurrentSession, $gDb, $gCurrentOrgId, $gProfileFields;
         
         require_once(__DIR__ . '/../../system/common_function.php');
-     //   require_once(__DIR__ . '/../Config/ConfigTable.php');
         $pPreferences = new ConfigTable();
         $pPreferences->read();
         
@@ -63,8 +63,6 @@ class FormfillerPreferencesService
             case 'Deinstallation':
 
                 $result = $gL10n->get('PLG_FORMFILLER_DEINST_STARTMESSAGE').$pPreferences->delete($formData['deinst_org_select']) ;
-               
-                
                 
                 break;
             
@@ -106,13 +104,9 @@ class FormfillerPreferencesService
                 
                 $pPreferences->save();
                 
-                
                 $result = $gL10n->get('PLG_FORMFILLER_ASSORT_SUCCESS');
 
                 break;
-                
-       
-
         }
        
         return $result;

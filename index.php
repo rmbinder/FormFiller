@@ -3,17 +3,17 @@
  ***********************************************************************************************
  * FormFiller
  *
- * Version 3.3.2
+ * Version 4.0.0
  * 
- * Dieses Plugin für Admidio ermoeglicht das Ausfuellen von PDF-Formularen sowie das Erstellen von Etiketten.
+ * This plugin for Admidio allows you to create and describe PDF documents.
  *
- * Autor: rmb
+ * Author: rmb
  *
- * Hinweis: FormFiller verwendet die externen PHP-Klassen FPDF und FPDI
+ * Note: FormFiller uses the external PHP classes FPDF and FPDI
  *  
- * Compatible with Admidio version 4.3
+ * Compatible with Admidio version 5
  *
- * @copyright 2004-2025 The Admidio Team
+ * @copyright The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  ***********************************************************************************************
@@ -48,8 +48,7 @@ try {
         
          admRedirect(ADMIDIO_URL . FOLDER_PLUGINS. PLUGIN_FOLDER . '/system/formfiller.php');
     }
-    
-                                      
+                                
 } catch (Exception $e) {
     $gMessage->show($e->getMessage());
 }
