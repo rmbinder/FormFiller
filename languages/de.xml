@@ -62,7 +62,6 @@
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Hier können beliebig viele Konfigurationen für Formulare erstellt werden. Das Feld Bezeichnung muss dabei immer befüllt sein.\n\nUm die Daten eines Profil- oder Zusatzfeldes anzuzeigen muss mindestens eine X- und eine Y-Koordinate angegeben sein. Die Angaben für X und Y definieren hierbei die horizontale und vertikale Position in Millimeter bezogen auf die linke, obere Ecke des ausgewählten PDF-Dokumentes.</string>
     <string name="PLG_FORMFILLER_FORM_CONFIGURATION">Formularkonfiguration</string>
     <string name="PLG_FORMFILLER_FORMER_MEMBERS_ONLY">Nur ehemalige Mitglieder</string>    
-    <string name="PLG_FORMFILLER_FORMFILLER">Formular-Füller</string>
     <string name="PLG_FORMFILLER_GREEN">grün</string>
     <string name="PLG_FORMFILLER_IMPORT">Import</string>
     <string name="PLG_FORMFILLER_IMPORT_DESC">Wähle die zu importierende Formularkonfiguration aus (Hinweis: Es können nur Dateien mit der Endung .cfg importiert werden). </string>
@@ -78,8 +77,12 @@
     <string name="PLG_FORMFILLER_LOCAL">lokal</string>        
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF-Anzeige</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">max. PDF-Anzeige ist die maximale Seitenzahl, die ein PDF-Dokument aufweisen darf, damit es noch am Bildschirm angezeigt wird. Ist die Anzahl der Seiten größer, wird sofort der Download der Datei angeboten.</string>
+    <string name="PLG_FORMFILLER_MENU_ITEM">Zugriff auf das Plugin FormFiller</string>
+    <string name="PLG_FORMFILLER_MENU_ITEM_DESC">Mitglieder dieser Rolle haben Zugriff auf das Plugin FormFiller</string>
     <string name="PLG_FORMFILLER_MENU_URL_ERROR">Die Authorisierungsprüfung des Plugins ist fehlgeschlagen. Es ist mehr als ein Menüpunkt mit derselben URL definiert.\n\n=> #VAR1_BOLD#</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">Mindestens ein Parameter fehlt.</string>
+    <string name="PLG_FORMFILLER_NAME">Formularfüller</string>
+    <string name="PLG_FORMFILLER_NAME_DESC">Das Plugin Formularfüller</string>
     <string name="PLG_FORMFILLER_OPTIONS">Optionen</string>
     <string name="PLG_FORMFILLER_OPTIONAL">optional</string>    
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organisationswahl</string>

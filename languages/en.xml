@@ -62,7 +62,6 @@
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Here arbitrary forms can be configured. The Description field must be filled.\n\nA configuration can be deleted by the contents of the field description will be deleted. To view the data of a profile field must be specified at least one X and a Y coordinate. The data for X and Y define here the horizontal and vertical position relative to the upper left corner of the form. .\n\nYou can also specify for each profile field a different configuration.</string>
     <string name="PLG_FORMFILLER_FORM_CONFIGURATION">Form configuration</string>
     <string name="PLG_FORMFILLER_FORMER_MEMBERS_ONLY">Only former members</string>    
-    <string name="PLG_FORMFILLER_FORMFILLER">Form filler</string>
     <string name="PLG_FORMFILLER_GREEN">green</string>
     <string name="PLG_FORMFILLER_IMPORT">Import</string>
     <string name="PLG_FORMFILLER_IMPORT_DESC">Choose the form configuration that is to be imported (Note: It can be imported with the extension .cfg files only). </string>
@@ -78,8 +77,12 @@
     <string name="PLG_FORMFILLER_LOCAL">local</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF view</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">max. PDF view is the maximum number of pages that must have a PDF document, so it is still displayed on the screen. If the number of sides increases, the download of the file is immediately available.</string>
+    <string name="PLG_FORMFILLER_MENU_ITEM">Access to the FormFiller plugin</string>
+    <string name="PLG_FORMFILLER_MENU_ITEM_DESC">Members of this role have access to the FormFiller plugin</string>
     <string name="PLG_FORMFILLER_MENU_URL_ERROR">The authorization check of the plugin failed. There is more than one menu item with the same URL defined.\n\n=> #VAR1_BOLD#</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">At least one parameter is missing.</string>
+    <string name="PLG_FORMFILLER_NAME">FormFiller</string>
+    <string name="PLG_FORMFILLER_NAME_DESC">The plugin FormFiller</string>    
     <string name="PLG_FORMFILLER_OPTIONS">Options</string>
     <string name="PLG_FORMFILLER_OPTIONAL">optional</string>
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organizational choice</string>

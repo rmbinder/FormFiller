@@ -62,7 +62,6 @@
     <string name="PLG_FORMFILLER_FORM_CONFIG_HEADER">Ici, vous pouvez créer un nombre illimité de configurations pour les formulaires. Le champ nom doit toujours être rempli.\n\nPour afficher les données d\'un profil ou d\'un champ supplémentaire, au moins une coordonnée X et une coordonnée Y doivent être spécifiées. Les spécifications pour X et Y définissent la position horizontale et verticale en millimètres par rapport au coin supérieur gauche du document PDF sélectionné.</string>
     <string name="PLG_FORMFILLER_FORM_CONFIGURATION">Configuration du formulaire</string>
     <string name="PLG_FORMFILLER_FORMER_MEMBERS_ONLY">Anciens membres seulement</string>    
-    <string name="PLG_FORMFILLER_FORMFILLER">Remplisseur de formulaires</string>
     <string name="PLG_FORMFILLER_GREEN">vert</string>
     <string name="PLG_FORMFILLER_IMPORT">Import</string>
     <string name="PLG_FORMFILLER_IMPORT_DESC">Sélectionnez la configuration du formulaire à importer (Note : Seuls les fichiers avec l\'extension .cfg peuvent être importés). </string>
@@ -78,8 +77,12 @@
     <string name="PLG_FORMFILLER_LOCAL">local</string>    
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. affichage PDF</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">L\'affichage PDF maximum est le nombre maximum de pages qu\'un document PDF peut avoir afin qu\'il puisse toujours être affiché à l\'écran. Si le nombre de pages est plus grand, le téléchargement du fichier est proposé immédiatement.</string>
+    <string name="PLG_FORMFILLER_MENU_ITEM">Accès au plugin FormFiller</string>
+    <string name="PLG_FORMFILLER_MENU_ITEM_DESC">Les membres de ce rôle ont accès au plugin FormFiller</string>
     <string name="PLG_FORMFILLER_MENU_URL_ERROR">Le contrôle d\'autorisation du plugin a échoué. Plus d\'un élément de menu est défini avec la même URL.\n\n=> #VAR1_BOLD#</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">Il manque au moins un paramètre.</string>
+    <string name="PLG_FORMFILLER_NAME">FormFiller</string>
+    <string name="PLG_FORMFILLER_NAME_DESC">Le plugin FormFiller</string>    
     <string name="PLG_FORMFILLER_OPTIONS">Options</string>
     <string name="PLG_FORMFILLER_OPTIONAL">optionel</string>    
     <string name="PLG_FORMFILLER_ORG_CHOICE">Choix de l\'organisation</string>

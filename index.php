@@ -28,14 +28,14 @@ try {
     require_once(__DIR__ . '/../../system/common.php');
     require_once(__DIR__ . '/system/common_function.php');
 
-    //$scriptName ist der Name wie er im Menue eingetragen werden muss, also ohne evtl. vorgelagerte Ordner wie z.B. /playground/adm_plugins/formfiller...
-    //Prüfung werden die Einstellungen von 'Modulrechte' und 'Sichtbar für'              * verwendet, die im Modul Menü für dieses Plugin gesetzt wurden.          * @param   string  $scriptName   Der Scriptname des Plugins
+    //$scriptName muss derselbe Name sein, wie er im Menue unter URL eingetragen ist
     $scriptName = substr($_SERVER['SCRIPT_NAME'], strpos($_SERVER['SCRIPT_NAME'], FOLDER_PLUGINS));
 
     // only authorized user are allowed to start this module
     if (!isUserAuthorized($scriptName)) 
     {
-        throw new Exception('SYS_NO_RIGHTS');
+        //throw new Exception('SYS_NO_RIGHTS');                     // über Exception wird nur SYS_NO_RIGHTS angezeigt
+        $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
     }
     else
     {

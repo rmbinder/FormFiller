@@ -25,8 +25,8 @@ try {
         $pPreferences = new ConfigTable();
 	    $pPreferences->read();
 	    
-        $title = $gL10n->get('PLG_FORMFILLER_FORMFILLER');
-        $headline =$gL10n->get('PLG_FORMFILLER_FORMFILLER');
+        $title = $gL10n->get('PLG_FORMFILLER_NAME');
+        $headline =$gL10n->get('PLG_FORMFILLER_NAME');
 
         $gNavigation->addStartUrl(CURRENT_URL, $headline, 'bi-pen');
 
