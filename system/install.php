@@ -31,13 +31,67 @@ try {
     }
     else
     {
-        // Menüpunkt erzeugen, wenn keiner vorhanden ist
-        if (!isMenuItem())
-        {
-            addMenuItem();
-        }
+        // im ersten Schritt prüfen, ob eine Rolle ("Zugriffsrolle") vorhanden ist? (ggf. neu anlegen oder aktualisieren)
         
+        // dazu zuerst die Id (cat_id) der Kategorie Allgemein ermitteln
+        $category = new Category($gDb);
+        $category->readDataByColumns(array('cat_org_id' => $gCurrentOrgId, 'cat_type' => 'ROL', 'cat_name_intern' => 'COMMON'));
+        $categoryCommonId = $category->getValue('cat_id');
+        
+        // danach ein neues Objekt erzeugen
+        $role = new Role($gDb);
+        
+        // eine eventuell vorhandene Rolle einlesen (das Einlesen über 'rol_name' und 'rol_description' funktioniert nur, wenn diese Daten vom Benutzer nicht verändert worden sind)
+        $role->readDataByColumns(array('rol_cat_id' => $categoryCommonId, 'rol_name' => $gL10n->get('PLG_FORMFILLER_MENU_ITEM'), 'rol_description' => $gL10n->get('PLG_FORMFILLER_MENU_ITEM_DESC')));
+        
+        if ($role->getValue('rol_id') === 0)                 // nur wenn es keine Rolle gibt, neue Daten eingeben (mehr als eine Rolle wird nicht betrachtet)
+        {
+            // Daten für diese Rolle eingeben (entweder vorhandene Daten aktualisieren oder neue Daten eingeben)
+            $role->saveChangesWithoutRights();                                          // toDo: ggf. erweiterte Berechtigungen für die Rolle vergeben
+            $role->setValue('rol_cat_id', $categoryCommonId, false);
+            $role->setValue('rol_name', $gL10n->get('PLG_FORMFILLER_MENU_ITEM'));
+            $role->setValue('rol_description', $gL10n->get('PLG_FORMFILLER_MENU_ITEM_DESC'));
+            $role-> save();
+        }
+ 
+        // aktuellen Benutzer dieser Rolle hinzufügen
+        $role->startMembership((int) $gCurrentUser->getValue('usr_id'));
+        $role->save();
+        
+        // im zweiten Schritt prüfen, ob ein Menüpunkt vorhanden ist und ggf. neu anlegen
+        
+        // dazu zuerst die Id (men_id) der Menüebene Erweiterungen ermitteln
+        $menuParent = new MenuEntry($gDb);
+        $menuParent->readDataByColumns(array('men_name_intern' => 'extensions'));
+        $menIdParent = $menuParent->getValue('men_id');
+        
+        // eine neues Objekt erzeugen
+        $menu = new MenuEntry($gDb);
+        
+        // einen eventuell vorhandenen Menüpunkt einlesen
+        $menu->readDataByColumns(array('men_url' => FOLDER_PLUGINS. PLUGIN_FOLDER .'/index.php'));
+        
+        // Daten für diesen Memüpunkt eingeben
+        $menu->setValue('men_men_id_parent', $menIdParent);
+        $menu->setValue('men_url', FOLDER_PLUGINS. PLUGIN_FOLDER .'/index.php');
+        $menu->setValue('men_icon', 'pen');
+        $menu->setValue('men_name', 'PLG_FORMFILLER_NAME');
+        $menu->setValue('men_description', 'PLG_FORMFILLER_NAME_DESC');
+        $menu->save();
+        
+        // die vorher angelegte Rolle diesen Menüpunkt hinzufügen ('Sichtbar für')
+        $rightMenuView = new RolesRights($gDb, 'menu_view', $menu->getValue('men_id'));
+        $rightMenuView->addRoles(array($role->getValue('rol_id')));
+        
+        // damit am Bildschirm die Menüeinträge aktualisiert werden: alle Sesssions neu laden
+        $gCurrentSession->reloadAllSessions();
+        
+        // im letzten Schritt die Konfigurationsdaten bearbeiten
+        
+        // eine neues Objekt erzeugen
         $pPreferences = new ConfigTable();
+        
+        // prüfen, ob die Konfigurationstabelle bereits vorhanden ist und ggf. neu anlegen oder aktualisieren
         if ($pPreferences->checkforupdate())
         {
             $pPreferences->init();
@@ -50,80 +104,4 @@ try {
     $gMessage->show($e->getMessage());
 }
 
-// Funktionen, die nur in diesem Script benoetigt werden
 
-/**
- * Creates a menu item in the extensions menu
- * @return  void
- */
-function addMenuItem() 
-{   
-    global $gDb, $gCurrentUser, $gL10n, $gCurrentOrgId, $gCurrentSession;
-    
-    // im ersten Schritt eine neue Rolle in der Kategorie Allgemein (Common) anlegen
-    
-    // dazu zuerst die Id (cat_id) der Kategorie Allgemein ermitteln
-    $category = new Category($gDb);
-    $category->readDataByColumns(array('cat_org_id' => $gCurrentOrgId, 'cat_type' => 'ROL', 'cat_name_intern' => 'COMMON'));
-    $categoryCommonId = $category->getValue('cat_id');
-    
-    // danach die Rolle anlegen
-    $role = new Role($gDb);
-
-    // für den Fall, dass beim letzten Uninstall zwar der Menüpunkt entfernt wurde, aber vergessen wurde, die Rolle auch zu entfernen: diese Rolle einlesen
-    $role->readDataByColumns(array('rol_cat_id' => $categoryCommonId, 'rol_name' => $gL10n->get('PLG_FORMFILLER_MENU_ITEM'), 'rol_description' => $gL10n->get('PLG_FORMFILLER_MENU_ITEM_DESC')));
-
-    $role->saveChangesWithoutRights();                                          // toDo: ggf. Berechtigungen für die Rolle vergeben
-    $role->setValue('rol_cat_id', $categoryCommonId, false);
-    $role->setValue('rol_name', $gL10n->get('PLG_FORMFILLER_MENU_ITEM'));
-    $role->setValue('rol_description', $gL10n->get('PLG_FORMFILLER_MENU_ITEM_DESC'));
-    $role-> save();
-    
-    // und den aktuellen Benutzer dieser Rolle hinzufügen
-    $role->startMembership((int) $gCurrentUser->getValue('usr_id'));
-    $role->save();
-    
-    // danach einen neuen Menüeintrag in der Menüebene Erweiterungen (Extensions) anlegen
-    
-    // dazu zuerst die Id (men_id) der Menüebene Erweiterungen ermitteln
-    $menuParent = new MenuEntry($gDb);
-    $menuParent->readDataByColumns(array('men_name_intern' => 'extensions'));
-    $menIdParent = $menuParent->getValue('men_id');
-    
-    // danach den Menüeintrag anlegen
-    $menu = new MenuEntry($gDb);
-    $menu->setValue('men_men_id_parent', $menIdParent);
-    $menu->setValue('men_url', FOLDER_PLUGINS. PLUGIN_FOLDER .'/index.php');
-    $menu->setValue('men_icon', 'pen');
-    $menu->setValue('men_name', 'PLG_FORMFILLER_NAME');
-    $menu->setValue('men_description', 'PLG_FORMFILLER_NAME_DESC');
-    $menu->save();
-    
-    // diesen Menüeintrag nur für die vorher angelegte Rolle freischalten ('Sichtbar für')
-    $rightMenuView = new RolesRights($gDb, 'menu_view', $menu->getValue('men_id'));
-    $rightMenuView->saveRoles(array($role->getValue('rol_id')));
-    
-    // damit am Bildschirm die Menüeinträge aktualisiert werden: alle Sesssions neu laden
-    $gCurrentSession->reloadAllSessions();
-}
-
-/**
- * Checks whether a menu item already exists
- * @return bool Return true if menu item exists
- */
-function isMenuItem()
-{
-    global $gDb;
-    
-    $menu = new MenuEntry($gDb);
-    $menu->readDataByColumns(array('men_url' => FOLDER_PLUGINS. PLUGIN_FOLDER .'/index.php'));
-        
-    if ($menu->getValue('men_id') === 0)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
