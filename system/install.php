@@ -49,8 +49,8 @@ try {
             // Daten für diese Rolle eingeben (entweder vorhandene Daten aktualisieren oder neue Daten eingeben)
             $role->saveChangesWithoutRights();                                          // toDo: ggf. erweiterte Berechtigungen für die Rolle vergeben
             $role->setValue('rol_cat_id', $categoryCommonId, false);
-            $role->setValue('rol_name', $gL10n->get('PLG_FORMFILLER_MENU_ITEM'));
-            $role->setValue('rol_description', $gL10n->get('PLG_FORMFILLER_MENU_ITEM_DESC'));
+            $role->setValue('rol_name', $gL10n->get('PLG_FORMFILLER_ACCESS_TO_PLUGIN'));
+            $role->setValue('rol_description', $gL10n->get('PLG_FORMFILLER_ACCESS_TO_PLUGIN_DESC'));
             $role-> save();
         }
  
@@ -96,6 +96,10 @@ try {
         {
             $pPreferences->init();
         }
+        
+        $pPreferences->config['install']['access_role_id'] = $role->getValue('rol_id');     // für die Uninstall-Routine: die ID der Zugriffsrolle in der Konfigurationstabelle speichern
+        $pPreferences->config['install']['menu_item_id'] = $menu->getValue('men_id');;      // für die Uninstall-Routine: die ID des Menüpunktes in der Konfigurationstabelle speichern
+        $pPreferences->save();
         
         admRedirect(ADMIDIO_URL . FOLDER_PLUGINS. PLUGIN_FOLDER . '/system/formfiller.php');
     }

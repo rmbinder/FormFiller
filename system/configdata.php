@@ -42,10 +42,16 @@ $config_default['Optionen']['pdfform_addsizes'] = '100x80';
     
 $config_default['Plugininformationen']['version'] = '';
 $config_default['Plugininformationen']['stand'] = '';
+$config_default['Plugininformationen']['table_name'] = '';
+$config_default['Plugininformationen']['shortcut'] = '';
  
 //Zugriffsberechtigung für das Modul preferences
 $config_default['access']['preferences'] = array();
-  	
+
+//Infos für Uninstall
+$config_default['install']['access_role_id'] = 0;
+$config_default['install']['menu_item_id'] = 0;
+
 /*
  *  Mittels dieser Zeichenkombinationen werden Konfigurationsdaten, die zur Laufzeit als Array verwaltet werden,
  *  zu einem String zusammengefasst und in der Admidiodatenbank gespeichert. 

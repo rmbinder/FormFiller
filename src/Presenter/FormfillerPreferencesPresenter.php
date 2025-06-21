@@ -87,9 +87,9 @@ class FormfillerPreferencesPresenter extends PagePresenter
                 'title' => $gL10n->get('PLG_FORMFILLER_ASSORT'),
                 'icon' => 'bi-sort-alpha-down'
             ),
-            'deinstallation' => array(
-                'id' => 'deinstallation',
-                'title' => $gL10n->get('PLG_FORMFILLER_DEINSTALLATION'),
+            'uninstallation' => array(
+                'id' => 'uninstallation',
+                'title' => $gL10n->get('PLG_FORMFILLER_UNINSTALLATION'),
                 'icon' => 'bi-trash'
             ),
             'access' => array(
@@ -216,36 +216,17 @@ class FormfillerPreferencesPresenter extends PagePresenter
     
     /**
      * Generates the html of the form from the deinstallation preferences and will return the complete html.
-     * @return string Returns the complete html of the form from the deinstallation preferences.
+     * @return string Returns the complete html of the form from the configurations preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
-    public function createDeinstallationForm(): string
+    public function createUninstallationForm(): string
     {
-        global $gL10n, $gCurrentSession;
-        
-        $formDeinstallation = new FormPresenter(
-            'adm_preferences_form_deinstallation',
-            '../templates/preferences.deinstallation.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Deinstallation')),
-            null,
-            array('class' => 'form-preferences')
-            );
-        
-        $radioButtonEntries = array('0' => $gL10n->get('PLG_FORMFILLER_DEINST_ACTORGONLY'), '1' => $gL10n->get('PLG_FORMFILLER_DEINST_ALLORG') );
-        $formDeinstallation->addRadioButton('deinst_org_select',$gL10n->get('PLG_FORMFILLER_ORG_CHOICE'),$radioButtonEntries, array('defaultValue' => '0',  'alertWarning' => $gL10n->get('PLG_FORMFILLER_DEINSTALLATION_FORM_DESC_ALERT')));    
-        
-        $formDeinstallation->addSubmitButton(
-            'adm_button_save_deinstallation',
-            $gL10n->get('PLG_FORMFILLER_DEINSTALLATION'),
-            array('icon' => 'bi-trash', 'class' => 'offset-sm-3')
-            );
-        
+        $this->assignSmartyVariable('open_uninst', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/uninstallation.php'));
         $smarty = $this->getSmartyTemplate();
-        $formDeinstallation->addToSmarty($smarty);
-        $gCurrentSession->addFormObject($formDeinstallation);
-        return $smarty->fetch('../templates/preferences.deinstallation.tpl');
+        return $smarty->fetch('../templates/preferences.uninstallation.tpl');
     }
+    
 
     /**
      * Generates the html of the form from the access preferences and will return the complete html.
@@ -308,7 +289,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $pPreferences = new ConfigTable();
         $pPreferences->read();
    
-        $this->assignSmartyVariable('plg_name', $gL10n->get('PLG_FORMFILLER_FORMFILLER'));
+        $this->assignSmartyVariable('plg_name', $gL10n->get('PLG_FORMFILLER_NAME'));
         $this->assignSmartyVariable('plg_version', $pPreferences->config['Plugininformationen']['version']);
         $this->assignSmartyVariable('plg_date', $pPreferences->config['Plugininformationen']['stand']);
         $this->assignSmartyVariable('open_doc', SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array('id' => 'de:plugins:formfiller#formfiller')));
@@ -355,7 +336,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
 
         $this->addJavascript(
             '
-            var panels = [  "configurations", "export_import" , "options", "assort", "deinstallation", "access", "informations"];
+            var panels = [  "configurations", "export_import" , "options", "assort", "uninstallation", "access", "informations"];
 
             for(var i = 0; i < panels.length; i++) {
                 $("#adm_panel_preferences_" + panels[i] + " .accordion-header").click(function (e) {

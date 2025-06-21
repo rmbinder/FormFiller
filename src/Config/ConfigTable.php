@@ -26,6 +26,10 @@
 	
 namespace Formfiller\Config;
 
+use Admidio\Menu\Entity\MenuEntry;
+use Admidio\Roles\Entity\RolesRights;
+use Admidio\Roles\Entity\Role;
+
 class ConfigTable
 {
 	public	  $config		= array();     ///< Array mit allen Konfigurationsdaten
@@ -104,6 +108,8 @@ class ConfigTable
 	
 		$this->config['Plugininformationen']['version'] = self::$version;
 		$this->config['Plugininformationen']['stand'] = self::$stand;
+		$this->config['Plugininformationen']['table_name'] = $this->table_name;
+		$this->config['Plugininformationen']['shortcut'] = self::$shortcut;
 	
 		// die eingelesenen Konfigurationsdaten in ein Arbeitsarray kopieren
 		$config_ist = $this->config;
@@ -332,47 +338,6 @@ class ConfigTable
     	return $ret;
 	}
 	
-    /**
-     * Loescht die Konfigurationsdaten in der Datenbank
-     * @param   int     $deinst_org_select  0 = Daten nur in aktueller Org loeschen, 1 = Daten in allen Org loeschen
-     * @return  string  $result             Meldung
-     */
-	public function delete($deinst_org_select)
-	{
-    	$result = '';
-		$result_data = false;
-		$result_db = false;
-		
-		if ($deinst_org_select == 0)                    //0 = Daten nur in aktueller Org loeschen 
-		{
-			$sql = 'DELETE FROM '.$this->table_name.'
-        			      WHERE plp_name LIKE ?
-        			        AND plp_org_id = ? ';
-			$result_data = $GLOBALS['gDb']->queryPrepared($sql, array(self::$shortcut.'__%', $GLOBALS['gCurrentOrgId']));		
-		}
-		elseif ($deinst_org_select == 1)              //1 = Daten in allen Org loeschen 
-		{
-			$sql = 'DELETE FROM '.$this->table_name.'
-        			      WHERE plp_name LIKE ? ';
-			$result_data = $GLOBALS['gDb']->queryPrepared($sql, array(self::$shortcut.'__%'));				
-		}
-
-		// wenn die Tabelle nur Eintraege dieses Plugins hatte, sollte sie jetzt leer sein und kann geloescht werden
-		$sql = 'SELECT * FROM '.$this->table_name.' ';
-		$statement = $GLOBALS['gDb']->queryPrepared($sql);
-
-        if ($statement->rowCount() == 0)
-    	{
-        	$sql = 'DROP TABLE '.$this->table_name.' ';
-        	$result_db = $GLOBALS['gDb']->queryPrepared($sql);
-    	}
-    	
-    	$result  = ($result_data ? $GLOBALS['gL10n']->get('PLG_FORMFILLER_DEINST_DATA_DELETE_SUCCESS') : $GLOBALS['gL10n']->get('PLG_FORMFILLER_DEINST_DATA_DELETE_ERROR') );
-		$result .= ($result_db ? $GLOBALS['gL10n']->get('PLG_FORMFILLER_DEINST_TABLE_DELETE_SUCCESS') : $GLOBALS['gL10n']->get('PLG_FORMFILLER_DEINST_TABLE_DELETE_ERROR') );
-    	$result .= ($result_data ? $GLOBALS['gL10n']->get('PLG_FORMFILLER_DEINST_ENDMESSAGE') : '' );
-		
-		return $result;
-	}
 	
 	/**
 	 * Funktion prüft, ob es eine Konfiguration mit dem übergebenen Namen bereits gibt
@@ -382,10 +347,6 @@ class ConfigTable
 	 */
 	public function createDesc($name)
 	{
-	 //   require_once(__DIR__ . '/../Config/ConfigTable.php');
-	 //   $pPreferences = new ConfigTable();
-	 //   $pPreferences->read();
-	    
 	    while (in_array($name, $this->config['Formular']['desc']))
 	    {
 	        $name .= ' - '.$GLOBALS['gL10n']->get('SYS_CARBON_COPY');
@@ -394,5 +355,27 @@ class ConfigTable
 	    return $name;
 	}
 	
+	/**
+	 * Liest alle Zugriffsrollen ein, die in der Konfigurationstabelle gespeichert sind
+	 * @return  array $data
+	 */
+	public function getAllAccessRoles()
+	{
+	    global $gDb;
+	    
+	    $data = array();
+	    
+	    $sql = 'SELECT plp_id, plp_name, plp_value, plp_org_id
+                  FROM '.$this->table_name.'
+                 WHERE plp_name = ? ';
+	    $statement = $gDb->queryPrepared($sql, array(self::$shortcut.'__install__access_role_id'));
+	    
+	    while ($row = $statement->fetch())
+	    {
+	        $data[] = $row['plp_value'];
+	    }
+	    
+	    return $data;
+	}
 	
 }

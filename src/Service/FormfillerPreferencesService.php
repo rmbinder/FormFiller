@@ -2,6 +2,9 @@
 namespace Formfiller\Service;
 
 use Admidio\Infrastructure\Exception;
+use Admidio\Menu\Entity\MenuEntry;
+use Admidio\Roles\Entity\Role;
+use Admidio\Roles\Entity\RolesRights;
 use Formfiller\Config\ConfigTable;
 
 /**
@@ -28,7 +31,7 @@ class FormfillerPreferencesService
      */
     public function save(string $panel, array $formData)
     {
-        global $gL10n, $gSettingsManager, $gCurrentSession, $gDb, $gCurrentOrgId, $gProfileFields;
+        global $gL10n, $gSettingsManager, $gCurrentSession, $gDb, $gCurrentOrgId, $gProfileFields, $gLogger;
         
         require_once(__DIR__ . '/../../system/common_function.php');
         $pPreferences = new ConfigTable();
@@ -57,12 +60,6 @@ class FormfillerPreferencesService
                     $pPreferences->config['access']['preferences'] = array();
                 }
                 $pPreferences->save();
-                
-                break;
-            
-            case 'Deinstallation':
-
-                $result = $gL10n->get('PLG_FORMFILLER_DEINST_STARTMESSAGE').$pPreferences->delete($formData['deinst_org_select']) ;
                 
                 break;
             
@@ -112,7 +109,7 @@ class FormfillerPreferencesService
         return $result;
 
         // clean up
-        //$gCurrentSession->reloadAllSessions();
+        $gCurrentSession->reloadAllSessions();
     }
 
 }
