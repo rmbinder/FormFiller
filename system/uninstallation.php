@@ -38,12 +38,12 @@ try
 	}
 
 	// Initialize and check the parameters
-	$getMode                       = admFuncVariableIsValid($_GET, 'mode', 'string', array('defaultValue' => 'html', 'validValues' => array('html', 'uninst')));
-	$postUninstAccessRole          = admFuncVariableIsValid($_POST, 'uninst_access_role', 'bool', array('defaultValue' => 0));
-	$postUninstAccessRoleOrgSelect = admFuncVariableIsValid($_POST, 'uninst_access_role_org_select', 'bool', array('defaultValue' => 0));
-	$postUninstConfigData          = admFuncVariableIsValid($_POST, 'uninst_config_data', 'bool', array('defaultValue' => 0));
-	$postUninstConfigDataOrgSelect = admFuncVariableIsValid($_POST, 'uninst_config_data_org_select', 'bool', array('defaultValue' => 0));
-	$postUninstMenuItem            = admFuncVariableIsValid($_POST, 'uninst_menu_item', 'bool', array('defaultValue' => 0));
+	$getMode                       = admFuncVariableIsValid($_GET, 'mode', 'string', array('defaultValue' => 'html', 'validValues' => array('html', 'uninst')));	
+	$postUninstAccessRole          = admFuncVariableIsValid($_POST, 'uninst_access_role', 'bool');
+	$postUninstAccessRoleOrgSelect = admFuncVariableIsValid($_POST, 'uninst_access_role_org_select', 'bool');
+	$postUninstConfigData          = admFuncVariableIsValid($_POST, 'uninst_config_data', 'bool');
+	$postUninstConfigDataOrgSelect = admFuncVariableIsValid($_POST, 'uninst_config_data_org_select', 'bool');
+	$postUninstMenuItem            = admFuncVariableIsValid($_POST, 'uninst_menu_item', 'bool');
 
 	switch ($getMode)
 	{
