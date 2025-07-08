@@ -1,6 +1,6 @@
 <ul id="adm_preferences_tabs" class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-        <a id="adm_tabs_nav_common" class="nav-link active" href="#adm_tabs_common" data-bs-toggle="tab" role="tab">{$l10n->get('PLG_FORMFILLER_FORMFILLER')}</a>
+        <a id="adm_tabs_nav_common" class="nav-link active" href="#adm_tabs_common" data-bs-toggle="tab" role="tab">{$l10n->get('PLG_FORMFILLER_NAME')}</a>
     </li>
 </ul>
 
