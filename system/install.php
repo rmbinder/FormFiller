@@ -42,7 +42,7 @@ try {
         $role = new Role($gDb);
         
         // eine eventuell vorhandene Rolle einlesen (das Einlesen über 'rol_name' und 'rol_description' funktioniert nur, wenn diese Daten vom Benutzer nicht verändert worden sind)
-        $role->readDataByColumns(array('rol_cat_id' => $categoryCommonId, 'rol_name' => $gL10n->get('PLG_FORMFILLER_MENU_ITEM'), 'rol_description' => $gL10n->get('PLG_FORMFILLER_MENU_ITEM_DESC')));
+        $role->readDataByColumns(array('rol_cat_id' => $categoryCommonId, 'rol_name' => $gL10n->get('PLG_FORMFILLER_ACCESS_TO_PLUGIN'), 'rol_description' => $gL10n->get('PLG_FORMFILLER_ACCESS_TO_PLUGIN_DESC')));
         
         if ($role->getValue('rol_id') === 0)                 // nur wenn es keine Rolle gibt, neue Daten eingeben (mehr als eine Rolle wird nicht betrachtet)
         {
