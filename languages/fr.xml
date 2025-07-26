@@ -26,8 +26,7 @@
     <string name="PLG_FORMFILLER_CONFIG_DATA">Données de configuration</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Configuration</string>
     <string name="PLG_FORMFILLER_CONFIGURATIONS">Configurations</string> 
-    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT">Modifier les configurations</string>
-    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT_DESC">Les configurations peuvent être créées et modifiées ici.</string>       
+    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT">Créer et modifier des configurations.</string>
     <string name="PLG_FORMFILLER_DATE">Date</string>
     <string name="PLG_FORMFILLER_DELETE_CONFIG">Supprimer cette configuration</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Description</string>
@@ -37,6 +36,7 @@
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Cela ouvre la documentation pour le plugin (une connexion Internet existante est nécessaire, car les données se trouvent sur admidio.org).</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS">Champs dynamiques</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS_DESC">Les coordonnées X et Y des champs dynamiques déterminent la première ligne de l’impression. Toutes les autres lignes sont ajoutées dynamiquement. Avec le paramètre OW=x (par exemple, OW=10), la distance peut être spécifiée en millimètres. Le réglage par défaut est 5 mm.\n\n Pour imprimer plusieurs champs dynamiques, vous pouvez définir un ordre à l'aide du paramètre OI=x. REMARQUE: le paramètre OI=x ne doit pas être utilisé avec des images ou des rectangles.\n\nLe paramètre MS=x peut être utilisé pour afficher le début du rôle (MS=B), la fin du rôle (MS=E) ou les deux (MS=BE) d'une appartenance à un rôle.</string>
+    <string name="PLG_FORMFILLER_EDIT">Modifier les configurations</string>
     <string name="PLG_FORMFILLER_ENVELOPE">Enveloppe DL</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_DATA">ERREUR : Au moins un champ avec contenu et position doit être spécifié dans chaque configuration !</string>
     <string name="PLG_FORMFILLER_EXPORT">Export</string>
@@ -68,7 +68,6 @@
     <string name="PLG_FORMFILLER_LABELS">Étiquettes</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">Pour imprimer des étiquettes, les informations suivantes sont requises dans le champ Etiquettes : nombre de colonnes, espacement des colonnes, nombre de lignes, espacement des lignes.\n\nExemple:\n 5,50,10,40\nsignifie que les étiquettes sont disposées sur 5 colonnes à une distance de 50mm et 10 lignes à une distance de 40mm</string>
     <string name="PLG_FORMFILLER_LINE">Ligne</string>
-    <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Changer à l\'export/import</string>
     <string name="PLG_FORMFILLER_LOCAL">local</string>    
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. affichage PDF</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">L\'affichage PDF maximum est le nombre maximum de pages qu\'un document PDF peut avoir afin qu\'il puisse toujours être affiché à l\'écran. Si le nombre de pages est plus grand, le téléchargement du fichier est proposé immédiatement.</string>
@@ -99,7 +98,6 @@
     <string name="PLG_FORMFILLER_PDFFORM_UNIT">Unité de mise en forme PDF</string>
     <string name="PLG_FORMFILLER_PDFFORM_UNIT_DESC">L\'unité du document PDF à générer est spécifiée ici ; le réglage par défaut est mm.</string>
     <string name="PLG_FORMFILLER_PLUGIN_DATE">Date</string>
-    <string name="PLG_FORMFILLER_PLUGIN_INFORMATION">Informations sur le plug-in</string>
     <string name="PLG_FORMFILLER_PLUGIN_NAME">Nom du plugin</string>
     <string name="PLG_FORMFILLER_PLUGIN_VERSION">Version</string>
     <string name="PLG_FORMFILLER_POSITION">Position</string>

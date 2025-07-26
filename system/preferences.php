@@ -28,7 +28,7 @@ try {
     $getMode = admFuncVariableIsValid($_GET, 'mode', 'string',
         array(
             'defaultValue' => 'html',
-            'validValues' => array('html', 'html_form', 'save', 'htaccess')
+            'validValues' => array('html', 'html_form', 'save')
         ));
     $getPanel = admFuncVariableIsValid($_GET, 'panel', 'string');
 
@@ -62,7 +62,7 @@ try {
             break;
     }
 } catch (Throwable $exception) {
-    if (in_array($getMode, array('save', 'new_org_create'))) {
+    if (in_array($getMode, array('save'))) {
         echo json_encode(array('status' => 'error', 'message' => $exception->getMessage()));
     } elseif ($getMode === 'html_form') {
         echo $exception->getMessage();

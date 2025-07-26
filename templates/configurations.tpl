@@ -1,6 +1,8 @@
-<p>{$l10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER')}                          <a class="admidio-icon-link openPopup" href="javascript:void(0);" data-class="modal-lg" data-href="{$urlPopupText}">
-                                <i class="bi bi-info-circle-fill admidio-info-icon"></i>
-                            </a></p>
+<p>{$l10n->get('PLG_FORMFILLER_FORM_CONFIG_HEADER')}                          
+    <a class="admidio-icon-link openPopup" href="javascript:void(0);" data-class="modal-lg" data-href="{$urlPopupText}">
+        <i class="bi bi-info-circle-fill admidio-info-icon"></i>
+    </a>
+</p>
 <hr />
  <div style="width:100%; height:1000px; overflow:auto; border:20px;">
 <form {foreach $attributes as $attribute}
@@ -27,8 +29,7 @@
                 {if {$relations_enabled}}
                      {include '../templates/form.select.popover.tpl' data=$elements[$configuration.relationtype_id] popover="{$l10n->get('PLG_FORMFILLER_RELATION_DESC')}"}
                 {/if}               
-                
-                
+                            
                 <div class="admidio-form-group admidio-form-custom-content row mb-3">
                     <label class="col-sm-3 col-form-label">
                         {$l10n->get('PLG_FORMFILLER_FIELD_SELECTION')}                   
@@ -56,7 +57,6 @@
                     </div>
                 </div>
             
-
                 {if isset($configuration.urlConfigCopy)}
                     <a id="copy_config" class="icon-text-lin offset-sm-3" href="{$configuration.urlConfigCopy}">
                         <i class="bi bi-copy"></i> {$l10n->get('SYS_COPY_CONFIGURATION')}</a>

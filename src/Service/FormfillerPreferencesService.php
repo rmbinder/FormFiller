@@ -2,9 +2,6 @@
 namespace Formfiller\Service;
 
 use Admidio\Infrastructure\Exception;
-use Admidio\Menu\Entity\MenuEntry;
-use Admidio\Roles\Entity\Role;
-use Admidio\Roles\Entity\RolesRights;
 use Formfiller\Config\ConfigTable;
 
 /**

@@ -1,4 +1,3 @@
-
 <div class="admidio-form-group admidio-form-custom-content row mb-3">
     <label for="plg_name" class="col-sm-3 col-form-label">
         {$l10n->get('PLG_FORMFILLER_PLUGIN_NAME')}

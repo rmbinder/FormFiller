@@ -25,9 +25,8 @@
     <string name="PLG_FORMFILLER_CHOOSE_USERSELECTION_DESC">Anstelle von Listenkonfiguration und Rollen können hier einzelne Benutzer ausgewählt werden.</string>
     <string name="PLG_FORMFILLER_CONFIG_DATA">Konfigurationsdaten</string>
     <string name="PLG_FORMFILLER_CONFIGURATION">Konfiguration</string>
-    <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string> 
-    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT">Konfigurationen editieren</string>
-    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT_DESC">Hier können Konfigurationen erstellt und editiert werden.</string>   
+    <string name="PLG_FORMFILLER_CONFIGURATIONS">Konfigurationen</string>
+    <string name="PLG_FORMFILLER_CONFIGURATIONS_EDIT">Konfigurationen erstellen und editieren.</string>
     <string name="PLG_FORMFILLER_DATE">Datum</string>
     <string name="PLG_FORMFILLER_DELETE_CONFIG">Diese Konfiguration löschen</string>
     <string name="PLG_FORMFILLER_DESCRIPTION">Bezeichnung</string>
@@ -37,6 +36,7 @@
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Hier kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS">Dynamische Felder</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS_DESC">Die X- und Y-Koordinaten bei dynamischen Feldern bestimmen die erste Zeile des Drucks. Alle weiteren Zeilen werden dynamisch angefügt. Mit dem Parameter OW=x (z.B. OW=10) kann der Abstand in Millimeter angegeben werden. Standardeinstellung ist 5 mm.\n\n Um mehrere dynamische Felder untereinander zu drucken, kann über den Parameter OI=x eine Reihenfolge definiert werden. HINWEIS: Der Paramter OI=x sollte nicht bei Bildern oder Rechtecken verwendet werden.\n\nÜber den Parameter MS=x kann Rollenbeginn (MS=B), Rollenende (MS=E) oder beides (MS=BE) einer Rollenmitgliedschaft angezeigt werden.</string>
+    <string name="PLG_FORMFILLER_EDIT">Editieren</string>
     <string name="PLG_FORMFILLER_ENVELOPE">Umschlag DL</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_DATA">FEHLER: In jeder Konfiguration muss mindestens ein Feld mit Inhalt und Position angegeben sein!</string>
     <string name="PLG_FORMFILLER_EXPORT">Export</string>
@@ -68,7 +68,6 @@
     <string name="PLG_FORMFILLER_LABELS">Etiketten</string>
     <string name="PLG_FORMFILLER_LABELS_DESC">Um Etiketten zu drucken sind folgende Angaben im Feld Etiketten erforderlich: Spaltenanzahl,Spaltenabstand,Zeilenanzahl,Zeilenabstand.\n\nBeispiel:\n 5,50,10,40\nbedeutet Anordnung der Etiketten zu 5 Spalten im Abstand von 50mm und 10 Zeilen im Abstand von 40mm</string>
     <string name="PLG_FORMFILLER_LINE">Linie</string>
-    <string name="PLG_FORMFILLER_LINK_TO_EXPORT_IMPORT">Zu Export/Import wechseln</string>
     <string name="PLG_FORMFILLER_LOCAL">lokal</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. PDF-Anzeige</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">max. PDF-Anzeige ist die maximale Seitenzahl, die ein PDF-Dokument aufweisen darf, damit es noch am Bildschirm angezeigt wird. Ist die Anzahl der Seiten größer, wird sofort der Download der Datei angeboten.</string>
@@ -99,7 +98,6 @@
     <string name="PLG_FORMFILLER_PDFFORM_UNIT">PDF-Form-Einheit</string>
     <string name="PLG_FORMFILLER_PDFFORM_UNIT_DESC">Hier wird die Einheit des zu erzeugenden PDF-Dokumentes angegeben; Standardeinstellung ist mm.</string>
     <string name="PLG_FORMFILLER_PLUGIN_DATE">Stand</string>
-    <string name="PLG_FORMFILLER_PLUGIN_INFORMATION">Plugininformationen</string>
     <string name="PLG_FORMFILLER_PLUGIN_NAME">Name des Plugins</string>
     <string name="PLG_FORMFILLER_PLUGIN_VERSION">Version</string>
     <string name="PLG_FORMFILLER_POSITION">Position</string>
