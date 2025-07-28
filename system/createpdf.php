@@ -35,7 +35,7 @@ use Admidio\Roles\Entity\Membership;
 use Admidio\Roles\Entity\Role;
 use Admidio\Users\Entity\User;
 use Admidio\Users\Entity\UserRelation;
-use Formfiller\Config\ConfigTable;
+use Plugins\FormFiller\classes\Config\ConfigTable;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfParser\PdfParserException;
 

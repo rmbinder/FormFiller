@@ -21,7 +21,7 @@ use Admidio\Infrastructure\Utils\SecurityUtils;
 use Admidio\UI\Presenter\FormPresenter;
 use Admidio\UI\Presenter\PagePresenter;
 use Admidio\Users\Entity\UserRelationType;
-use Formfiller\Config\ConfigTable;
+use Plugins\FormFiller\classes\Config\ConfigTable;
 
 try {
     require_once(__DIR__ . '/../../../system/common.php');

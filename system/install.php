@@ -17,7 +17,7 @@ use Admidio\Categories\Entity\Category;
 use Admidio\Menu\Entity\MenuEntry;
 use Admidio\Roles\Entity\Role;
 use Admidio\Roles\Entity\RolesRights;
-use Formfiller\Config\ConfigTable;
+use Plugins\FormFiller\classes\Config\ConfigTable;
 
 try {
     require_once(__DIR__ . '/../../../system/common.php');

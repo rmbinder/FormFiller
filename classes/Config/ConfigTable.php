@@ -24,7 +24,7 @@
  *
  *****************************************************************************/
 	
-namespace Formfiller\Config;
+namespace Plugins\FormFiller\classes\Config;
 
 use Admidio\Menu\Entity\MenuEntry;
 use Admidio\Roles\Entity\RolesRights;

@@ -1,12 +1,12 @@
 <?php
-namespace Formfiller\Presenter;
+namespace Plugins\FormFiller\classes\Presenter;
 
 use Admidio\Changelog\Service\ChangelogService;
 use Admidio\Infrastructure\Exception;
 use Admidio\Infrastructure\Utils\SecurityUtils;
 use Admidio\UI\Presenter\FormPresenter;
 use Admidio\UI\Presenter\PagePresenter;
-use Formfiller\Config\ConfigTable;
+use Plugins\FormFiller\classes\Config\ConfigTable;
 
 /**
  * @brief Class with methods to display the preference page and helpful functions.

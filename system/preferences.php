@@ -17,8 +17,8 @@
  */
 
 use Admidio\Infrastructure\Exception;
-use Formfiller\Presenter\FormfillerPreferencesPresenter;
-use Formfiller\Service\FormfillerPreferencesService;
+use Plugins\FormFiller\classes\Presenter\FormfillerPreferencesPresenter;
+use Plugins\FormFiller\classes\Service\FormfillerPreferencesService;
 
 try {
     require_once(__DIR__ . '/../../../system/common.php');

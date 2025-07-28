@@ -1,8 +1,8 @@
 <?php
-namespace Formfiller\Service;
+namespace Plugins\FormFiller\classes\Service;
 
 use Admidio\Infrastructure\Exception;
-use Formfiller\Config\ConfigTable;
+use Plugins\FormFiller\classes\Config\ConfigTable;
 
 /**
  * @brief Class with methods to display the module pages.

@@ -14,7 +14,7 @@
  ***********************************************************************************************
  */
 use Admidio\Infrastructure\Exception;
-use Formfiller\Config\ConfigTable;
+use Plugins\FormFiller\classes\Config\ConfigTable;
 
 try {
     require_once(__DIR__ . '/../../../system/common.php');

@@ -19,7 +19,7 @@
  ***********************************************************************************************
  */
 
-use Formfiller\Config\ConfigTable;
+use Plugins\FormFiller\classes\Config\ConfigTable;
 
 //Fehlermeldungen anzeigen
 error_reporting(E_ALL);
