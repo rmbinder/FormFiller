@@ -247,7 +247,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
             SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Access')),
             null,
             array('class' => 'form-preferences')
-            );
+        );
         
         $sql = 'SELECT rol_id, rol_name, cat_name
                   FROM '.TBL_CATEGORIES.' , '.TBL_ROLES.'
@@ -261,46 +261,25 @@ class FormfillerPreferencesPresenter extends PagePresenter
             '',
             $gDb,
             $sql,
-            array('defaultValue' => $pPreferences->config['access']['preferences'], 'helpTextId' => 'PLG_FORMFILLER_ACCESS_PREFERENCES_DESC', 'multiselect' => true));
-        
-        $selectBoxEntries = array('10' => '10', '25' => '25', '50' => '50', '100' => '100', '200' => '200');
-        $formAccess->addSelectBox(
-            'test_selectBox',
-            'lalala',
-            $selectBoxEntries,
-            array( 'defaultValue' => array('10' => '10',  '50' => '50'), 'helpTextId' => 'SYS_INVENTORY_ACCESS_EDIT_FIELDS_DESC', 'multiselect' => true)
-            );
-        
-        
-        
+            array('defaultValue' => $pPreferences->config['access']['preferences'], 'helpTextId' => 'PLG_FORMFILLER_ACCESS_PREFERENCES_DESC', 'multiselect' => true)
+        );
+
         //Warning: Undefined array key "inventory_profile_view"
         $formAccess->addInput(
             'inventory_profile_view',
             '',
             '',
             array( 'property' => FormPresenter::FIELD_HIDDEN)
-            );
-        
-        $selectBoxEntries = array('10' => '10', '25' => '25', '50' => '50', '100' => '100', '-1' => $gL10n->get('SYS_ALL'));
-        $formAccess->addSelectBox(
-            'inventory_fields',
-            $gL10n->get('SYS_INVENTORY_ACCESS_EDIT_FIELDS'),
-            $selectBoxEntries,
-            array( 'helpTextId' => 'SYS_INVENTORY_ACCESS_EDIT_FIELDS_DESC', 'multiselect' => true, 'maximumSelectionNumber' => count($selectBoxEntries))
-            );
-        
-        
-        
+        );
         
         $formAccess->addSubmitButton(
             'adm_button_save_access',
             $gL10n->get('SYS_SAVE'),
             array('icon' => 'bi-check-lg', 'class' => 'offset-sm-3')
-            );
+        );
         
         $smarty = $this->getSmartyTemplate();
         $formAccess->addToSmarty($smarty);
-   //     $gCurrentSession->addFormObject($formAccess);
         return $smarty->fetch('../templates/preferences.access.plugin.formfiller.tpl');
     }
     
