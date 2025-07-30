@@ -403,7 +403,7 @@ try {
 
     $formConfigurations = new FormPresenter(
         'adm_configurations_preferences_form',
-        '../templates/configurations.tpl',
+        '../templates/configurations.plugin.formfiller.tpl',
         SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations_function.php', array('form' => 'configurations')),
         $page,
         array('class' => 'form-preferences')

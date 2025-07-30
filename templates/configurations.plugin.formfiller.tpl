@@ -15,19 +15,19 @@
         <div class="card admidio-field-group">
             <div class="card-header">{$configuration.key+1}. {$l10n->get('SYS_CONFIGURATION')}</div>
             <div class="card-body">
-                {include '../templates/form.input.popover.tpl' data=$elements[$configuration.desc] popover="{$l10n->get('PLG_FORMFILLER_DESCRIPTION_DESC')}"}
-                {include '../templates/form.select.popover.tpl' data=$elements[$configuration.font] popover="{$l10n->get('PLG_FORMFILLER_FONT_DESC')}"}
-                {include '../templates/form.select.popover.tpl' data=$elements[$configuration.style] popover="{$l10n->get('PLG_FORMFILLER_FONTSTYLE_DESC')}"}
-                {include '../templates/form.input.popover.tpl' data=$elements[$configuration.size] popover="{$l10n->get('PLG_FORMFILLER_FONTSIZE_DESC')}"}
-                {include '../templates/form.select.popover.tpl' data=$elements[$configuration.color] popover="{$l10n->get('PLG_FORMFILLER_FONTCOLOR_DESC')}"}
-                {include '../templates/form.select.popover.tpl' data=$elements[$configuration.pdfform_orientation] popover="{$l10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION_DESC')}"}
-                {include '../templates/form.select.popover.tpl' data=$elements[$configuration.pdfform_size] popover="{$l10n->get('PLG_FORMFILLER_PDFFORM_SIZE_DESC')}"}
-                {include '../templates/form.select.popover.tpl' data=$elements[$configuration.pdfform_unit] popover="{$l10n->get('PLG_FORMFILLER_PDFFORM_UNIT_DESC')}"}
-                {include '../templates/form.select.popover.tpl' data=$elements[$configuration.pdfid] popover="{$l10n->get('PLG_FORMFILLER_PDF_FILE_DESC')}"}
-                {include '../templates/form.input.popover.tpl' data=$elements[$configuration.labels] popover="{$l10n->get('PLG_FORMFILLER_LABELS_DESC')}"}
+                {include '../templates/form.input.popover.plugin.formfiller.tpl' data=$elements[$configuration.desc] popover="{$l10n->get('PLG_FORMFILLER_DESCRIPTION_DESC')}"}
+                {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.font] popover="{$l10n->get('PLG_FORMFILLER_FONT_DESC')}"}
+                {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.style] popover="{$l10n->get('PLG_FORMFILLER_FONTSTYLE_DESC')}"}
+                {include '../templates/form.input.popover.plugin.formfiller.tpl' data=$elements[$configuration.size] popover="{$l10n->get('PLG_FORMFILLER_FONTSIZE_DESC')}"}
+                {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.color] popover="{$l10n->get('PLG_FORMFILLER_FONTCOLOR_DESC')}"}
+                {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.pdfform_orientation] popover="{$l10n->get('PLG_FORMFILLER_PDFFORM_ORIENTATION_DESC')}"}
+                {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.pdfform_size] popover="{$l10n->get('PLG_FORMFILLER_PDFFORM_SIZE_DESC')}"}
+                {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.pdfform_unit] popover="{$l10n->get('PLG_FORMFILLER_PDFFORM_UNIT_DESC')}"}
+                {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.pdfid] popover="{$l10n->get('PLG_FORMFILLER_PDF_FILE_DESC')}"}
+                {include '../templates/form.input.popover.plugin.formfiller.tpl' data=$elements[$configuration.labels] popover="{$l10n->get('PLG_FORMFILLER_LABELS_DESC')}"}
  
                 {if {$relations_enabled}}
-                     {include '../templates/form.select.popover.tpl' data=$elements[$configuration.relationtype_id] popover="{$l10n->get('PLG_FORMFILLER_RELATION_DESC')}"}
+                     {include '../templates/form.select.popover.plugin.formfiller.tpl' data=$elements[$configuration.relationtype_id] popover="{$l10n->get('PLG_FORMFILLER_RELATION_DESC')}"}
                 {/if}               
                             
                 <div class="admidio-form-group admidio-form-custom-content row mb-3">

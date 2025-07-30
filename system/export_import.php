@@ -69,7 +69,7 @@ try
 			
 			$formExportImport = new FormPresenter(
 				'adm_preferences_form_export_import',
-				'../templates/export_import.tpl',
+				'../templates/export_import.plugin.formfiller.tpl',
 				SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/export_import.php', array('mode' => 'export_import')),
 				$page,
 				array('class' => 'form-preferences', 'enableFileUpload' => true)

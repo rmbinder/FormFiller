@@ -48,7 +48,7 @@ try {
         // create filter menu with elements for role
         $form = new FormPresenter(
             'formfiller_form',
-            '../templates/formfiller.form.tpl',
+            '../templates/plugin.formfiller.tpl',
             SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS .'/formfiller/system/createpdf.php'),
             $page,
             array( 'type' => 'default' , 'method' => 'post',  'setFocus' => false,  'enableFileUpload' => true)

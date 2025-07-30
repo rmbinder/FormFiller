@@ -113,7 +113,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         $this->assignSmartyVariable('open_configs', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations.php'));
         $smarty = $this->getSmartyTemplate();
-        return $smarty->fetch('../templates/preferences.configurations.tpl');
+        return $smarty->fetch('../templates/preferences.configurations.plugin.formfiller.tpl');
     }
     
     /**
@@ -126,7 +126,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         $this->assignSmartyVariable('open_export_import', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/export_import.php'));
         $smarty = $this->getSmartyTemplate();
-        return $smarty->fetch('../templates/preferences.export_import.tpl');
+        return $smarty->fetch('../templates/preferences.export_import.plugin.formfiller.tpl');
     }
     
     /**
@@ -143,7 +143,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         
         $formAssort = new FormPresenter(
             'adm_preferences_form_configurations',
-            '../templates/preferences.assort.tpl',
+            '../templates/preferences.assort.plugin.formfiller.tpl',
             SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Assort')),
             null,
             array('class' => 'form-preferences')
@@ -160,7 +160,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $smarty = $this->getSmartyTemplate();
         $formAssort->addToSmarty($smarty);
         $gCurrentSession->addFormObject($formAssort);
-        return $smarty->fetch('../templates/preferences.assort.tpl');
+        return $smarty->fetch('../templates/preferences.assort.plugin.formfiller.tpl');
     }
     
     /**
@@ -180,7 +180,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         
         $formOptions = new FormPresenter(
             'adm_preferences_form_options',
-            '../templates/preferences.options.tpl',
+            '../templates/preferences.options.plugin.formfiller.tpl',
             SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Options')),
             null,
             array('class' => 'form-preferences')
@@ -209,7 +209,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $smarty = $this->getSmartyTemplate();
         $formOptions->addToSmarty($smarty);
         $gCurrentSession->addFormObject($formOptions);
-        return $smarty->fetch('../templates/preferences.options.tpl');
+        return $smarty->fetch('../templates/preferences.options.plugin.formfiller.tpl');
     }
     
     /**
@@ -222,7 +222,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     {
         $this->assignSmartyVariable('open_uninst', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/uninstallation.php'));
         $smarty = $this->getSmartyTemplate();
-        return $smarty->fetch('../templates/preferences.uninstallation.tpl');
+        return $smarty->fetch('../templates/preferences.uninstallation.plugin.formfiller.tpl');
     }
     
     
@@ -243,7 +243,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         
         $formAccess = new FormPresenter(
             'adm_preferences_form_access',
-            '../templates/preferences.access.tpl',
+            '../templates/preferences.access.plugin.formfiller.tpl',
             SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Access')),
             null,
             array('class' => 'form-preferences')
@@ -301,7 +301,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $smarty = $this->getSmartyTemplate();
         $formAccess->addToSmarty($smarty);
    //     $gCurrentSession->addFormObject($formAccess);
-        return $smarty->fetch('../templates/preferences.access.tpl');
+        return $smarty->fetch('../templates/preferences.access.plugin.formfiller.tpl');
     }
     
     /**
@@ -323,7 +323,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $this->assignSmartyVariable('open_doc', SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array('id' => 'de:plugins:formfiller#formfiller')));
         
         $smarty = $this->getSmartyTemplate();
-        return $smarty->fetch('../templates/preferences.informations.tpl');
+        return $smarty->fetch('../templates/preferences.informations.plugin.formfiller.tpl');
     }
     
     
