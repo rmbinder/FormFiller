@@ -36,7 +36,7 @@
     <string name="PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC">Allows the documentation of the plugin can be opened (An existing Internet connection is required because the data is located on admidio.org).</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS">Dynamic fields</string>
     <string name="PLG_FORMFILLER_DYNAMIC_FIELDS_DESC">The X and Y coordinates for dynamic fields determine the first line of the print. All other lines are added dynamically. With the parameter OW=x (for example, OW=10), the distance can be specified in millimeters. Default setting is 5 mm.\n\n To print multiple dynamic fields, you can define an order using the parameter OI=x. NOTE: The OI=x parameter should not be used with images or rectangles.\n\nThe MS=x parameter can be used to display the role start (MS=B), role end (MS=E) or both (MS=BE) of a role membership.</string>
-    <string name="PLG_FORMFILLER_EDIT">Edit configurations</string>
+    <string name="PLG_FORMFILLER_EDIT">Edit</string>
     <string name="PLG_FORMFILLER_ENVELOPE">Envelope DL</string>
     <string name="PLG_FORMFILLER_ERROR_MIN_DATA">ERROR: In each configuration, at least one field with content and position must be specified!</string>
     <string name="PLG_FORMFILLER_EXPORT">Export</string>
