@@ -9,16 +9,24 @@
  ***********************************************************************************************
  */
  
-use Admidio\Components\Entity\Component;
+use Admidio\Infrastructure\Utils\FileSystemUtils;
 use Admidio\Menu\Entity\MenuEntry;
 use Admidio\Roles\Entity\RolesRights;
 
 require_once(__DIR__ . '/../../../system/common.php');
 
+$folders = explode('/', $_SERVER['SCRIPT_FILENAME']);
+while (array_search(substr(FOLDER_PLUGINS, 1), $folders))
+{
+    array_shift($folders);
+}
+array_shift($folders);
+
 if(!defined('PLUGIN_FOLDER'))
 {
-	define('PLUGIN_FOLDER', '/'.substr(dirname(__DIR__),strrpos(dirname(__DIR__),DIRECTORY_SEPARATOR)+1));
+    define('PLUGIN_FOLDER', '/'.$folders[0]);
 }
+unset($folders);
 
 spl_autoload_register('myAutoloader');
 
@@ -58,50 +66,68 @@ function myAutoloader($className) {
 
 /**
  * Funktion prueft, ob der Nutzer berechtigt ist das Plugin aufzurufen.
- * Zur Prüfung wird die Einstellung von 'Sichtbar für' verwendet,
- * die im Modul Menü für dieses Plugin gesetzt wurde.
- * @param   string  $scriptName   Der Scriptname des Plugins
+ * 
+ * In Admidio im Modul Menü kann über 'Sichtbar für' die Sichtbarkeit eines Menüpunkts eingeschränkt werden.
+ * Der Zugriff auf die darunter liegende Seite ist von dieser Berechtigung jedoch nicht betroffen.
+ * 
+ * Diese Funktion liest die unter 'Sichtbar für' eingetragenen Rollen ein 
+ * und prüft, ob der angemeldete Benutzer Mitglied einer dieser Rollen ist
+ * Wenn ja, ist der Benutzer berechtigt, das Plugin aufzurufen
+ * Wichtiger Hinweis: Sind unter 'Sichtbar für' keine Rollen angegeben, so darf jeder Benutzer das Plugin ausführen
+ * 
+ * @param   string  $scriptName   Der Scriptname des Plugins (default: 'index.php')
  * @return  bool    true, wenn der User berechtigt ist
  */
-function isUserAuthorized($scriptName)
+function isUserAuthorized( string $scriptname = '')
 {
-    global $gDb, $gMessage, $gLogger, $gL10n, $gCurrentUser;
+    global $gDb, $gCurrentUser;
     
     $userIsAuthorized = false;
-    $menId = 0;
+    $menIds = array();
     
+    if (strlen($scriptname) !== 0)
+    {
+        $scriptname = '/'.$scriptname;
+    }
+    else 
+    {
+        $scriptname = '/'.'index.php';
+    }
+    
+    // mit Admidio 5 wurden alle Hauptscripts meiner Plugins umbenannt zu index.php
+    // als URL (unter "Sichtbar für") könnte deshalb stehen:
+    // /adm_plugins/Formfiller/index.php oder /adm_plugins/Formfiller/ oder /adm_plugins/Formfiller
+    // bei jeder dieser Möglichkeiten wird die index.php vom Browser aufgerufen. 
+    // jede dieser Möglichkeiten muss in dieser Funktion abgedeckt werden
+    $menuURLs = array(FOLDER_PLUGINS. PLUGIN_FOLDER. $scriptname , FOLDER_PLUGINS. PLUGIN_FOLDER.'/' , FOLDER_PLUGINS. PLUGIN_FOLDER) ;
+   
     $sql = 'SELECT men_id
               FROM '.TBL_MENU.'
-             WHERE men_url = ? -- $scriptName ';
+             WHERE men_url IN (\''. implode('\', \'', $menuURLs) . '\')';
     
-    $menuStatement = $gDb->queryPrepared($sql, array($scriptName));
+    $menuStatement = $gDb->queryPrepared($sql);
     
-    if ( $menuStatement->rowCount() === 0 || $menuStatement->rowCount() > 1)
-    {
-        $gLogger->notice('FormFiller: Error with menu entry: Found rows: '. $menuStatement->rowCount() );
-        $gLogger->notice('FormFiller: Error with menu entry: ScriptName: '. $scriptName);
-        $gMessage->show($gL10n->get('PLG_FORMFILLER_MENU_URL_ERROR', array($scriptName)), $gL10n->get('SYS_ERROR'));
-    }
-    else
+    if ( $menuStatement->rowCount() !== 0 )
     {
         while ($row = $menuStatement->fetch())
         {
-            $menId = (int) $row['men_id'];
+            $menIds[] = (int) $row['men_id'];
+        }
+        
+        foreach ($menIds as $menId)
+        {
+            // read current roles rights of the menu
+            $displayMenu = new RolesRights($gDb, 'menu_view', $menId);
+            
+            // check for right to show the menu
+            if (count($displayMenu->getRolesIds()) === 0 || $displayMenu->hasRight($gCurrentUser->getRoleMemberships()))
+            {
+                $userIsAuthorized = true;
+            }
         }
     }
-    
-    // read current roles rights of the menu
-    $displayMenu = new RolesRights($gDb, 'menu_view', $menId);
-    
-    // check for right to show the menu
-    if (count($displayMenu->getRolesIds()) === 0 || $displayMenu->hasRight($gCurrentUser->getRoleMemberships()))
-    {
-        $userIsAuthorized = true;
-    }
-    
     return $userIsAuthorized;
 }
-
 /**
  * Funktion prueft, ob der Nutzer berechtigt ist, das Modul Preferences aufzurufen.
  * @param   none

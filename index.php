@@ -28,26 +28,20 @@ try {
     require_once(__DIR__ . '/../../system/common.php');
     require_once(__DIR__ . '/system/common_function.php');
 
-    //$scriptName muss derselbe Name sein, wie er im Menue unter URL eingetragen ist
-    $scriptName = substr($_SERVER['SCRIPT_NAME'], strpos($_SERVER['SCRIPT_NAME'], FOLDER_PLUGINS));
-
-    // only authorized user are allowed to start this module
-    if (!isUserAuthorized($scriptName)) 
+    if (!isUserAuthorized())
     {
         //throw new Exception('SYS_NO_RIGHTS');                     // über Exception wird nur SYS_NO_RIGHTS angezeigt
         $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
     }
-    else
+    
+    // Konfiguration initialisieren
+    $pPreferences = new ConfigTable();
+    if ($pPreferences->checkforupdate())
     {
-        // Konfiguration initialisieren
-        $pPreferences = new ConfigTable();
-        if ($pPreferences->checkforupdate())
-        {
-            $pPreferences->init();
-        }
-        
-         admRedirect(ADMIDIO_URL . FOLDER_PLUGINS. PLUGIN_FOLDER . '/system/formfiller.php');
+        $pPreferences->init();
     }
+        
+    admRedirect(ADMIDIO_URL . FOLDER_PLUGINS. PLUGIN_FOLDER . '/system/formfiller.php');
                                 
 } catch (Exception $e) {
     $gMessage->show($e->getMessage());

@@ -72,7 +72,6 @@
     <string name="PLG_FORMFILLER_MAX_PDFVIEW">max. affichage PDF</string>
     <string name="PLG_FORMFILLER_MAX_PDFVIEW_DESC">L\'affichage PDF maximum est le nombre maximum de pages qu\'un document PDF peut avoir afin qu\'il puisse toujours être affiché à l\'écran. Si le nombre de pages est plus grand, le téléchargement du fichier est proposé immédiatement.</string>
     <string name="PLG_FORMFILLER_MENU_ITEM">Élément de menu</string>
-    <string name="PLG_FORMFILLER_MENU_URL_ERROR">Le contrôle d\'autorisation du plugin a échoué. Plus d\'un élément de menu est défini avec la même URL.\n\n=> #VAR1_BOLD#</string>
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">Il manque au moins un paramètre.</string>
     <string name="PLG_FORMFILLER_NAME">FormFiller</string>
     <string name="PLG_FORMFILLER_NAME_DESC">Le plugin FormFiller</string>    
