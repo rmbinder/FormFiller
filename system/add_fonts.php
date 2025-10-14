@@ -10,6 +10,10 @@
  ***********************************************************************************************
  */
 
+if (basename($_SERVER['SCRIPT_FILENAME']) === 'add_fonts.php') {
+    exit('This page may not be called directly!');
+}
+
 //Note:
 //Additional fonts still have to be declarded in the function validFonts()
 

@@ -7,8 +7,8 @@
     <div class="col-sm-9">
         <div>
             <a class="btn btn-primary" id="open_export_import" href="{$open_export_import}">
-                <i class="bi bi-code"></i>{$l10n->get('PLG_FORMFILLER_EXPORT_IMPORT')}</a>
-           
+                <i class="bi bi-code"></i>{$l10n->get('PLG_FORMFILLER_EXPORT_IMPORT')}
+            </a>
         </div>
     </div>
 </div>

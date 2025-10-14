@@ -30,6 +30,7 @@
 use Admidio\Documents\Entity\File;
 use Admidio\Documents\Entity\Folder;
 use Admidio\Infrastructure\Image;
+use Admidio\Infrastructure\Exception;
 use Admidio\Roles\Entity\ListConfiguration;
 use Admidio\Roles\Entity\Membership;
 use Admidio\Roles\Entity\Role;
@@ -46,7 +47,7 @@ try
     require_once(__DIR__ . '/../libs/fpdf/fpdf.php');
     require_once(__DIR__ . '/../libs/fpdi/src/autoload.php');
 
-    error_reporting(E_ALL);
+ //   error_reporting(E_ALL);
 
     $awardsIsActiv = false;
 
@@ -62,7 +63,7 @@ try
     // only the main script or the plugin keymanager can call and start this module
     if (strpos($gNavigation->getUrl(), 'formfiller.php') === false && strpos($gNavigation->getUrl(), 'keys_export_to_pff.php') === false)
     {
-        throw new Exception('SYS_NO_RIGHTS');
+        throw new Exception('SYS_NO_RIGHTS');                    
     }
 
     // Initialize and check the parameters

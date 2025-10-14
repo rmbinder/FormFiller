@@ -20,6 +20,7 @@
  */
 
 use Plugins\FormFiller\classes\Config\ConfigTable;
+use Admidio\Infrastructure\Exception;
 
 //Fehlermeldungen anzeigen
 error_reporting(E_ALL);
@@ -30,8 +31,7 @@ try {
 
     if (!isUserAuthorized())
     {
-        //throw new Exception('SYS_NO_RIGHTS');                     // über Exception wird nur SYS_NO_RIGHTS angezeigt
-        $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+        throw new Exception('SYS_NO_RIGHTS');   
     }
     
     // Konfiguration initialisieren
@@ -41,6 +41,7 @@ try {
         $pPreferences->init();
     }
         
+    $gNavigation->addStartUrl(CURRENT_URL);
     admRedirect(ADMIDIO_URL . FOLDER_PLUGINS. PLUGIN_FOLDER . '/system/formfiller.php');
                                 
 } catch (Exception $e) {

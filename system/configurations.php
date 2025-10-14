@@ -29,7 +29,7 @@ try {
     require_once(__DIR__ . '/common_function.php');
 
     // only authorized user are allowed to start this module
-    if (!$gCurrentUser->isAdministrator()) 
+    if (!isUserAuthorizedForPreferences())
     {
         throw new Exception('SYS_NO_RIGHTS');
     }

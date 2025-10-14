@@ -18,49 +18,55 @@ use Admidio\UI\Presenter\PagePresenter;
 use Plugins\FormFiller\classes\Config\ConfigTable;
  
 try {
-        require_once(__DIR__ . '/../../../system/common.php');
-        require_once(__DIR__ . '/../system/common_function.php');
-
-       // Konfiguration einlesen          
-        $pPreferences = new ConfigTable();
-	    $pPreferences->read();
-	    
-        $title = $gL10n->get('PLG_FORMFILLER_NAME');
-        $headline =$gL10n->get('PLG_FORMFILLER_NAME');
-
-        $gNavigation->addStartUrl(CURRENT_URL, $headline, 'bi-pen');
-
-        // create html page object
-        $page = PagePresenter::withHtmlIDAndHeadline('plg-formfiller-main-html');
-        $page->setTitle($title);
-        $page->setHeadline($headline);
+    require_once(__DIR__ . '/../../../system/common.php');
+    require_once(__DIR__ . '/common_function.php');
+ 
+    // only authorized user are allowed to start this module   
+    if (!isUserAuthorized())
+    {
+        throw new Exception('SYS_NO_RIGHTS');   
+    }
     
-        if (isUserAuthorizedForPreferences())
-        {
-            // show link to pluginpreferences
-            $page->addPageFunctionsMenuItem(
-                'admMenuItemPreferencesLists',
-                $gL10n->get('SYS_SETTINGS'),
-                SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/system/preferences.php'),
-                'bi-gear-fill');
-        }
+    // Konfiguration einlesen          
+    $pPreferences = new ConfigTable();
+    $pPreferences->read();
+ 
+    $title = $gL10n->get('PLG_FORMFILLER_NAME');
+    $headline =$gL10n->get('PLG_FORMFILLER_NAME');
 
-        // create filter menu with elements for role
-        $form = new FormPresenter(
-            'formfiller_form',
-            '../templates/plugin.formfiller.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS .'/formfiller/system/createpdf.php'),
-            $page,
-            array( 'type' => 'default' , 'method' => 'post',  'setFocus' => false,  'enableFileUpload' => true)
-        );
+    $gNavigation->addStartUrl(CURRENT_URL, $headline, 'bi-pen');
 
-          $sql = 'SELECT lst_id, lst_name, lst_global
-		  FROM '. TBL_LISTS .'
-         WHERE lst_org_id = ?
-           AND ( lst_usr_id = ?
-            OR lst_global = true)
-           AND lst_name IS NOT NULL
-      ORDER BY lst_global ASC, lst_name ASC';
+    // create html page object
+    $page = PagePresenter::withHtmlIDAndHeadline('plg-formfiller-main-html');
+    $page->setTitle($title);
+    $page->setHeadline($headline);
+
+    if (isUserAuthorizedForPreferences())
+    {
+        // show link to pluginpreferences
+        $page->addPageFunctionsMenuItem(
+            'admMenuItemPreferencesLists',
+            $gL10n->get('SYS_SETTINGS'),
+            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/system/preferences.php'),
+            'bi-gear-fill');
+    }
+
+    // create filter menu with elements for role
+    $form = new FormPresenter(
+        'formfiller_form',
+        '../templates/plugin.formfiller.tpl',
+        SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS .'/formfiller/system/createpdf.php'),
+        $page,
+        array( 'type' => 'default' , 'method' => 'post',  'setFocus' => false,  'enableFileUpload' => true)
+    );
+
+    $sql = 'SELECT lst_id, lst_name, lst_global
+              FROM '. TBL_LISTS .'
+             WHERE lst_org_id = ?
+               AND ( lst_usr_id = ?
+                OR lst_global = true)
+               AND lst_name IS NOT NULL
+        ORDER BY lst_global ASC, lst_name ASC';
     
     $statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, $gCurrentUserId));
     $configurations = array();
@@ -80,11 +86,11 @@ try {
     
     // alle Rollen au?er Events
     $sql = 'SELECT rol.rol_uuid, rol.rol_name, cat.cat_name
-                  FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
-                 WHERE cat.cat_id = rol.rol_cat_id
-                   AND (  cat.cat_org_id = ?
-                    OR cat.cat_org_id IS NULL )
-                   AND cat.cat_name_intern <> ? ';
+              FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+             WHERE cat.cat_id = rol.rol_cat_id
+               AND (  cat.cat_org_id = ?
+                OR cat.cat_org_id IS NULL )
+               AND cat.cat_name_intern <> ? ';
     
     $statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, 'EVENTS'));
     
@@ -105,11 +111,11 @@ try {
     
     // alle Events
     $sql = 'SELECT rol.rol_uuid, rol.rol_name, cat.cat_name
-          FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
-         WHERE cat.cat_id = rol.rol_cat_id
-           AND (  cat.cat_org_id = ?
-            OR cat.cat_org_id IS NULL )
-           AND cat.cat_name_intern = ? ';
+              FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+             WHERE cat.cat_id = rol.rol_cat_id
+               AND (  cat.cat_org_id = ?
+                OR cat.cat_org_id IS NULL )
+               AND cat.cat_name_intern = ? ';
     
     $statement = $gDb->queryPrepared($sql, array($gCurrentOrgId, 'EVENTS'));
     

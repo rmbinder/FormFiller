@@ -18,6 +18,7 @@
 
 use Admidio\Infrastructure\Utils\FileSystemUtils;
 use Admidio\Infrastructure\Utils\SecurityUtils;
+use Admidio\Infrastructure\Exception;
 use Admidio\UI\Presenter\FormPresenter;
 use Admidio\UI\Presenter\PagePresenter;
 use Plugins\FormFiller\classes\Config\ConfigTable;
@@ -33,7 +34,7 @@ try
 	// only authorized user are allowed to start this module
 	if (!isUserAuthorizedForPreferences())
 	{
-		throw new Exception('SYS_NO_RIGHTS');
+	    throw new Exception('SYS_NO_RIGHTS');                     
 	}
 
 	// Initialize and check the parameters
