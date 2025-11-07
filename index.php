@@ -29,19 +29,26 @@ try {
     require_once(__DIR__ . '/../../system/common.php');
     require_once(__DIR__ . '/system/common_function.php');
 
-    if (!isUserAuthorized())
-    {
-        throw new Exception('SYS_NO_RIGHTS');   
+    if (! isUserAuthorized()) {
+        throw new Exception('SYS_NO_RIGHTS');
     }
+
+    $gNavigation->addStartUrl(CURRENT_URL);
     
-    // Konfiguration initialisieren
     $pPreferences = new ConfigTable();
-    if ($pPreferences->checkforupdate())
-    {
+    if ($pPreferences->checkforupdate()) {
         $pPreferences->init();
     }
+    
+    $pPreferences->read();
+    if ($pPreferences->config['install']['access_role_id'] == 0 || $pPreferences->config['install']['menu_item_id'] == 0) {
         
-    $gNavigation->addStartUrl(CURRENT_URL);
+        $urlInst = ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/install.php';
+        $gMessage->show($gL10n->get('PLG_FORMFILLER_UPDATE_REQUIRED', array(
+            '<a href="' . $urlInst . '">' . $urlInst . '</a>'
+        )));
+    }
+    
     admRedirect(ADMIDIO_URL . FOLDER_PLUGINS. PLUGIN_FOLDER . '/system/formfiller.php');
                                 
 } catch (Exception $e) {

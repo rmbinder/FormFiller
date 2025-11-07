@@ -4,7 +4,7 @@
     <label class="col-sm-3 col-form-label"></label>
     <div class="col-sm-9">
         <div>
-            <a class="btn btn-primary" id="open_uninstallation" href="{$open_uninst}">
+            <a class="btn btn-primary" id="open_uninstallation" href="{$open_uninstall}">
                 <i class="bi bi-trash"></i>{$l10n->get('PLG_FORMFILLER_UNINSTALLATION')}
             </a>
         </div>

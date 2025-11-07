@@ -220,11 +220,10 @@ class FormfillerPreferencesPresenter extends PagePresenter
      */
     public function createUninstallationForm(): string
     {
-        $this->assignSmartyVariable('open_uninst', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/uninstallation.php'));
+        $this->assignSmartyVariable('open_uninstall', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/uninstall.php'));
         $smarty = $this->getSmartyTemplate();
-        return $smarty->fetch('../templates/preferences.uninstallation.plugin.formfiller.tpl');
+        return $smarty->fetch('../templates/preferences.uninstall.plugin.formfiller.tpl');
     }
-    
     
     /**
      * Generates the html of the form from the access preferences and will return the complete html.
