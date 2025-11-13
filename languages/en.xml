@@ -58,6 +58,7 @@
     <string name="PLG_FORMFILLER_IMPORT_ERROR_FILE">The selected file does not contain valid configuration data.</string>
     <string name="PLG_FORMFILLER_IMPORT_ERROR_OTHER">When uploading and checking file a general error occurred. Cause of error might as be a wrong file extension or a too large file.</string>
     <string name="PLG_FORMFILLER_IMPORT_SUCCESS">The configuration has been added.</string>
+    <string name="PLG_FORMFILLER_INSTALL_UPDATE_REQUIRED">The existing installation is incomplete. It is necessary to run the installation routine again..\n\nTo install, run the following script: #VAR1#</string>
     <string name="PLG_FORMFILLER_INTERFACE_KEYMANAGER">Interface for plugin KeyManager</string>
     <string name="PLG_FORMFILLER_INTERFACE_KEYMANAGER_DESC">FormFiller provides an interface to the plugin KeyManager. To do this, select the additional field "Text" under "Content" and use the following syntax under Position after the X and Y coordinates: K = internal name of the KeyManager key field, e.g. 50,100;K=KEYNAME.</string>       
     <string name="PLG_FORMFILLER_LABELS">Labels</string>
@@ -69,7 +70,6 @@
     <string name="PLG_FORMFILLER_MISSING_PARAMETER">At least one parameter is missing.</string>
     <string name="PLG_FORMFILLER_NAME">FormFiller</string>
     <string name="PLG_FORMFILLER_NAME_DESC">The plugin FormFiller</string>    
-    <string name="PLG_FORMFILLER_NO_INST_IDS_FOUND">- No menu item and/or access role could be found. You must delete the menu item and access role manually..\n</string> 
     <string name="PLG_FORMFILLER_OPTIONAL">optional</string>
     <string name="PLG_FORMFILLER_OPTIONS">Options</string>
     <string name="PLG_FORMFILLER_ORG_CHOICE">Organizational choice</string>
@@ -113,13 +113,13 @@
     <string name="PLG_FORMFILLER_UNINST_MENU_ITEM_ERROR">- An error occurred while deleting the menu item.\n</string>
     <string name="PLG_FORMFILLER_UNINST_MENU_ITEM_NOT_DELETED">- The menu item created by the plugin could not be deleted because it is still in use in another organization..\n</string>
     <string name="PLG_FORMFILLER_UNINST_MENU_ITEM_SUCCESS">- The menu item created by the plugin has been deleted.\n</string> 
+    <string name="PLG_FORMFILLER_UNINST_NO_INST_IDS_FOUND">- No menu item and/or access role could be found. You must delete the menu item and access role manually..\n</string> 
     <string name="PLG_FORMFILLER_UNINST_SECURITY_CHECK">Are you sure you want to uninstall the plugin?</string> 
     <string name="PLG_FORMFILLER_UNINST_STARTMESSAGE">The following deletions were performed:\n\n</string>
     <string name="PLG_FORMFILLER_UNINST_TABLE_DELETE_ERROR">- The table "adm_plugin_preferences" could not be deleted because it houses more data from other plugins.\n</string>
     <string name="PLG_FORMFILLER_UNINST_TABLE_DELETE_SUCCESS">- The created table "adm_plugin_preferences" was deleted.\n</string>
     <string name="PLG_FORMFILLER_UNINSTALLATION">Uninstall</string>
     <string name="PLG_FORMFILLER_UNINSTALLATION_DESC">Entries created by the plugin can be deleted via uninstallation.</string>
-    <string name="PLG_FORMFILLER_UPDATE_REQUIRED">The existing installation is incomplete. It is necessary to run the installation routine again..\n\nTo install, run the following script: #VAR1#</string>
     <string name="PLG_FORMFILLER_USER">User</string>
     <string name="PLG_FORMFILLER_VALUE">Text</string>
     <string name="PLG_FORMFILLER_WORDWRAP">Wordwrap</string>
