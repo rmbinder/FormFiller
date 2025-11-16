@@ -14,13 +14,16 @@
  *
  * Folgende Methoden stehen zur Verfuegung:
  *
- * init()						:	prueft, ob die Konfigurationstabelle existiert,
+ * init()						-	prueft, ob die Konfigurationstabelle existiert,
  * 									legt sie ggf. an und befuellt sie mit Default-Werten
- * save() 					    : 	schreibt die Konfiguration in die Datenbank
- * read()						:	liest die Konfigurationsdaten aus der Datenbank
- * checkforupdate()	            :	vergleicht die Angaben in der Datei version.php
+ * save() 					    - 	schreibt die Konfiguration in die Datenbank
+ * read()						-	liest die Konfigurationsdaten aus der Datenbank
+ * checkforupdate()	            -	vergleicht die Angaben in der Datei version.php
  * 									mit den Daten in der DB
- * delete($deinst_org_select)	:	loescht die Konfigurationsdaten in der Datenbank
+ * createDesc()                 -   the function checks whether a configuration with the passed name already exists
+ * getAllAccessRoles()          -   reads all access roles stored in the configuration table
+ * getShortcut()                -   returns the shortcut of the plugin
+ * getTableName()               -   returns the table name of the plugin
  *
  *****************************************************************************/
 	
@@ -44,7 +47,7 @@ class ConfigTable
 	public  $config_default = array();	
 	
     /**
-     * ConfigTablePFF constructor
+     * ConfigTable constructor
      */
 	public function __construct()
 	{
@@ -354,7 +357,7 @@ class ConfigTable
 	}
 	
 	/**
-	 * Liest alle Zugriffsrollen ein, die in der Konfigurationstabelle gespeichert sind
+	 * Reads all access roles stored in the configuration table
 	 * @return  array $data
 	 */
 	public function getAllAccessRoles()

@@ -303,13 +303,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.informations.plugin.formfiller.tpl');
     }
-    
-    
-    
-    
-    
-
-
 
     /**
      * Set a panel name that should be opened at a page load.
@@ -390,37 +383,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
             // === 2) Innerhalb eines Panels die Klick-Handler anmelden ===
             function initializePanelInteractions(panelId) {
                 var panelContainer = $("[data-preferences-panel=\"" + panelId + "\"]");
-            
-                // Captcha-Refresh
-                panelContainer.off("click", "#adm_captcha_refresh").on("click", "#adm_captcha_refresh", function(event) {
-                    event.preventDefault();
-                    var captchaImg = panelContainer.find("#adm_captcha");
-                    if (captchaImg.length) {
-                        captchaImg.attr("src", "' . ADMIDIO_URL . FOLDER_LIBS . '/securimage/securimage_show.php" + "?" + Math.random());
-                    }
-                });
-            
-                // Update-Check
-                panelContainer.off("click", "#adm_link_check_update").on("click", "#adm_link_check_update", function(event) {
-                    event.preventDefault();
-                    var versionInfoContainer = panelContainer.find("#adm_version_content");
-                    versionInfoContainer.html("<i class=\"spinner-border spinner-border-sm\"></i>").show();
-                    $.get("' . ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php", { mode: "update_check" }, function(htmlVersion) {
-                        versionInfoContainer.html(htmlVersion);
-                    });
-                });
-            
-                // Verzeichnis-Schutz prÃ¼fen
-                panelContainer.off("click", "#link_directory_protection").on("click", "#link_directory_protection", function(event) {
-                    event.preventDefault();
-                    var statusContainer = panelContainer.find("#directory_protection_status");
-                    statusContainer.html("<i class=\"spinner-border spinner-border-sm\"></i>").show();
-                    $.get("' . ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php", { mode: "htaccess" }, function(statusText) {
-                        var directoryProtection = panelContainer.find("#directoryProtection");
-                        directoryProtection.html("<span class=\"text-success\"><strong>" + statusText + "</strong></span>");
-                    });
-                });
-               
+                           
                 // Module Settings visibility
                 // Universal handling for module enabled toggle within the current panel container
                 
@@ -428,46 +391,9 @@ class FormfillerPreferencesPresenter extends PagePresenter
                 var additionalIds = [\'#system_notifications_enabled\'];
                 // Look for any input whose id ends with "_module_enabled"
                 var selectors = ["[id$=\'_module_enabled\']"].concat(additionalIds);
-
-                var moduleEnabledField = panelContainer.find(selectors.join(", ")).filter(":visible");
-                if (moduleEnabledField.length > 0) {
-                    // Get all row elements inside the form, excluding the row containing the module enabled field
-                    var formElementGroups = panelContainer.find("form div.row")
-                        .not(moduleEnabledField.closest("div.row"));
-                    
-                    // Function to update visibility based on the fields type and state
-                    var updateVisibility = function(initialCall) {
-                        var isEnabled;
-                        if (moduleEnabledField.attr("type") === "checkbox") {
-                            isEnabled = moduleEnabledField.is(":checked");
-                        } else {
-                            isEnabled = moduleEnabledField.val() != 0;
-                        }
-                        
-                        if (initialCall === true) {
-                            if (isEnabled) {
-                                formElementGroups.show();
-                            } else {
-                                formElementGroups.hide();
-                            }
-                        } else {
-                            if (isEnabled) {
-                                formElementGroups.slideDown("slow");
-                            } else {
-                                formElementGroups.slideUp("slow");
-                            }
-                        }
-                    };
-                    
-                    // Set initial state without animation
-                    updateVisibility(true);
-                    
-                    // Update visibility on change
-                    moduleEnabledField.on("change", updateVisibility);
-                }
             }
         
-            // === 3) Hooks fÃ¼r Desktop-Tabs ===
+            // === 3) Hooks für Desktop-Tabs ===
             $(document).on("shown.bs.tab", "ul#adm_preferences_tabs button.nav-link", function(e) {
                 var target = e.target.getAttribute("data-bs-target");
                 var match = target && target.match(/^#adm_tab_(.+)_content$/);
@@ -488,12 +414,12 @@ class FormfillerPreferencesPresenter extends PagePresenter
                 }
             });
         
-            // === 4) Hooks fÃ¼r Mobile-Accordion ===
+            // === 4) Hooks für Mobile-Accordion ===
             $(document).on("shown.bs.collapse", "#adm_preferences_accordion .accordion-collapse", function() {
                 var panelId = this.id.replace(/^collapse_/, "");
                 loadPreferencesPanel(panelId);
             });
-            // initial: geÃ¶ffnetes Accordion-Panel laden
+            // initial: geöffnetes Accordion-Panel laden
             $("#adm_preferences_accordion .accordion-collapse.show").each(function() {
                 var panelId = this.id.replace(/^collapse_/, "");
                 loadPreferencesPanel(panelId);
@@ -503,9 +429,6 @@ class FormfillerPreferencesPresenter extends PagePresenter
             $(document).on("submit", "form[id^=\"adm_preferences_form_\"]", formSubmit);
       ', true);
       
-
-        ChangelogService::displayHistoryButton($this, 'preferences', 'preferences,texts');
-
         // Load the select2 in case any of the form uses a select box. Unfortunately, each section
         // is loaded on-demand, when there is no HTML page anymore to insert the css/JS file loading,
         // so we need to do it here, even when no selectbox will be used...

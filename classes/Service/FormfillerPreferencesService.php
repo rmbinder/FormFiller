@@ -40,11 +40,8 @@ class FormfillerPreferencesService
         switch ($panel) {
             
             case 'Options':
-
                 $pPreferences->config['Optionen']['maxpdfview'] = $formData['maxpdfview'];
                 $pPreferences->config['Optionen']['pdfform_addsizes'] = $formData['pdfform_addsizes'];
-                $pPreferences->save();
-                
                 break;
 
             case 'Access':
@@ -56,8 +53,6 @@ class FormfillerPreferencesService
                 {
                     $pPreferences->config['access']['preferences'] = array();
                 }
-                $pPreferences->save();
-                
                 break;
             
             case 'Assort':
@@ -96,17 +91,13 @@ class FormfillerPreferencesService
                     $pPreferences->config['Formular']['pdfform_unit'],
                     $pPreferences->config['Formular']['relation'] );
                 
-                $pPreferences->save();
-                
                 $result = $gL10n->get('PLG_FORMFILLER_ASSORT_SUCCESS');
-
                 break;
         }
-       
+        $pPreferences->save();
         return $result;
 
         // clean up
         $gCurrentSession->reloadAllSessions();
     }
-
 }
