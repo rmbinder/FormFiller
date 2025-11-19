@@ -55,7 +55,7 @@ try {
     $form = new FormPresenter(
         'formfiller_form',
         '../templates/plugin.formfiller.tpl',
-        SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS .'/formfiller/system/createpdf.php'),
+        SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/createpdf.php'),
         $page,
         array( 'type' => 'default' , 'method' => 'post',  'setFocus' => false,  'enableFileUpload' => true)
     );

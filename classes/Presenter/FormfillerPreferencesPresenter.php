@@ -111,7 +111,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
      */
     public function createConfigurationsEditForm(): string
     {
-        $this->assignSmartyVariable('open_configs', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations.php'));
+        $this->assignSmartyVariable('open_configs', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/configurations.php'));
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.configurations.plugin.formfiller.tpl');
     }
@@ -124,7 +124,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
      */
     public function createExportImportForm(): string
     {
-        $this->assignSmartyVariable('open_export_import', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/export_import.php'));
+        $this->assignSmartyVariable('open_export_import', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/export_import.php'));
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.export_import.plugin.formfiller.tpl');
     }
@@ -144,7 +144,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $formAssort = new FormPresenter(
             'adm_preferences_form_configurations',
             '../templates/preferences.assort.plugin.formfiller.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Assort')),
+            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array('mode' => 'save', 'panel' => 'Assort')),
             null,
             array('class' => 'form-preferences')
             );
@@ -181,7 +181,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $formOptions = new FormPresenter(
             'adm_preferences_form_options',
             '../templates/preferences.options.plugin.formfiller.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Options')),
+            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array('mode' => 'save', 'panel' => 'Options')),
             null,
             array('class' => 'form-preferences')
             );
@@ -220,7 +220,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
      */
     public function createUninstallationForm(): string
     {
-        $this->assignSmartyVariable('open_uninstall', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/uninstall.php'));
+        $this->assignSmartyVariable('open_uninstall', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/uninstall.php'));
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.uninstall.plugin.formfiller.tpl');
     }
@@ -243,7 +243,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $formAccess = new FormPresenter(
             'adm_preferences_form_access',
             '../templates/preferences.access.plugin.formfiller.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php', array('mode' => 'save', 'panel' => 'Access')),
+            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array('mode' => 'save', 'panel' => 'Access')),
             null,
             array('class' => 'form-preferences')
         );
@@ -298,7 +298,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $this->assignSmartyVariable('plg_name', $gL10n->get('PLG_FORMFILLER_NAME'));
         $this->assignSmartyVariable('plg_version', $pPreferences->config['Plugininformationen']['version']);
         $this->assignSmartyVariable('plg_date', $pPreferences->config['Plugininformationen']['stand']);
-        $this->assignSmartyVariable('open_doc', SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array('id' => 'de:plugins:formfiller#formfiller')));
+        $this->assignSmartyVariable('open_doc', SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array('id' => 'de:plugins:formfiller')));
         
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.informations.plugin.formfiller.tpl');
@@ -369,7 +369,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
                 // Schritt 1: Spinner einfügen
                 panelContainer.html("<div class=\"d-flex justify-content-center align-items-center\" style=\"height: 200px;\"><div class=\"spinner-border text-primary\" role=\"status\"><span class=\"visually-hidden\">Lade...</span></div></div>");
 
-                $.get("' . ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/preferences.php", {
+                $.get("' . ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php", {
                     mode: "html_form",
                     panel: panelId
                 }, function(htmlContent) {

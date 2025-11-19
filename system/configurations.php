@@ -383,7 +383,7 @@ try {
     }
     $page->addJavascript($javascriptCodeExecute, true);
 
-    $formConfigurations = new FormPresenter('adm_configurations_preferences_form', '../templates/configurations.plugin.formfiller.tpl', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations_function.php', array(
+    $formConfigurations = new FormPresenter('adm_configurations_preferences_form', '../templates/configurations.plugin.formfiller.tpl', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/configurations_function.php', array(
         'form' => 'configurations'
     )), $page, array(
         'class' => 'form-preferences'
@@ -485,12 +485,12 @@ try {
         ));
 
         if ($num_configs > 1) {
-            $configuration['urlConfigDelete'] = SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations.php', array(
+            $configuration['urlConfigDelete'] = SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/configurations.php', array(
                 'delete' => $conf + 1
             ));
         }
         if (! empty('desc' . $conf)) {
-            $configuration['urlConfigCopy'] = SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations.php', array(
+            $configuration['urlConfigCopy'] = SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/configurations.php', array(
                 'copy' => $conf + 1
             ));
         }
@@ -498,10 +498,10 @@ try {
     }
     $page->assignSmartyVariable('relations_enabled', $gSettingsManager->getInt('contacts_user_relations_enabled'));
     $page->assignSmartyVariable('configurations', $configurations);
-    $page->assignSmartyVariable('urlConfigNew', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations.php', array(
+    $page->assignSmartyVariable('urlConfigNew', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/configurations.php', array(
         'add' => 1
     )));
-    $page->assignSmartyVariable('urlPopupText', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . '/formfiller/system/configurations_popup.php', array(
+    $page->assignSmartyVariable('urlPopupText', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/configurations_popup.php', array(
         'message_id' => 'mylist_condition',
         'inline' => 'true'
     )));
