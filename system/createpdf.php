@@ -697,7 +697,7 @@ try
 										else    // lese Wert aus Datenbank
 										{
 											// show selected text of optionfield or combobox
-											$arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
+											$arrListValues = $gProfileFields->getPropertyById($fieldid, 'ufo_usf_options', 'text');
 											if (isset($arrListValues[$pos+1]))
 											{
 												$text = $arrListValues[$pos+1];
@@ -755,7 +755,7 @@ try
 											else    // lese Wert aus Datenbank
 											{
 												// show selected text of optionfield or combobox
-												$arrListValues = $gProfileFields->getPropertyById($fieldid, 'usf_value_list', 'text');
+												$arrListValues = $gProfileFields->getPropertyById($fieldid, 'ufo_usf_options', 'text');
 												if (isset($arrListValues[$pos+1]))
 												{
 													$text = $arrListValues[$pos+1];
