@@ -397,7 +397,7 @@ try {
                     $fontData = array();
                     foreach ($arrSplit as $splitData) {
                         // prüfen, ob das Attribut im richtigen Format vorliegt (Text=Text)
-                        if (strpos($splitData, '=', 1) !== false) {
+                        if (stristr($splitData, '=') && (strpos($splitData, '=', 1) !== false)) {
                             $attr = explode('=', $splitData);
                             $fontData[$attr[0]] = $attr[1];
                         }
