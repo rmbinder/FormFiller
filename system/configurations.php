@@ -37,8 +37,8 @@ try {
     $pPreferences->read();
 
     $awardsIsActiv = false;
-    if (file_exists(__DIR__ . '/../awards/awards_common.php')) {
-        require_once (__DIR__ . '/../awards/awards_common.php');
+    if (file_exists(__DIR__ . '/../../awards/awards_common.php')) {
+        require_once (__DIR__ . '/../../awards/awards_common.php');
         if (isAwardsDbInstalled()) {
             $awardsIsActiv = true;
         }
