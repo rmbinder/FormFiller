@@ -289,18 +289,26 @@ class FormfillerPreferencesPresenter extends PagePresenter
      * @throws \Smarty\Exception
      */
     public function createInformationsForm(): string
-    {
-        global $gL10n;
+    {        
+        global $gL10n, $gCurrentSession;
         
         $pPreferences = new ConfigTable();
         $pPreferences->read();
         
-        $this->assignSmartyVariable('plg_name', $gL10n->get('PLG_FORMFILLER_NAME'));
-        $this->assignSmartyVariable('plg_version', $pPreferences->config['Plugininformationen']['version']);
-        $this->assignSmartyVariable('plg_date', $pPreferences->config['Plugininformationen']['stand']);
-        $this->assignSmartyVariable('open_doc', SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array('id' => 'de:plugins:formfiller')));
+        $formInformations = new FormPresenter('adm_preferences_form_options', '../templates/preferences.informations.plugin.formfiller.tpl', '', null, array(
+            'class' => 'form-preferences'
+        ));
+        
+        $formInformations->addCustomContent('plg_name', $gL10n->get('PLG_FORMFILLER_PLUGIN_NAME'), $gL10n->get('PLG_FORMFILLER_NAME'));
+        $formInformations->addCustomContent('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
+        $formInformations->addCustomContent('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
+        
+        $html = '<a class="btn btn-secondary" id="open_documentation" href="' . SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array('id' => 'de:plugins:formfiller')) . '" target="_blank"><i class="bi bi-file-earmark-pdf"></i> ' . $gL10n->get('PLG_DECLARATION_OF_MEMBERSHIP_DOCUMENTATION_OPEN') . '</a>';
+        $formInformations->addCustomContent('plg_doc', $gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array('helpTextId' => $gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC')));
         
         $smarty = $this->getSmartyTemplate();
+        $formInformations->addToSmarty($smarty);
+        $gCurrentSession->addFormObject($formInformations);
         return $smarty->fetch('../templates/preferences.informations.plugin.formfiller.tpl');
     }
 
@@ -393,7 +401,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
                 var selectors = ["[id$=\'_module_enabled\']"].concat(additionalIds);
             }
         
-            // === 3) Hooks für Desktop-Tabs ===
+            // === 3) Hooks fï¿½r Desktop-Tabs ===
             $(document).on("shown.bs.tab", "ul#adm_preferences_tabs button.nav-link", function(e) {
                 var target = e.target.getAttribute("data-bs-target");
                 var match = target && target.match(/^#adm_tab_(.+)_content$/);
@@ -414,12 +422,12 @@ class FormfillerPreferencesPresenter extends PagePresenter
                 }
             });
         
-            // === 4) Hooks für Mobile-Accordion ===
+            // === 4) Hooks fï¿½r Mobile-Accordion ===
             $(document).on("shown.bs.collapse", "#adm_preferences_accordion .accordion-collapse", function() {
                 var panelId = this.id.replace(/^collapse_/, "");
                 loadPreferencesPanel(panelId);
             });
-            // initial: geöffnetes Accordion-Panel laden
+            // initial: geï¿½ffnetes Accordion-Panel laden
             $("#adm_preferences_accordion .accordion-collapse.show").each(function() {
                 var panelId = this.id.replace(/^collapse_/, "");
                 loadPreferencesPanel(panelId);
