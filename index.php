@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * FormFiller
  *
- * Version 4.0.0
+ * Version 4.0.2
  * 
  * This plugin for Admidio allows you to create and describe PDF documents.
  *

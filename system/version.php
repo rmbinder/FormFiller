@@ -14,5 +14,5 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'version.php') {
     exit('This page may not be called directly!');
 }
 
-$plugin_version = '4.0.1';
-$plugin_stand   = '19.11.2025';
+$plugin_version = '4.0.2';
+$plugin_stand   = '07.02.2026';
