@@ -409,7 +409,7 @@ try {
         );
 
         $formConfigurations->addInput('desc' . $conf, $gL10n->get('PLG_FORMFILLER_DESCRIPTION'), $pPreferences->config['Formular']['desc'][$conf], array(
-            'property' => HtmlForm::FIELD_REQUIRED
+            'property' => FormPresenter::FIELD_REQUIRED
         ));
         $formConfigurations->addSelectBox('font' . $conf, $gL10n->get('PLG_FORMFILLER_FONT'), validFonts(), array(
             'defaultValue' => $pPreferences->config['Formular']['font'][$conf],
