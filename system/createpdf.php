@@ -636,8 +636,37 @@ try {
                                     break;
 
                                 case 'CHECKBOX':
+                                    $text = ' ';
                                     if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'))) {
-                                        $text = 'x';
+
+                                        if (array_key_exists('T', $fontData)) // Nehme Text aus Konfiguration
+                                        {
+                                            $textarray = explode(',', $fontData['T']);
+                                            if (isset($textarray[0])) // Wenn Text für diese Stelle definiert
+                                            {
+                                                $text = $textarray[0];
+                                            }
+                                        } else {
+                                            $text = 'x';
+                                        }
+                                    } else {
+                                        if (isset($xyKoord[2]) && isset($xyKoord[3])) {
+                                            // beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+                                            // deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+                                            $sortArray[$pointer]['xykoord'][0] = $xyKoord[2];
+                                            $sortArray[$pointer]['xykoord'][1] = $xyKoord[3];
+
+                                            if (array_key_exists('T', $fontData)) // Nehme Text aus Konfiguration
+                                            {
+                                                $textarray = explode(',', $fontData['T']);
+                                                if (isset($textarray[1])) // Wenn Text für diese Stelle definiert
+                                                {
+                                                    $text = $textarray[1];
+                                                }
+                                            } else {
+                                                $text = 'x';
+                                            }
+                                        }
                                     }
                                     break;
 
@@ -687,8 +716,37 @@ try {
                                         break;
 
                                     case 'CHECKBOX':
+                                        $text = ' ';
                                         if ($user->getValue($gProfileFields->getPropertyById($fieldid, 'usf_name_intern'))) {
-                                            $text = 'x';
+
+                                            if (array_key_exists('T', $fontData)) // Nehme Text aus Konfiguration
+                                            {
+                                                $textarray = explode(',', $fontData['T']);
+                                                if (isset($textarray[0])) // Wenn Text für diese Stelle definiert
+                                                {
+                                                    $text = $textarray[0];
+                                                }
+                                            } else {
+                                                $text = 'x';
+                                            }
+                                        } else {
+                                            if (isset($xyKoord[2]) && isset($xyKoord[3])) {
+                                                // beim Schreiben in die PDF-Datei werden nur xykoord[0] und [1] ausgelesen,
+                                                // deshalb hier die jeweiligen Positionen auslesen und in [0] und [1] schreiben
+                                                $sortArray[$pointer]['xykoord'][0] = $xyKoord[2];
+                                                $sortArray[$pointer]['xykoord'][1] = $xyKoord[3];
+
+                                                if (array_key_exists('T', $fontData)) // Nehme Text aus Konfiguration
+                                                {
+                                                    $textarray = explode(',', $fontData['T']);
+                                                    if (isset($textarray[1])) // Wenn Text für diese Stelle definiert
+                                                    {
+                                                        $text = $textarray[1];
+                                                    }
+                                                } else {
+                                                    $text = 'x';
+                                                }
+                                            }
                                         }
                                         break;
 
