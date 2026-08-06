@@ -1,7 +1,6 @@
 <?php
 namespace Plugins\FormFiller\classes\Presenter;
 
-use Admidio\Changelog\Service\ChangelogService;
 use Admidio\Infrastructure\Exception;
 use Admidio\Infrastructure\Utils\SecurityUtils;
 use Admidio\UI\Presenter\FormPresenter;
@@ -9,11 +8,12 @@ use Admidio\UI\Presenter\PagePresenter;
 use Plugins\FormFiller\classes\Config\ConfigTable;
 
 /**
+ *
  * @brief Class with methods to display the preference page and helpful functions.
  *
  * This class adds some functions that are used in the formfiller-preferences module to keep the
  * code easy to read and short
- * 
+ *
  * FormfillerPreferencesPresenter is a modified (Admidio)PreferencesPresenter
  *
  * **Code example**
@@ -29,25 +29,30 @@ use Plugins\FormFiller\classes\Config\ConfigTable;
  */
 class FormfillerPreferencesPresenter extends PagePresenter
 {
+
     /**
+     *
      * @var array Array with all possible entries for the preferences.
-     *            Each entry consists of an array that has the following structure:
-     *            array ('key' => 'xzy', 'label' => 'xyz', 'panels' => array('id' => 'xyz', 'title' => 'xyz', 'icon' => 'xyz'))
-     * 
-     *            There are thwo different visualizations of the preferences:
-     *              1) a nested tab structure (main tabs created by 'key' and 'label' and sub tabs created by 'panels')
-     *              2) a accordion structure when the @media query (max-width: 768px) is active ('key' and 'label' are used for card header
-     *                 and 'panels' for accordions inside the card) 
+     *      Each entry consists of an array that has the following structure:
+     *      array ('key' => 'xzy', 'label' => 'xyz', 'panels' => array('id' => 'xyz', 'title' => 'xyz', 'icon' => 'xyz'))
+     *     
+     *      There are thwo different visualizations of the preferences:
+     *      1) a nested tab structure (main tabs created by 'key' and 'label' and sub tabs created by 'panels')
+     *      2) a accordion structure when the @media query (max-width: 768px) is active ('key' and 'label' are used for card header
+     *      and 'panels' for accordions inside the card)
      */
     protected array $preferenceTabs = array();
+
     /**
+     *
      * @var string Name of the preference panel that should be shown after page loading.
-     *             If this parameter is empty, then show the common preferences.
+     *      If this parameter is empty, then show the common preferences.
      */
     protected string $preferencesPanelToShow = '';
 
     /**
      * Constructor that initializes the class member parameters
+     *
      * @throws Exception
      */
     public function __construct(string $panel = '')
@@ -64,6 +69,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
     }
 
     /**
+     *
      * @throws Exception
      */
     private function initialize(): void
@@ -72,39 +78,75 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $this->preferenceTabs = array(
             // === 1) Configuration ===
             array(
-                'key'    => 'configuration',
-                'label'  => $gL10n->get('PLG_FORMFILLER_CONFIGURATIONS'),
+                'key' => 'configuration',
+                'label' => $gL10n->get('PLG_FORMFILLER_CONFIGURATIONS'),
                 'panels' => array(
-                    array('id'=>'configurations_edit',  'title'=>$gL10n->get('PLG_FORMFILLER_EDIT'),                'icon'=>'bi-sliders2',          'subcards'=>false),
-                    array('id'=>'assort',               'title'=>$gL10n->get('PLG_FORMFILLER_ASSORT'),              'icon'=>'bi-sort-alpha-down',   'subcards'=>false),
-                    array('id'=>'export_import',        'title'=>$gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'),       'icon'=>'bi-code',              'subcards'=>false),
-                ),
+                    array(
+                        'id' => 'configurations_edit',
+                        'title' => $gL10n->get('PLG_FORMFILLER_EDIT'),
+                        'icon' => 'bi-sliders2',
+                        'subcards' => false
+                    ),
+                    array(
+                        'id' => 'assort',
+                        'title' => $gL10n->get('PLG_FORMFILLER_ASSORT'),
+                        'icon' => 'bi-sort-alpha-down',
+                        'subcards' => false
+                    ),
+                    array(
+                        'id' => 'export_import',
+                        'title' => $gL10n->get('PLG_FORMFILLER_EXPORT_IMPORT'),
+                        'icon' => 'bi-code',
+                        'subcards' => false
+                    )
+                )
             ),
-            
+
             // === 2) System ===
             array(
-                'key'    => 'system',
-                'label'  => $gL10n->get('SYS_SYSTEM'),
+                'key' => 'system',
+                'label' => $gL10n->get('SYS_SYSTEM'),
                 'panels' => array(
-                    array('id'=>'informations',         'title'=>$gL10n->get('SYS_INFORMATIONS'),                   'icon'=>'bi-info-circle',       'subcards'=>false),
-                    array('id'=>'options',              'title'=>$gL10n->get('PLG_FORMFILLER_OPTIONS'),             'icon'=>'bi-gear',              'subcards'=>false),
-                    array('id'=>'uninstallation',       'title'=>$gL10n->get('PLG_FORMFILLER_UNINSTALLATION'),      'icon'=>'bi-trash',             'subcards'=>false),                    
-                ),
+                    array(
+                        'id' => 'informations',
+                        'title' => $gL10n->get('SYS_INFORMATIONS'),
+                        'icon' => 'bi-info-circle',
+                        'subcards' => false
+                    ),
+                    array(
+                        'id' => 'options',
+                        'title' => $gL10n->get('PLG_FORMFILLER_OPTIONS'),
+                        'icon' => 'bi-gear',
+                        'subcards' => false
+                    ),
+                    array(
+                        'id' => 'uninstallation',
+                        'title' => $gL10n->get('PLG_FORMFILLER_UNINSTALLATION'),
+                        'icon' => 'bi-trash',
+                        'subcards' => false
+                    )
+                )
             ),
-            
+
             // === 3) Security ===
             array(
-                'key'    => 'security',
-                'label'  => $gL10n->get('SYS_SECURITY'),
+                'key' => 'security',
+                'label' => $gL10n->get('SYS_SECURITY'),
                 'panels' => array(
-                    array('id'=>'access',               'title'=>$gL10n->get('PLG_FORMFILLER_ACCESS_PREFERENCES'),  'icon'=>'bi-key',               'subcards'=>false),
-                ),
-            ),
+                    array(
+                        'id' => 'access',
+                        'title' => $gL10n->get('PLG_FORMFILLER_ACCESS_PREFERENCES'),
+                        'icon' => 'bi-key',
+                        'subcards' => false
+                    )
+                )
+            )
         );
     }
 
     /**
      * Generates the html of the form from the configurations preferences and will return the complete html.
+     *
      * @return string Returns the complete html of the form from the configurations preferences.
      * @throws Exception
      * @throws \Smarty\Exception
@@ -115,9 +157,10 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.configurations.plugin.formfiller.tpl');
     }
-    
+
     /**
      * Generates the html of the form from the exportimport preferences and will return the complete html.
+     *
      * @return string Returns the complete html of the form from the exportimport preferences.
      * @throws Exception
      * @throws \Smarty\Exception
@@ -128,9 +171,10 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.export_import.plugin.formfiller.tpl');
     }
-    
+
     /**
      * Generates the html of the form from the assort preferences and will return the complete html.
+     *
      * @return string Returns the complete html of the form from the assort preferences.
      * @throws Exception
      * @throws \Smarty\Exception
@@ -138,33 +182,34 @@ class FormfillerPreferencesPresenter extends PagePresenter
     public function createAssortForm(): string
     {
         global $gL10n, $gSettingsManager, $gCurrentSession;
-        
+
         $formValues = $gSettingsManager->getAll();
-        
-        $formAssort = new FormPresenter(
-            'adm_preferences_form_configurations',
-            '../templates/preferences.assort.plugin.formfiller.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array('mode' => 'save', 'panel' => 'Assort')),
-            null,
-            array('class' => 'form-preferences')
-            );
-        
-        $formAssort->addCustomContent('assort','','', array( 'alertWarning' => $gL10n->get('PLG_FORMFILLER_ASSORT_NOTE')));
-        
-        $formAssort->addSubmitButton(
-            'adm_button_save_assort',
-            $gL10n->get('PLG_FORMFILLER_ASSORT'),
-            array('icon' => 'bi-sort-alpha-down', 'class' => 'offset-sm-3')
-            );
-        
+
+        $formAssort = new FormPresenter('adm_preferences_form_configurations', '../templates/preferences.assort.plugin.formfiller.tpl', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array(
+            'mode' => 'save',
+            'panel' => 'Assort'
+        )), null, array(
+            'class' => 'form-preferences'
+        ));
+
+        $formAssort->addCustomContent('assort', '', '', array(
+            'alertWarning' => $gL10n->get('PLG_FORMFILLER_ASSORT_NOTE')
+        ));
+
+        $formAssort->addSubmitButton('adm_button_save_assort', $gL10n->get('PLG_FORMFILLER_ASSORT'), array(
+            'icon' => 'bi-sort-alpha-down',
+            'class' => 'offset-sm-3'
+        ));
+
         $smarty = $this->getSmartyTemplate();
         $formAssort->addToSmarty($smarty);
         $gCurrentSession->addFormObject($formAssort);
         return $smarty->fetch('../templates/preferences.assort.plugin.formfiller.tpl');
     }
-    
+
     /**
      * Generates the html of the form from the options preferences and will return the complete html.
+     *
      * @return string Returns the complete html of the form from the options preferences.
      * @throws Exception
      * @throws \Smarty\Exception
@@ -172,48 +217,44 @@ class FormfillerPreferencesPresenter extends PagePresenter
     public function createOptionsForm(): string
     {
         global $gL10n, $gSettingsManager, $gCurrentSession;
-        
+
         $pPreferences = new ConfigTable();
         $pPreferences->read();
-        
+
         $formValues = $gSettingsManager->getAll();
-        
-        $formOptions = new FormPresenter(
-            'adm_preferences_form_options',
-            '../templates/preferences.options.plugin.formfiller.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array('mode' => 'save', 'panel' => 'Options')),
-            null,
-            array('class' => 'form-preferences')
-            );
-        
-        $formOptions->addInput(
-            'maxpdfview',
-            $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'),
-            $pPreferences->config['Optionen']['maxpdfview'],
-            array('step' => 1,'type' => 'number', 'minNumber' => 0, 'helpTextId' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC')
-            );
-        
-        $formOptions->addInput(
-            'pdfform_addsizes',
-            $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'),
-            $pPreferences->config['Optionen']['pdfform_addsizes'],
-            array( 'helpTextId' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC')
-            );
-        
-        $formOptions->addSubmitButton(
-            'adm_button_save_options',
-            $gL10n->get('SYS_SAVE'),
-            array('icon' => 'bi-check-lg', 'class' => 'offset-sm-3')
-            );
-        
+
+        $formOptions = new FormPresenter('adm_preferences_form_options', '../templates/preferences.options.plugin.formfiller.tpl', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array(
+            'mode' => 'save',
+            'panel' => 'Options'
+        )), null, array(
+            'class' => 'form-preferences'
+        ));
+
+        $formOptions->addInput('maxpdfview', $gL10n->get('PLG_FORMFILLER_MAX_PDFVIEW'), $pPreferences->config['Optionen']['maxpdfview'], array(
+            'step' => 1,
+            'type' => 'number',
+            'minNumber' => 0,
+            'helpTextId' => 'PLG_FORMFILLER_MAX_PDFVIEW_DESC'
+        ));
+
+        $formOptions->addInput('pdfform_addsizes', $gL10n->get('PLG_FORMFILLER_PDFFORM_ADDSIZES'), $pPreferences->config['Optionen']['pdfform_addsizes'], array(
+            'helpTextId' => 'PLG_FORMFILLER_PDFFORM_ADDSIZES_DESC'
+        ));
+
+        $formOptions->addSubmitButton('adm_button_save_options', $gL10n->get('SYS_SAVE'), array(
+            'icon' => 'bi-check-lg',
+            'class' => 'offset-sm-3'
+        ));
+
         $smarty = $this->getSmartyTemplate();
         $formOptions->addToSmarty($smarty);
         $gCurrentSession->addFormObject($formOptions);
         return $smarty->fetch('../templates/preferences.options.plugin.formfiller.tpl');
     }
-    
+
     /**
      * Generates the html of the form from the deinstallation preferences and will return the complete html.
+     *
      * @return string Returns the complete html of the form from the configurations preferences.
      * @throws Exception
      * @throws \Smarty\Exception
@@ -224,9 +265,10 @@ class FormfillerPreferencesPresenter extends PagePresenter
         $smarty = $this->getSmartyTemplate();
         return $smarty->fetch('../templates/preferences.uninstall.plugin.formfiller.tpl');
     }
-    
+
     /**
      * Generates the html of the form from the access preferences and will return the complete html.
+     *
      * @return string Returns the complete html of the form from the access preferences.
      * @throws Exception
      * @throws \Smarty\Exception
@@ -234,78 +276,76 @@ class FormfillerPreferencesPresenter extends PagePresenter
     public function createAccessForm(): string
     {
         global $gL10n, $gSettingsManager, $gCurrentSession, $gCurrentOrgId, $gDb;
-        
+
         $pPreferences = new ConfigTable();
         $pPreferences->read();
-        
+
         $formValues = $gSettingsManager->getAll();
-        
-        $formAccess = new FormPresenter(
-            'adm_preferences_form_access',
-            '../templates/preferences.access.plugin.formfiller.tpl',
-            SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array('mode' => 'save', 'panel' => 'Access')),
-            null,
-            array('class' => 'form-preferences')
-        );
-        
+
+        $formAccess = new FormPresenter('adm_preferences_form_access', '../templates/preferences.access.plugin.formfiller.tpl', SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER . '/system/preferences.php', array(
+            'mode' => 'save',
+            'panel' => 'Access'
+        )), null, array(
+            'class' => 'form-preferences'
+        ));
+
         $sql = 'SELECT rol_id, rol_name, cat_name
-                  FROM '.TBL_CATEGORIES.' , '.TBL_ROLES.'
+                  FROM ' . TBL_CATEGORIES . ' , ' . TBL_ROLES . '
                  WHERE cat_id = rol_cat_id
                    AND ( cat_org_id = ' . $gCurrentOrgId . '
                     OR cat_org_id IS NULL )
               ORDER BY cat_sequence, rol_name ASC';
-        
-        $formAccess->addSelectBoxFromSql(
-            'access_preferences',
-            '',
-            $gDb,
-            $sql,
-            array('defaultValue' => $pPreferences->config['access']['preferences'], 'helpTextId' => 'PLG_FORMFILLER_ACCESS_PREFERENCES_DESC', 'multiselect' => true)
-        );
 
-        //Warning: Undefined array key "inventory_profile_view"
-        $formAccess->addInput(
-            'inventory_profile_view',
-            '',
-            '',
-            array( 'property' => FormPresenter::FIELD_HIDDEN)
-        );
-        
-        $formAccess->addSubmitButton(
-            'adm_button_save_access',
-            $gL10n->get('SYS_SAVE'),
-            array('icon' => 'bi-check-lg', 'class' => 'offset-sm-3')
-        );
-        
+        $formAccess->addSelectBoxFromSql('access_preferences', '', $gDb, $sql, array(
+            'defaultValue' => $pPreferences->config['access']['preferences'],
+            'helpTextId' => 'PLG_FORMFILLER_ACCESS_PREFERENCES_DESC',
+            'multiselect' => true
+        ));
+
+        // Warning: Undefined array key "inventory_profile_view"
+        $formAccess->addInput('inventory_profile_view', '', '', array(
+            'property' => FormPresenter::FIELD_HIDDEN
+        ));
+
+        $formAccess->addSubmitButton('adm_button_save_access', $gL10n->get('SYS_SAVE'), array(
+            'icon' => 'bi-check-lg',
+            'class' => 'offset-sm-3'
+        ));
+
         $smarty = $this->getSmartyTemplate();
         $formAccess->addToSmarty($smarty);
         return $smarty->fetch('../templates/preferences.access.plugin.formfiller.tpl');
     }
-    
+
     /**
      * Generates the html of the form from the informations preferences and will return the complete html.
+     *
      * @return string Returns the complete html of the form from the informations preferences.
      * @throws Exception
      * @throws \Smarty\Exception
      */
     public function createInformationsForm(): string
-    {        
+    {
         global $gL10n, $gCurrentSession;
-        
+
         $pPreferences = new ConfigTable();
         $pPreferences->read();
-        
+
         $formInformations = new FormPresenter('adm_preferences_form_options', '../templates/preferences.informations.plugin.formfiller.tpl', '', null, array(
             'class' => 'form-preferences'
         ));
-        
+
         $formInformations->addCustomContent('plg_name', $gL10n->get('PLG_FORMFILLER_PLUGIN_NAME'), $gL10n->get('PLG_FORMFILLER_NAME'));
         $formInformations->addCustomContent('plg_version', $gL10n->get('PLG_FORMFILLER_PLUGIN_VERSION'), $pPreferences->config['Plugininformationen']['version']);
         $formInformations->addCustomContent('plg_date', $gL10n->get('PLG_FORMFILLER_PLUGIN_DATE'), $pPreferences->config['Plugininformationen']['stand']);
-        
-        $html = '<a class="btn btn-secondary" id="open_documentation" href="' . SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array('id' => 'de:plugins:formfiller')) . '" target="_blank"><i class="bi bi-file-earmark-pdf"></i> ' . $gL10n->get('PLG_DECLARATION_OF_MEMBERSHIP_DOCUMENTATION_OPEN') . '</a>';
-        $formInformations->addCustomContent('plg_doc', $gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array('helpTextId' => $gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC')));
-        
+
+        $html = '<a class="btn btn-secondary" id="open_documentation" href="' . SecurityUtils::encodeUrl('https://www.admidio.org/dokuwiki/doku.php', array(
+            'id' => 'de:plugins:formfiller'
+        )) . '" target="_blank"><i class="bi bi-file-earmark-pdf"></i> ' . $gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN') . '</a>';
+        $formInformations->addCustomContent('plg_doc', $gL10n->get('PLG_FORMFILLER_DOCUMENTATION'), $html, array(
+            'helpTextId' => $gL10n->get('PLG_FORMFILLER_DOCUMENTATION_OPEN_DESC')
+        ));
+
         $smarty = $this->getSmartyTemplate();
         $formInformations->addToSmarty($smarty);
         $gCurrentSession->addFormObject($formInformations);
@@ -314,7 +354,9 @@ class FormfillerPreferencesPresenter extends PagePresenter
 
     /**
      * Set a panel name that should be opened at a page load.
-     * @param string $panelName Name of the panel that should be opened at a page load.
+     *
+     * @param string $panelName
+     *            Name of the panel that should be opened at a page load.
      * @return void
      */
     public function setPanelToShow(string $panelName): void
@@ -325,7 +367,8 @@ class FormfillerPreferencesPresenter extends PagePresenter
     /**
      * Read all available registrations from the database and create the HTML content of this
      * page with the Smarty template engine and write the HTML output to the internal
-     * parameter **$pageContent**. If no registration is found, then show a message to the user.
+     * parameter **$pageContent**.
+     * If no registration is found, then show a message to the user.
      */
     public function show(): void
     {
@@ -436,7 +479,7 @@ class FormfillerPreferencesPresenter extends PagePresenter
             // === 5) Formular-Submit per AJAX ===
             $(document).on("submit", "form[id^=\"adm_preferences_form_\"]", formSubmit);
       ', true);
-      
+
         // Load the select2 in case any of the form uses a select box. Unfortunately, each section
         // is loaded on-demand, when there is no HTML page anymore to insert the css/JS file loading,
         // so we need to do it here, even when no selectbox will be used...
